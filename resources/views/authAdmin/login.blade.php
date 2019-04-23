@@ -81,9 +81,9 @@
                             <a class="btn btn-link" href="{{ route('password.request') }}">
                                 {{ __('Forgot Your Password?') }}
                             </a><br>
-                            <a class="btn btn-link" href="{{ route('register') }}">
+                            {{-- <a class="btn btn-link" href="{{ route('register') }}">
                                 {{ __('Register') }}
-                            </a>
+                            </a> --}}
                         </p>
                         
                       </div>
