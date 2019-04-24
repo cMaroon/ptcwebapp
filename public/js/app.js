@@ -52013,14 +52013,12 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   mode: 'history',
   routes: [{
     path: '/admin/dashboard',
-    name: 'dashboard',
-    component: _components_Dashboard__WEBPACK_IMPORTED_MODULE_0__["default"],
-    props: true
+    name: 'admin-dashboard',
+    component: _components_Dashboard__WEBPACK_IMPORTED_MODULE_0__["default"]
   }, {
     path: '/admin/users',
     name: 'users',
-    component: _components_Users__WEBPACK_IMPORTED_MODULE_1__["default"],
-    props: true
+    component: _components_Users__WEBPACK_IMPORTED_MODULE_1__["default"]
   }]
 });
 var app = new Vue({

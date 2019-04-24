@@ -12,6 +12,7 @@ window.Vue = require('vue');
 
 import Dashboard from './components/Dashboard'
 import Users from './components/Users'
+
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
@@ -21,15 +22,15 @@ const router = new VueRouter({
   routes: [
       {
           path: '/admin/dashboard',
-          name: 'dashboard',
+          name: 'admin-dashboard',
           component: Dashboard,
-          props: true
+          
       },
       {
         path: '/admin/users',
         name: 'users',
         component: Users,
-        props: true
+        
     },
 
   ],

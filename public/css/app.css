@@ -13143,6 +13143,54 @@ a.text-muted:hover {
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
 }@charset "UTF-8";
 
+.icon-vividorange {
+  color: #f96f0e;
+}
+
+.icon-strongblue {
+  color: #057ccf;
+}
+
+.icon-blue {
+  color: #3490dc;
+}
+
+.icon-indigo {
+  color: #6574cd;
+}
+
+.icon-purple {
+  color: #9561e2;
+}
+
+.icon-pink {
+  color: #f66D9b;
+}
+
+.icon-red {
+  color: #e3342f;
+}
+
+.icon-orange {
+  color: #f6993f;
+}
+
+.icon-yellow {
+  color: #ffed4a;
+}
+
+.icon-green {
+  color: #38c172;
+}
+
+.icon-teal {
+  color: #4dc0b5;
+}
+
+.icon-cyan {
+  color: #6cb2eb;
+}
+
 /*!
  * Font Awesome Free 5.8.1 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
@@ -29558,6 +29606,11 @@ a.text-dark:focus {
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.router-link-exact-active {
+  background-color: #494E53;
+  color: #fff !important;
 }
 
 @media print {
