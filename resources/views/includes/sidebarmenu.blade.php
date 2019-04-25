@@ -11,7 +11,7 @@
         </li>
         {{-- @can('isSuperAdmin') --}}
         <li class="nav-item">
-          <router-link :to="{ name: 'users'}" class="nav-link">
+          <router-link :to="{ name: 'admin-users'}" class="nav-link">
             <i class="fas fa-users nav-icon icon-indigo"></i>
             <p>User Accounts</p>
           </router-link>

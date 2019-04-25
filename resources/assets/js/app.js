@@ -8,6 +8,11 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import { Form, HasError, AlertError } from 'vform';
+
+window.Form = Form;
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
 
 
 import Dashboard from './components/Dashboard'
@@ -28,7 +33,7 @@ const router = new VueRouter({
       },
       {
         path: '/admin/users',
-        name: 'users',
+        name: 'admin-users',
         component: Users,
         
     },
