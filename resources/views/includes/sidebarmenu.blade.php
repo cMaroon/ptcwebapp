@@ -93,5 +93,11 @@
                      @csrf
                  </form>
                 </li>
+                @if ((Auth::user()->usertype) !== 'superadmin')
+                {{Auth::user()->email}}
+                @else
+                You are Logged In as a <strong>{{Auth::user()->usertype}}</strong>
+                @endif
+                
         </ul>
       </nav>

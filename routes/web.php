@@ -23,7 +23,7 @@ Route::get('/user/logout','Auth\LoginController@logoutUser')->name('user.logout'
 Route::group(['prefix' => 'admin'], function(){
     Route::get('/login', 'AuthAdmin\LoginController@showLoginForm')->name('admin.login');
     Route::post('/login', 'AuthAdmin\LoginController@login')->name('admin.login.submit');
-    Route::get('/admin', 'AdminController@index')->name('admin.home');
+    Route::get('/dashboard', 'AdminController@index')->name('admin.home');
     Route::get('/logout','AuthAdmin\LoginController@logoutAdmin')->name('admin.logout');
 
     Route::get('/{path}',"AdminController@index")->where('path','([A-z\d-\/_.]+)?');
@@ -32,14 +32,14 @@ Route::group(['prefix' => 'admin'], function(){
 Route::group(['prefix' => 'instructor'], function(){
     Route::get('/login', 'AuthInstructor\LoginController@showLoginForm')->name('instructor.login');
     Route::post('/login', 'AuthInstructor\LoginController@login')->name('instructor.login.submit');
-    Route::get('/instructor', 'InstructorController@index')->name('instructor.home');
+    Route::get('/dashboard', 'InstructorController@index')->name('instructor.home');
     Route::get('/logout','AuthInstructor\LoginController@logoutInstructor')->name('instructor.logout');
 });
 
 Route::group(['prefix' => 'student'], function(){
     Route::get('/login', 'AuthStudent\LoginController@showLoginForm')->name('student.login');
     Route::post('/login', 'AuthStudent\LoginController@login')->name('student.login.submit');
-    Route::get('/student', 'StudentController@index')->name('student.home');
+    Route::get('/dashboard', 'StudentController@index')->name('student.home');
     Route::get('/logout','AuthStudent\LoginController@logoutStudent')->name('student.logout');
 });
 

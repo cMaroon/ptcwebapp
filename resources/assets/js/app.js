@@ -16,7 +16,7 @@ Vue.component(AlertError.name, AlertError)
 
 
 import Dashboard from './components/Dashboard'
-import Users from './components/Users'
+import Users from './components/AdminUsers'
 
 import VueRouter from 'vue-router'
 
