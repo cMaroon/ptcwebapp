@@ -22,7 +22,7 @@ class AdminUserController extends Controller
     public function index()
     {
 
-        return new AdminUserCollection(Admin::latest()->paginate(15));
+        return new AdminUserCollection(Admin::with('adminInfo')->orderBy('id','DESC')->paginate(15));
     }
 
     /**
@@ -70,7 +70,7 @@ class AdminUserController extends Controller
      */
     public function show($id)
     {
-        return new AdminUserResource(Admin::findOrFail($id));
+        return new AdminUserResource(AdminInformation::findOrFail($id));
     }
 
     /**
@@ -116,8 +116,15 @@ class AdminUserController extends Controller
         return new AdminUserResource($admininfo,$admin);
     }
 
-    public function search($field,$query)
+    public function searchInfo($field,$query)
     {
-        
+        return new AdminUserCollection(AdminInformation::with('adminUserID')->where($field,'LIKE',"%$query%")->latest()
+        ->paginate(15));
+    }
+
+    public function searchUser($field,$query)
+    {
+        return new AdminUserCollection(Admin::with('adminInfo')->where($field,'LIKE',"%$query%")->latest()
+        ->paginate(15));
     }
 }
