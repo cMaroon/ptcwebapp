@@ -5,6 +5,7 @@
           <div class="card-header">
             <h3 class="card-title">Admin Users Information</h3>
             <div class="card-tools" style="position: absolute;right:1rem;top:.5rem;">
+              <button type="button" class="btn btn-success" @click="create">Add New <i class="fas fa-plus"></i></button>
               <button type="button" class="btn btn-primary" @click="reload">Reload <i class="fas fa-sync"></i></button>
             </div>
           </div>
@@ -90,10 +91,52 @@
           <!-- /.card-body -->
       </div>
    </div>
+   <!-- Modal -->
+    <div class="modal fade" id="adminuserModalLong" tabindex="-1" role="dialog" aria-labelledby="adminuserModalTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="adminuserModalTitle">Add New User</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            
+          <form @submit.prevent="store" @keydown="form.onKeydown($event)">
+          <div class="modal-body">
+            <alert-error ></alert-error>
+              <div class="form-group">
+                <label>Id Number</label>
+                <input v-model="form.id_num" type="text" name="id_num"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }">
+                <has-error :form="form" field="id_num"></has-error>
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input v-model="form.email" type="text" name="email"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                <has-error :form="form" field="email"></has-error>
+              </div>
+
+              <div class="form-group">
+                <label>Password</label>
+                <input v-model="form.password" type="password" name="password"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
+                <has-error :form="form" field="password"></has-error>
+              </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button :disabled="form.busy" type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
    <vue-progress-bar></vue-progress-bar>
+   <vue-snotify></vue-snotify>
  </div>
-          
-    
 </template>
 
 <script>
@@ -103,6 +146,20 @@
           query:'',
           queryField:'id_num',
           adminuser:[],
+          form : new Form({
+            id:'',
+            id_num:'',
+            email:'',
+            password:'',
+            usertype:'',
+            user_id:'',
+            firstname:'',
+            middlename:'',
+            lastname:'',
+            suffixname:'',
+            admin_type:'',
+
+          }),
           pagination:{
             current_page:1,
           }
@@ -154,6 +211,19 @@
             this.getData()
             this.query=''
             this.queryField='id_num'
+            this.$snotify.success('Data Successfully Refresh','Success', {
+                  timeout: 1000,
+                  showProgressBar: false,
+                  closeOnClick: false,
+                  pauseOnHover: false
+                });
+          },
+          create(){
+            $('#adminuserModalLong').modal('show')
+
+          },
+          store(){
+            console.log('Hello')
           }
         }
     }

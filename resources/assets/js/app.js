@@ -9,19 +9,24 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import Vue from 'vue'
-import { Form, HasError, AlertError } from 'vform';
-
-window.Form = Form;
-Vue.component(HasError.name, HasError)
-Vue.component(AlertError.name, AlertError)
-
-
-import Dashboard from './components/Dashboard'
-import Users from './components/AdminUsers'
-import Pagination from './components/partial/PaginationComponent.vue'
-
+import { Form, HasError, AlertError } from 'vform'
 import VueRouter from 'vue-router'
 import VueProgressBar from 'vue-progressbar'
+import Snotify, { SnotifyPosition} from 'vue-snotify'
+import Dashboard from './components/Dashboard'
+import Users from './components/AdminUsers'
+
+window.Form = Form
+
+Vue.use(Snotify, SnotifyOptions)
+Vue.use(VueProgressBar, VueProgressBarOptions)
+Vue.use(VueRouter)
+
+const SnotifyOptions = {
+  toast: {
+    position: SnotifyPosition.rightTop
+  }
+}
 
 const VueProgressBarOptions = {
   color: '#50d38a',
@@ -36,8 +41,6 @@ const VueProgressBarOptions = {
   location: 'top',
   inverse: false
 }
-Vue.use(VueProgressBar, VueProgressBarOptions)
-Vue.use(VueRouter)
 
 const router = new VueRouter({
   mode: 'history',
@@ -59,7 +62,8 @@ const router = new VueRouter({
 });
 
 Vue.component('pagination',require('./components/partial/PaginationComponent.vue').default)
-
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
 
 const app = new Vue({
   el: '#app',
