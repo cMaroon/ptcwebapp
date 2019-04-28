@@ -33,23 +33,16 @@ class AdminUserController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->validate($request,[
-        //     'id_num' => 'required|string|max:191|unique:users_admin',
-        //     'firstname' => 'required|string|max:191|alpha_spaces',
-        //     'middlename' => 'max:191|alpha_spaces|nullable',
-        //     'lastname' => 'required|string|max:191|alpha_spaces',
-        //     'email' => 'required|string|email|max:191|unique:users_admin',
-        //     'password' => 'required|string|min:6',
-        // ]);
-
-        $admininfo = new AdminInformation();
-        // $admininfo->user_id = $request->user_id;
-        $admininfo->firstname = $request->firstname;
-        $admininfo->middlename = $request->middlename;
-        $admininfo->lastname = $request->lastname;
-        $admininfo->suffixname = $request->suffixname;
-        $admininfo->admin_type = $request->admin_type;
-        $admininfo->save();
+        $this->validate($request,[
+            'id_num' => 'required|string|max:191|unique:users_admin',
+            'firstname' => 'required|string|max:191|alpha_spaces',
+            'middlename' => 'max:191|alpha_spaces|nullable',
+            'lastname' => 'required|string|max:191|alpha_spaces',
+            'suffixname' => 'max:191|alpha_spaces|nullable',
+            'usertype' => 'required|string',
+            'email' => 'required|string|email|max:191|unique:users_admin',
+            'password' => 'required|string|min:6',
+        ]);
 
         $admin = new Admin();
         $admin->id_num = $request->id_num;
@@ -58,6 +51,14 @@ class AdminUserController extends Controller
         $admin->usertype = $request->usertype;
         $admin->save();
 
+        $admininfo = new AdminInformation();
+        $admininfo->user_id = $request->user_id;
+        $admininfo->firstname = $request->firstname;
+        $admininfo->middlename = $request->middlename;
+        $admininfo->lastname = $request->lastname;
+        $admininfo->suffixname = $request->suffixname;
+        $admininfo->save();
+        
         return new AdminUserResource($admininfo,$admin);
         
     }

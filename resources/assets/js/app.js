@@ -8,15 +8,15 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.Form = Form
+
 import Vue from 'vue'
-import { Form, HasError, AlertError } from 'vform'
+import { Form, HasError, AlertError, AlertErrors, AlertSuccess } from 'vform'
 import VueRouter from 'vue-router'
 import VueProgressBar from 'vue-progressbar'
 import Snotify, { SnotifyPosition} from 'vue-snotify'
 import Dashboard from './components/Dashboard'
 import Users from './components/AdminUsers'
-
-window.Form = Form
 
 Vue.use(Snotify, SnotifyOptions)
 Vue.use(VueProgressBar, VueProgressBarOptions)
@@ -64,6 +64,9 @@ const router = new VueRouter({
 Vue.component('pagination',require('./components/partial/PaginationComponent.vue').default)
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
+Vue.component(AlertErrors.name, AlertErrors)
+Vue.component(AlertSuccess.name, AlertSuccess)
+
 
 const app = new Vue({
   el: '#app',

@@ -21,7 +21,6 @@ class CreateAdminInformationTable extends Migration
             $table->string('middlename')->nullable();
             $table->string('lastname');
             $table->string('suffixname')->nullable();
-            $table->string('admin_type')->nullable();
             $table->string('sex')->nullable();
             $table->string('civil_status')->nullable();
             $table->string('citizenship')->nullable();
@@ -41,7 +40,6 @@ class CreateAdminInformationTable extends Migration
             $table->string('contact_number')->nullable();
  
             $table->timestamps();
-
 
             $table->foreign('user_id')->references('id')->on('users_admin')->onDelete('cascade');
         });

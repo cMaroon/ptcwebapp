@@ -46,6 +46,7 @@
               <tbody>
                 <tr v-show="!adminuser.length" v-for="(adminuser, index) in adminuser" :key="adminuser.id">
                     <td>{{ index + 1}}</td>
+                    <td hidden>{{ adminuser.admin_info.user_id }}</td>
                     <td>{{ adminuser.id_num }}</td>
                     <td>{{ adminuser.email }}</td>
                     <td>{{ adminuser.admin_info.lastname }} {{ adminuser.admin_info.suffixname }}, {{ adminuser.admin_info.firstname }} {{ adminuser.admin_info.middlename }}</td>
@@ -54,7 +55,7 @@
                         <button type="button" class="btn btn-info btn-sm">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button type="button" class="btn btn-primary btn-sm">
+                        <button type="button" @click="edit(adminuser)" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                         </button>
                         <button type="button" class="btn btn-danger btn-sm">
@@ -96,15 +97,19 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="adminuserModalTitle">Add New User</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <h5 class="modal-title" id="adminuserModalTitle">{{ editMode ? "Edit":"Add New"}} Admin User</h5>
+
           </div>
             
-          <form @submit.prevent="store" @keydown="form.onKeydown($event)">
+          <form @submit.prevent="editMode ? update() : store()" @keydown="form.onKeydown($event)">
           <div class="modal-body">
-            <alert-error ></alert-error>
+            <alert-error :form="form" message="There were some problems with your input."></alert-error>
+              <div class="form-group">
+                <label>User ID</label>
+                <input v-model="form.user_id" type="text" name="user_id"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('user_id') }">
+                <has-error :form="form" field="user_id"></has-error>
+              </div>
               <div class="form-group">
                 <label>Id Number</label>
                 <input v-model="form.id_num" type="text" name="id_num"
@@ -117,7 +122,41 @@
                   class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
                 <has-error :form="form" field="email"></has-error>
               </div>
-
+              <div class="form-group">
+                <label>First Name</label>
+                <input v-model="form.firstname" type="text" name="firstname"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('firstname') }">
+                <has-error :form="form" field="firstname"></has-error>
+              </div>
+              <div class="form-group">
+                <label>Middle Name</label>
+                <input v-model="form.middlename" type="text" name="middlename"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('middlename') }">
+                <has-error :form="form" field="middlename"></has-error>
+              </div>
+              <div class="form-group">
+                <label>Last Name</label>
+                <input v-model="form.lastname" type="text" name="lastname"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('lastname') }">
+                <has-error :form="form" field="lastname"></has-error>
+              </div>
+              <div class="form-group">
+                <label>Suffix Name</label>
+                <input v-model="form.suffixname" type="text" name="suffixname"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('suffixname') }">
+                <has-error :form="form" field="suffixname"></has-error>
+              </div>
+              <div class="form-group">
+                <label>User Type</label>
+                    <select v-model="form.usertype" type="text" class="form-control" name="usertype"
+                    :class="{ 'is-invalid': form.errors.has('usertype')}">
+                        <option value="" disabled selected>Please select user type*</option>
+                        <option value="registrar">Registrar</option>
+                        <option value="cashier">Cashier</option>
+                        <option value="assestment">Assestment</option>
+                    </select>
+                <has-error :form="form" field="usertype"></has-error>
+              </div>
               <div class="form-group">
                 <label>Password</label>
                 <input v-model="form.password" type="password" name="password"
@@ -127,7 +166,6 @@
 
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button :disabled="form.busy" type="submit" class="btn btn-primary">Save changes</button>
           </div>
           </form>
@@ -143,11 +181,11 @@
     export default {
       data(){
         return{
+          editMode: false,
           query:'',
           queryField:'id_num',
           adminuser:[],
           form : new Form({
-            id:'',
             id_num:'',
             email:'',
             password:'',
@@ -157,7 +195,6 @@
             middlename:'',
             lastname:'',
             suffixname:'',
-            admin_type:'',
 
           }),
           pagination:{
@@ -219,11 +256,54 @@
                 });
           },
           create(){
+            this.editMode = false
+            this.form.reset()
+            this.form.clear()
             $('#adminuserModalLong').modal('show')
 
           },
           store(){
-            console.log('Hello')
+            // console.log('Hello')
+            this.$Progress.start()
+            this.form.busy = true
+            this.form.post('/api/adminuser')
+              .then(response => {
+                this.getData()
+                $('#adminuserModalLong').modal('hide')
+                  if(this.form.successful){
+                    this.$Progress.finish()
+                    this.$snotify.success('Data Successfully Saved','Success', {
+                          timeout: 3000,
+                          showProgressBar: false,
+                          closeOnClick: false,
+                          pauseOnHover: false
+                        });
+                  }else{
+                    this.$Progress.fail()
+                    this.$snotify.error('Something went wrong try again later','Error', {
+                          timeout: 3000,
+                          showProgressBar: false,
+                          closeOnClick: false,
+                          pauseOnHover: false
+                        });
+                  }
+              })
+              .catch(e => {
+                this.$Progress.fail()
+                // console.log(e)
+              })
+          },
+          edit(adminuser){
+            $('#adminuserModalLong').modal('show')
+            this.editMode = true
+            this.form.reset()
+            this.form.clear()
+            this.form.fill(adminuser)
+
+            // this.form.fill(adminuser.admin_info)
+          },
+          update(){
+
           }
         }
     }

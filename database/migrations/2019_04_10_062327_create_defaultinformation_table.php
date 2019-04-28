@@ -29,7 +29,6 @@ class CreateDefaultinformationTable extends Migration
                 'user_id' => '1',
                 'firstname' => 'super',
                 'lastname' => 'admin',
-                'admin_type' => 'superadmin',
                 'created_at' => date('Y-m-d H:m:s'),
                 'updated_at' => date('Y-m-d H:m:s')
 
