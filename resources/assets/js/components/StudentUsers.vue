@@ -3,7 +3,7 @@
    <div class="col-md-12">
       <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Admin Users Information</h3>
+            <h3 class="card-title">Student Users Information</h3>
             <div class="card-tools" style="position: absolute;right:1rem;top:.5rem;">
               <button type="button" class="btn btn-success" @click="create">Add New <i class="fas fa-plus"></i></button>
               <button type="button" class="btn btn-primary" @click="reload">Reload <i class="fas fa-sync"></i></button>
@@ -39,26 +39,24 @@
                   <th>ID Number</th>
                   <th>Email</th>
                   <th>Fullname</th>
-                  <th>Usertype</th>
                   <th class="text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-show="!adminuser.length" v-for="(adminuser, index) in adminuser" :key="adminuser.id">
+                <tr v-show="!studentuser.length" v-for="(studentuser, index) in studentuser" :key="studentuser.id">
                     <td>{{ index + 1}}</td>
-                    <td hidden>{{ adminuser.id }}</td>
-                    <td>{{ adminuser.id_num }}</td>
-                    <td>{{ adminuser.email }}</td>
-                    <td>{{ adminuser.lastname }} {{ adminuser.suffixname }}, {{ adminuser.firstname }} {{ adminuser.middlename }}</td>
-                    <td>{{ adminuser.usertype }}</td>
+                    <td hidden>{{ studentuser.id }}</td>
+                    <td>{{ studentuser.id_num }}</td>
+                    <td>{{ studentuser.email }}</td>
+                    <td>{{ studentuser.lastname }} {{ studentuser.suffixname }}, {{ studentuser.firstname }} {{ studentuser.middlename }}</td>
                     <td class="text-center">
-                        <button type="button" @click="show(adminuser)" class="btn btn-info btn-sm">
+                        <button type="button" @click="show(studentuser)" class="btn btn-info btn-sm">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button type="button" @click="edit(adminuser)" class="btn btn-primary btn-sm">
+                        <button type="button" @click="edit(studentuser)" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button type="button" @click="destroy(adminuser)" class="btn btn-danger btn-sm">
+                        <button type="button" @click="destroy(studentuser)" class="btn btn-danger btn-sm">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                         
@@ -66,7 +64,7 @@
 
 
                 </tr>
-                <tr v-show="!adminuser.length">
+                <tr v-show="!studentuser.length">
                   <td colspan="6">
                     <div class="alert alert-danger" role="alert">
                       No Data Found!
@@ -80,7 +78,6 @@
                 <th>ID Number</th>
                 <th>Email</th>
                 <th>Fullname</th>
-                <th>Usertype</th>
                 <th class="text-center">Action</th>
               </tr>
               </tfoot>
@@ -95,11 +92,11 @@
       </div>
    </div>
    <!-- Modal -->
-    <div class="modal fade" id="adminuserModalLong" tabindex="-1" role="dialog" aria-labelledby="adminuserModalTitle" aria-hidden="true">
+    <div class="modal fade" id="studentuserModalLong" tabindex="-1" role="dialog" aria-labelledby="studentuserModalTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="adminuserModalTitle">{{ editMode ? "Edit":"Add New"}} Admin User</h5>
+            <h5 class="modal-title" id="studentuserModalTitle">{{ editMode ? "Edit":"Add New"}} Student User</h5>
 
           </div>
             
@@ -147,17 +144,6 @@
                 <input v-model="form.suffixname" type="text" name="suffixname"
                   class="form-control" :class="{ 'is-invalid': form.errors.has('suffixname') }">
                 <has-error :form="form" field="suffixname"></has-error>
-              </div>
-              <div class="form-group">
-                <label>User Type</label>
-                    <select v-model="form.usertype" type="text" class="form-control" name="usertype"
-                    :class="{ 'is-invalid': form.errors.has('usertype')}">
-                        <option value="" disabled selected>Please select user type*</option>
-                        <option value="registrar">Registrar</option>
-                        <option value="cashier">Cashier</option>
-                        <option value="assestment">Assestment</option>
-                    </select>
-                <has-error :form="form" field="usertype"></has-error>
               </div>
               <div class="form-group">
                 <label>Password</label>
@@ -223,23 +209,6 @@
                 <input v-model="form.suffixname" type="text" name="suffixname"
                   class="form-control" readonly>
               </div>
-              <div class="form-group">
-                <label>User Type</label>
-                    <select v-model="form.usertype" type="text" class="form-control" name="usertype"
-                    disabled>
-                        <option value="" disabled selected>Please select user type*</option>
-                        <option value="registrar">Registrar</option>
-                        <option value="cashier">Cashier</option>
-                        <option value="assestment">Assestment</option>
-                    </select>
-              </div>
-              <!-- <div class="form-group">
-                <label>Password</label>
-                <input v-model="form.password" type="password" name="password"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
-                <has-error :form="form" field="password"></has-error>
-              </div> -->
-
           </div>
           <div class="modal-footer">
             <button :disabled="form.busy" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -261,14 +230,15 @@
           editMode: false,
           query:'',
           queryField:'id_num',
-          adminuser:[],
+          studentuser:[],
           totalcount:'',
           form : new Form({
             id:'',
             id_num:'',
             email:'',
-            password:'',
-            usertype:'',
+            cd_email:'',
+            password:'123456',
+            usertype:'student',
             user_id:'',
             firstname:'',
             middlename:'',
@@ -299,10 +269,10 @@
           getData(){
             //load data
             this.$Progress.start()
-            axios.get('/api/adminuser?page='+this.pagination.current_page)
+            axios.get('/api/studentuser?page='+this.pagination.current_page)
               .then(response=>{
                 // console.log(response)
-                this.adminuser = response.data.data
+                this.studentuser = response.data.data
                 this.pagination = response.data.meta
                 this.totalcount = this.pagination.total
                 this.$Progress.finish()
@@ -314,9 +284,9 @@
           },
           searchData(){
             this.$Progress.start()
-            axios.get('/api/search/adminuser/'+this.queryField+'/'+this.query+'?page='+this.pagination.current_page)
+            axios.get('/api/search/studentuser/'+this.queryField+'/'+this.query+'?page='+this.pagination.current_page)
             .then(response =>{
-              this.adminuser = response.data.data
+              this.studentuser = response.data.data
               this.pagination = response.data.meta
               this.$Progress.finish()
             })
@@ -342,18 +312,19 @@
             this.form.reset()
             this.form.clear()
             this.form.user_id = this.totalcount + 1
-            $('#adminuserModalLong').modal('show')
+            $('#studentuserModalLong').modal('show')
 
           },
           store(){
             // console.log('Hello')
             this.$Progress.start()
             this.form.busy = true
+            this.form.cd_email = this.form.email
             this.form
-              .post('/api/adminuser')
+              .post('/api/studentuser')
               .then(response => {
                 this.getData()
-                $('#adminuserModalLong').modal('hide')
+                $('#studentuserModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
                     this.$snotify.success('Data Successfully Saved','Success', {
@@ -379,30 +350,32 @@
                 // console.log(e)
               })
           },
-          show(adminuser) {
+          show(studentuser) {
             this.form.reset();
-            this.form.fill(adminuser);
+            this.form.fill(studentuser);
             $("#showModalLong").modal("show");
-            // console.log(adminuser);
+            // console.log(studentuser);
           },
-          edit(adminuser){
-            $('#adminuserModalLong').modal('show')
+          edit(studentuser){
+            $('#studentuserModalLong').modal('show')
             this.editMode = true
             this.form.reset()
             this.form.clear()
-            this.form.fill(adminuser)
+            this.form.fill(studentuser)
             this.form.user_id = this.form.id
+            this.form.password = '123456'
+            this.form.cd_email = this.form.email
 
-            // this.form.fill(adminuser.admin_info)
+
           },
           update(){
             this.$Progress.start()
             this.form.busy = true
             this.form
-              .put('/api/adminuser/'+this.form.id)
+              .put('/api/studentuser/'+this.form.id)
               .then(response => {
                 this.getData()
-                $('#adminuserModalLong').modal('hide')
+                $('#studentuserModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
                     this.$snotify.success('Data Successfully Updated','Success', {
@@ -428,8 +401,8 @@
                 // console.log(e)
               })
           },
-          destroy(adminuser){
-            this.form.id = adminuser.id
+          destroy(studentuser){
+            this.form.id = studentuser.id
             this.$snotify.clear()
             this.$snotify.confirm(
               "You will not be able to recover this data!",
@@ -444,7 +417,7 @@
                     action: toast => {
                       this.$snotify.remove(toast.id);
                       axios
-                          .delete('/api/adminuser/'+this.form.id)
+                          .delete('/api/studentuser/'+this.form.id)
                           .then(response =>{
                             this.getData()
                             this.$Progress.finish()

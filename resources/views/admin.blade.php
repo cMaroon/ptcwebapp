@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html lang="{{ app()->getLocale() }}">
     <head>
-      <?php $title='Dashboard'?>
+      <?php $title='PTC-Official'?>
       @include('includes.metadata')
       
     </head>
@@ -72,9 +72,6 @@
 
     <!-- Main content -->
         <router-view></router-view>
-    <!-- set progressbar -->
-    {{-- <vue-progress-bar></vue-progress-bar> --}}
-    <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
 

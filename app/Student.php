@@ -22,7 +22,7 @@ class Student extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id_num', 'email', 'password','usertype',
+        'id_num', 'email', 'firstname', 'middlename' ,'lastname','suffixname', 'password','usertype',
     ];
 
     /**
@@ -42,4 +42,9 @@ class Student extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function studInfo()
+    {
+        return $this->hasOne('App\StudentInformation','id');
+    }
 }

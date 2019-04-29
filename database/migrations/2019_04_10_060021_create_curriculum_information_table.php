@@ -21,6 +21,8 @@ class CreateCurriculumInformationTable extends Migration
             $table->integer('curr_program_id')->unsigned();
             $table->integer('curr_course_id')->unsigned();
             $table->integer('curr_section_id')->unsigned();
+            $table->integer('curr_stud_count')->unsigned();
+            $table->integer('curr_limit_persec')->unsigned();
             $table->string('sched_days')->nullable();
             $table->string('sched_time')->nullable();
             $table->string('sched_room')->nullable();

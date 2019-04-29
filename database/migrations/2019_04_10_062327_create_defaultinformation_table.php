@@ -17,6 +17,8 @@ class CreateDefaultinformationTable extends Migration
             DB::table('users_admin')->insert(array(
                 'id_num' => 'superadmin01',
                 'email' => 'itstaff.ptc@gmail.com',
+                'firstname' => 'super',
+                'lastname' => 'admin',
                 'password' => Hash::make('admin'),
                 'usertype' => 'superadmin',
                 'created_at' => date('Y-m-d H:m:s'),
@@ -38,6 +40,8 @@ class CreateDefaultinformationTable extends Migration
             DB::table('users_instructor')->insert(array(
                 'id_num' => 'gloriagarcia',
                 'email' => 'gloriagarcia@ptc-edu.ph',
+                'firstname' => 'Gloria',
+                'lastname' => 'Garcia',
                 'password' => Hash::make('garcia'),
                 'usertype' => 'instructor',
                 'created_at' => date('Y-m-d H:m:s'),
@@ -48,6 +52,8 @@ class CreateDefaultinformationTable extends Migration
             DB::table('users_instructor')->insert(array(
                 'id_num' => 'corneliolamera',
                 'email' => 'corneliolamera@ptc-edu.ph',
+                'firstname' => 'Cornelio',
+                'lastname' => 'Lamera',
                 'password' => Hash::make('lamera'),
                 'usertype' => 'instructor',
                 'created_at' => date('Y-m-d H:m:s'),
@@ -78,6 +84,8 @@ class CreateDefaultinformationTable extends Migration
             DB::table('users_student')->insert(array(
                 'id_num' => 'EC2017-0357',
                 'email' => 'bsit.kristian@gmail.com',
+                'firstname' => 'Kristian',
+                'lastname' => 'See Te',
                 'password' => Hash::make('kristian'),
                 'usertype' => 'student',
                 'created_at' => date('Y-m-d H:m:s'),

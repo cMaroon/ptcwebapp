@@ -13,17 +13,23 @@
         <li class="nav-item">
           <router-link :to="{ name: 'admin-users'}" class="nav-link">
             <i class="fas fa-users nav-icon icon-indigo"></i>
-            <p>User Accounts</p>
+            <p>Staff User Accounts</p>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link to="./studentlist" class="nav-link">
+          <router-link :to="{ name: 'admin-studentlist'}" class="nav-link">
             <i class="fas fa-address-card nav-icon icon-vividorange"></i>
-            <p>Student List</p>
+            <p>Student User Accounts</p>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link to="./program" class="nav-link">
+          <router-link :to="{ name: 'admin-managenroll'}" class="nav-link">
+            <i class="fas fa-archive nav-icon icon-cyan"></i>
+            <p>Manage Enrollment</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link :to="{ name: 'admin-manageprogram'}" class="nav-link">
             <i class="fas fa-tasks nav-icon icon-green"></i>
             <p>Manage Program</p>
           </router-link>
@@ -38,12 +44,6 @@
           <router-link to="./curriculum" class="nav-link">
             <i class="fas fa-table nav-icon icon-teal"></i>
             <p>Manage Curriculum</p>
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="./manage_enrollment" class="nav-link">
-            <i class="fas fa-archive nav-icon icon-cyan"></i>
-            <p>Manage Enrollment</p>
           </router-link>
         </li>
           {{-- <li class="nav-item">
@@ -74,7 +74,10 @@
           @endcan
             <li class="nav-item">
 
-                @if ((Auth::user()->usertype) == 'superadmin')
+                @if ((Auth::user()->usertype) == 'superadmin' || 
+                (Auth::user()->usertype) !== 'registrar' || 
+                (Auth::user()->usertype) !== 'cashier' || 
+                (Auth::user()->usertype) !== 'assestment')
                     <a class="nav-link" href="{{ route('admin.logout') }}"
                         onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">
@@ -93,8 +96,12 @@
                      @csrf
                  </form>
                 </li>
-                @if ((Auth::user()->usertype) !== 'superadmin')
-                {{Auth::user()->email}}
+                @if ((Auth::user()->usertype) !== 'superadmin' && 
+                (Auth::user()->usertype) !== 'registrar' && 
+                (Auth::user()->usertype) !== 'cashier' && 
+                (Auth::user()->usertype) !== 'assestment')
+                
+                {{Auth::user()->usertype}}
                 @else
                 You are Logged In as a <strong>{{Auth::user()->usertype}}</strong>
                 @endif

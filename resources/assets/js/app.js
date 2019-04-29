@@ -17,14 +17,17 @@ import VueProgressBar from 'vue-progressbar'
 import Snotify, { SnotifyPosition} from 'vue-snotify'
 import Dashboard from './components/Dashboard'
 import Users from './components/AdminUsers'
+import Students from './components/StudentUsers'
+import ManageEnroll from './components/ManageEnrollment'
+import ManageProgram from './components/ManageProgram'
 
-Vue.use(Snotify, SnotifyOptions)
+Vue.use(Snotify, SnotifyOptions, SnotifyPosition)
 Vue.use(VueProgressBar, VueProgressBarOptions)
 Vue.use(VueRouter)
 
 const SnotifyOptions = {
   toast: {
-    position: SnotifyPosition.rightTop
+    position: SnotifyPosition.rightTop,
   }
 }
 
@@ -52,11 +55,29 @@ const router = new VueRouter({
           
       },
       {
-        path: '/admin/users',
+        path: '/admin/adminusers',
         name: 'admin-users',
         component: Users,
         
-    },
+      },
+      {
+        path: '/admin/studentusers',
+        name: 'admin-studentlist',
+        component: Students,
+        
+      },
+      {
+        path: '/admin/manage-enrollment',
+        name: 'admin-managenroll',
+        component: ManageEnroll,
+        
+      },
+      {
+        path: '/admin/manage-program',
+        name: 'admin-manageprogram',
+        component: ManageProgram,
+        
+      },
 
   ],
 });

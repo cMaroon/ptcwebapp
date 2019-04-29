@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Program extends Model
+class ManageProgram extends Model
 {
     
-    protected $table = 'programs_information';
+    protected $table = 'program_information';
     public $primaryKey = 'id';
 
 
@@ -22,9 +22,9 @@ class Program extends Model
         return $this->hasMany('App\Curriculum');
     }
 
-    public function advisingid()
+    public function aID()
     {
-        return $this->belongsTo('App\Advising','advising_id');
+        return $this->belongsTo('App\Instructor','advising_id');
     }
 
 

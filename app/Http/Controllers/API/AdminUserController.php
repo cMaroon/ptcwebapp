@@ -47,6 +47,10 @@ class AdminUserController extends Controller
         $admin = new Admin();
         $admin->id_num = $request->id_num;
         $admin->email = $request->email;
+        $admin->firstname = $request->firstname;
+        $admin->middlename = $request->middlename;
+        $admin->lastname = $request->lastname;
+        $admin->suffixname = $request->suffixname;
         $admin->password = Hash::make($request->password);
         $admin->usertype = $request->usertype;
         $admin->save();
@@ -71,7 +75,7 @@ class AdminUserController extends Controller
      */
     public function show($id)
     {
-        return new AdminUserResource(AdminInformation::findOrFail($id));
+        return new AdminUserResource(Admin::findOrFail($id));
     }
 
     /**
@@ -89,12 +93,15 @@ class AdminUserController extends Controller
         $admininfo->middlename = $request->middlename;
         $admininfo->lastname = $request->lastname;
         $admininfo->suffixname = $request->suffixname;
-        $admininfo->admin_type = $request->admin_type;
         $admininfo->save();
 
         $admin = Admin::findOrfail($id);
         $admin->id_num = $request->id_num;
         $admin->email = $request->email;
+        $admin->firstname = $request->firstname;
+        $admin->middlename = $request->middlename;
+        $admin->lastname = $request->lastname;
+        $admin->suffixname = $request->suffixname;
         $admin->password = Hash::make($request->password);
         $admin->usertype = $request->usertype;
         $admin->save();

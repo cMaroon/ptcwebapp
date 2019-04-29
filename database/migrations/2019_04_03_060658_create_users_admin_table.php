@@ -18,6 +18,10 @@ class CreateUsersAdminTable extends Migration
             $table->string('id_num')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('firstname');
+            $table->string('middlename')->nullable();
+            $table->string('lastname');
+            $table->string('suffixname')->nullable();
             $table->string('password');
             $table->string('usertype')->default('admin');
             $table->rememberToken();

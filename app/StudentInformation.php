@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Students extends Model
+class StudentInformation extends Model
 {
     
     // protected $connection = 'mysql2';
@@ -14,7 +14,7 @@ class Students extends Model
 
     //Database Tables
     protected $fillable = [
-        'id_num','firstname', 'middlename' ,'lastname','cd_email','program_id','year_level','section',
+        'id_num','firstname', 'middlename' ,'lastname','cd_email',
         'suffixname','scholarship','sex','civil_status','citizenship','birthplace','religion','dob',
         'ca_st_num','ca_st_name','ca_subd','ca_brgy','ca_city','ca_province','ca_zipcode',
         'per_st_num','per_st_name','per_subd','per_brgy','per_city','per_province','per_zipcode',
@@ -25,24 +25,29 @@ class Students extends Model
 
     ];
 
-    public function studprograms()
-    {
-        return $this->belongsTo('App\Program','program_id');
-    }
+    // public function studprograms()
+    // {
+    //     return $this->belongsTo('App\ManageProgram','program_id');
+    // }
 
-    public function studyearlevel()
-    {
-        return $this->belongsTo('App\YearLevel','year_level');
-    }
+    // public function studyearlevel()
+    // {
+    //     return $this->belongsTo('App\YearLevel','year_level');
+    // }
 
-    public function studsection()
-    {
-        return $this->belongsTo('App\Section','section');
-    }
+    // public function studsection()
+    // {
+    //     return $this->belongsTo('App\Section','section');
+    // }
 
     public function studenroll()
     {
         return $this->hasMany('App\Enrollment','id_num');
+    }
+
+    public function studentUserID()
+    {
+        return $this->belongsTo('App\Student','user_id');
     }
 
 
