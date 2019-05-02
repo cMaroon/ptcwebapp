@@ -23,6 +23,12 @@ class SemesterController extends Controller
         return new OtherSettingsCollection(Semester::orderBy('id','DESC')->paginate(15));
     }
 
+    public function semlist()
+    {
+        return new OtherSettingsCollection(Semester::get());
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *

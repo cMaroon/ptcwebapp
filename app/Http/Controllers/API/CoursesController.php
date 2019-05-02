@@ -20,7 +20,13 @@ class CoursesController extends Controller
      */
     public function index()
     {
-        return new CoursesCollection(Courses::orderBy('id','DESC')->paginate(15));
+        return new CoursesCollection(Courses::orderBy('id','DESC')->paginate(10));
+    }
+
+    public function courselist()
+    {
+        return new CoursesCollection(Courses::get());
+
     }
 
     /**
@@ -110,7 +116,7 @@ class CoursesController extends Controller
     public function searchCourses($field,$query)
     {
         return new CoursesCollection(Courses::where($field,'LIKE',"%$query%")->latest()
-        ->paginate(15));
+        ->paginate(10));
     }
 
 }

@@ -23,6 +23,12 @@ class SchoolYearController extends Controller
         return new OtherSettingsCollection(SchoolYear::orderBy('id','DESC')->paginate(15));
     }
 
+    public function sylist()
+    {
+        return new OtherSettingsCollection(SchoolYear::orderBy('id','DESC')->get());
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *

@@ -24,6 +24,12 @@ class ManageProgramController extends Controller
         return new ManageProgramCollection(ManageProgram::with('aID.instructorInfo')->orderBy('id','DESC')->paginate(4));
     }
 
+    public function programlist()
+    {
+        return new ManageProgramCollection(ManageProgram::get());
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *

@@ -47,7 +47,7 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link to="./curriculum" class="nav-link">
+          <router-link :to="{ name: 'admin-managecurriculum'}" class="nav-link">
             <i class="fas fa-table nav-icon icon-teal"></i>
             <p>Manage Curriculum</p>
           </router-link>

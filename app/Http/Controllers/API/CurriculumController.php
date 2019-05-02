@@ -5,65 +5,76 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CurriculumCollection;
+use App\Http\Resources\CurriculumResource;
+
 use App\Curriculum;
-use App\Program;
 
 class CurriculumController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-    
+    protected $table = 'curriculum_information';
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        // $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel')->get();
-        // || \Gate::allows('isAuthor')
-        // if (\Gate::allows('isSuperAdmin')) {
-            // dd($curriculum);
-            return Curriculum::with('currprograms','currcourses','currsemester','curryearlevel','currsection')->latest()->paginate(10);
-        // }
-        
+        return new CurriculumCollection(Curriculum::with('currsy','currprograms','currcourses','currsemester','curryearlevel','currsection','currinstructor')->orderBy('id','DESC')->paginate(10));
     }
 
-    public function CurriculumList()
-    {
-        $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel','currsection')->get();
-        return $curriculum;
-        // || \Gate::allows('isAuthor')
-        // if (\Gate::allows('isSuperAdmin')) {
-            // return Courses::latest()->paginate(50);
-        // }
-        
-    }
-
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $this->validate($request,[
+            'sy' => 'required',
             'semester' => 'required',
             'curr_year' => 'required',
             'curr_program_id' => 'required',
             'curr_course_id' => 'required',
             'curr_section_id' => 'required',
-            // 'sched_days' => 'required',
-            // 'sched_time' => 'required',
-            // 'sched_room' => 'required',
+            'sched_days'=>'required',
+            'sched_time'=>'required',
+            'sched_room'=>'required',
+            'curr_limit_persec'=>'required',
+            'curr_id_ins'=>'required',
 
         ]);
-        return Curriculum::create([
-            'semester' => $request['semester'],
-            'curr_year' => $request['curr_year'],
-            'curr_program_id' => $request['curr_program_id'],
-            'curr_course_id' => $request['curr_course_id'],
-            'curr_section_id' => $request['curr_section_id'],
-            'sched_days' => $request['sched_days'],
-            'sched_time' => $request['sched_time'],
-            'sched_room' => $request['sched_room'],
-        ]);
 
+        $cu = new Curriculum();
+        $cu->sy = $request->sy;
+        $cu->semester = $request->semester;
+        $cu->curr_year = $request->curr_year;
+        $cu->curr_program_id = $request->curr_program_id;
+        $cu->curr_course_id = $request->curr_course_id;
+        $cu->curr_section_id = $request->curr_section_id;
+        $cu->curr_stud_count = $request->curr_stud_count;
+        $cu->curr_limit_persec = $request->curr_limit_persec;
+        $cu->sched_days = $request->sched_days;
+        $cu->sched_time = $request->sched_time;
+        $cu->sched_room = $request->sched_room;
+        $cu->curr_id_ins = $request->curr_id_ins;
+        $cu->save();
 
+        return new CurriculumResource($cu);
+        
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        return new CurriculumResource(Curriculum::with('currsy','currprograms','currcourses','currsemester','curryearlevel','currsection','currinstructor')->findOrFail($id));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -74,19 +85,37 @@ class CurriculumController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $curriculum = Curriculum::findOrFail($id);
-        
-
         $this->validate($request,[
+            'sy' => 'required',
             'semester' => 'required',
             'curr_year' => 'required',
             'curr_program_id' => 'required',
             'curr_course_id' => 'required',
             'curr_section_id' => 'required',
+            'sched_days'=>'required',
+            'sched_time'=>'required',
+            'sched_room'=>'required',
+            'curr_limit_persec'=>'required',
+            'curr_id_ins'=>'required',
 
         ]);
 
-        $curriculum->update($request->all());
+        $cu = Curriculum::findOrfail($id);
+        $cu->sy = $request->sy;
+        $cu->semester = $request->semester;
+        $cu->curr_year = $request->curr_year;
+        $cu->curr_program_id = $request->curr_program_id;
+        $cu->curr_course_id = $request->curr_course_id;
+        $cu->curr_section_id = $request->curr_section_id;
+        $cu->curr_stud_count = $request->curr_stud_count;
+        $cu->curr_limit_persec = $request->curr_limit_persec;
+        $cu->sched_days = $request->sched_days;
+        $cu->sched_time = $request->sched_time;
+        $cu->sched_room = $request->sched_room;
+        $cu->curr_id_ins = $request->curr_id_ins;
+        $cu->save();
+
+        return new CurriculumResource($cu);
     }
 
     /**
@@ -97,32 +126,16 @@ class CurriculumController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('isSuperAdmin');
-        $curriculum = Curriculum::findOrFail($id);
-
-        // delete the user
-
-        $curriculum->delete();
-
+        $cu = Curriculum::findOrfail($id);
+        $cu->delete();
+        return new CurriculumResource($cu);
 
     }
 
-    public function search(){
-
-        if ($search = \Request::get('q')) {
-
-            $program_id = Program::where(function($query) use ($search){
-                $query->where('program_code','LIKE',"%$search%");
-            })->first()->id;
-
-            // return $enrollment_id;
-
-            $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel','currsection')->where('curr_program_id','=', $program_id)->paginate(10000);
-        }else{
-            $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel','currsection')->latest()->paginate(10);            
-        }
-
-        return $curriculum;
-
+    public function searchCurriculum($field,$query)
+    {
+        return new CurriculumCollection(Curriculum::with('currsy','currprograms','currcourses','currsemester','curryearlevel','currsection','currinstructor')->where($field,'LIKE',"%$query%")->latest()
+        ->paginate(10));
     }
+
 }

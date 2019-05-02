@@ -22,6 +22,7 @@ import Students from './components/StudentUsers'
 import ManageEnroll from './components/ManageEnrollment'
 import ManageProgram from './components/ManageProgram'
 import ManageCourses from './components/ManageCourses'
+import ManageCurriculum from './components/ManageCurriculum'
 import OtherSettings from './components/OtherSettings'
 
 Vue.use(Snotify, SnotifyOptions, SnotifyPosition)
@@ -91,6 +92,12 @@ const router = new VueRouter({
         path: '/admin/manage-courses',
         name: 'admin-managecourses',
         component: ManageCourses,
+        
+      },
+      {
+        path: '/admin/manage-curriculum',
+        name: 'admin-managecurriculum',
+        component: ManageCurriculum,
         
       },
       {

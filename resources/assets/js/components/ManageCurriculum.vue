@@ -3,7 +3,7 @@
    <div class="col-md-12">
       <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Manage Courses Information</h3>
+            <h3 class="card-title">Manage Curriculum Information</h3>
             <div class="card-tools" style="position: absolute;right:1rem;top:.5rem;">
               <button type="button" class="btn btn-success" @click="create">Add New <i class="fas fa-plus"></i></button>
               <button type="button" class="btn btn-primary" @click="reload">Reload <i class="fas fa-sync"></i></button>
@@ -19,8 +19,8 @@
                 </div>
                 <div class="col-md-2">
                   <select v-model="queryField" class="form-control" id="fields">
-                    <option value="course_code" selected>Course Code</option>
-                    <option value="descriptive_title">Descriptive Title</option>
+                    <!-- <option value="sy" selected>Course Code</option>
+                    <option value="descriptive_title">Descriptive Title</option> -->
                   </select>
                 </div>
                 <div class="col-md-7">
@@ -33,33 +33,45 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Course Code</th>
-                  <th>Descriptive Title</th>
-                  <th>Lecture Hour</th>
-                  <th>Laboratory Hour</th>
-                  <th>Course Unit</th>
-                  <th>Course Prerequisite</th>
+                  <th>School Year</th>
+                  <th>Semester</th>
+                  <th>Year Level</th>
+                  <th>Program</th>
+                  <th>Course</th>
+                  <th>Section</th>
+                  <th>Student Count</th>
+                  <th>Limit Count</th>
+                  <th>Days</th>
+                  <th>Time</th>
+                  <th>Room</th>
+                  <th>Instructor</th>
                   <th class="text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-show="!courses.length" v-for="(courses, index) in courses" :key="courses.id">
+                <tr v-show="!curriculum.length" v-for="(curriculum, index) in curriculum" :key="curriculum.id">
                     <td>{{ index + 1}}</td>
-                    <td hidden>{{ courses.id }}</td>
-                    <td>{{ courses.course_code }}</td>
-                    <td>{{ courses.descriptive_title }}</td>
-                    <td>{{ courses.lec_hr }}</td>
-                    <td>{{ courses.lab_hr }}</td>
-                    <td>{{ courses.course_unit }}</td>
-                    <td>{{ courses.course_pre_req }}</td>
+                    <td hidden>{{ curriculum.id }}</td>
+                    <td>{{ curriculum.currsy.title }}</td>
+                    <td>{{ curriculum.currsemester.title }}</td>
+                    <td>{{ curriculum.curryearlevel.title }}</td>
+                    <td>{{ curriculum.currprograms.program_code }}</td>
+                    <td>{{ curriculum.currcourses.course_code }}</td>
+                    <td>{{ curriculum.currsection.title }}</td>
+                    <td>{{ curriculum.curr_stud_count }}</td>
+                    <td>{{ curriculum.curr_limit_persec }}</td>
+                    <td>{{ curriculum.sched_days }}</td>
+                    <td>{{ curriculum.sched_time }}</td>
+                    <td>{{ curriculum.sched_room }}</td>
+                    <td>Prof. {{ curriculum.currinstructor.firstname }} {{ curriculum.currinstructor.lastname }}</td>
                     <td class="text-center">
-                        <button type="button" @click="show(courses)" class="btn btn-info btn-sm">
+                        <button type="button" @click="show(curriculum)" class="btn btn-info btn-sm">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button type="button" @click="edit(courses)" class="btn btn-primary btn-sm">
+                        <button type="button" @click="edit(curriculum)" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button type="button" @click="destroy(courses)" class="btn btn-danger btn-sm">
+                        <button type="button" @click="destroy(curriculum)" class="btn btn-danger btn-sm">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                         
@@ -67,8 +79,8 @@
 
 
                 </tr>
-                <tr v-show="!courses.length">
-                  <td colspan="8">
+                <tr v-show="!curriculum.length">
+                  <td colspan="14">
                     <div class="alert alert-danger" role="alert">
                       <center>No Data Found!</center>
                     </div>
@@ -78,12 +90,18 @@
               <tfoot>
               <tr>
                   <th>#</th>
-                  <th>Course Code</th>
-                  <th>Descriptive Title</th>
-                  <th>Lecture Hour</th>
-                  <th>Laboratory Hour</th>
-                  <th>Course Unit</th>
-                  <th>Course Prerequisite</th>
+                  <th>School Year</th>
+                  <th>Semester</th>
+                  <th>Year Level</th>
+                  <th>Program</th>
+                  <th>Course</th>
+                  <th>Section</th>
+                  <th>Student Count</th>
+                  <th>Limit Count</th>
+                  <th>Days</th>
+                  <th>Time</th>
+                  <th>Room</th>
+                  <th>Instructor</th>
                   <th class="text-center">Action</th>
               </tr>
               </tfoot>
@@ -98,52 +116,93 @@
       </div>
    </div>
    <!-- Modal -->
-    <div class="modal fade" id="coursesModalLong" tabindex="-1" role="dialog" aria-labelledby="coursesModalTitle" aria-hidden="true">
+    <div class="modal fade" id="curriculumModalLong" tabindex="-1" role="dialog" aria-labelledby="curriculumModalTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="coursesModalTitle">{{ editMode ? "Edit":"Add New"}} Course</h5>
+            <h5 class="modal-title" id="curriculumModalTitle">{{ editMode ? "Edit":"Add New"}} Curriculum</h5>
 
           </div>
             
           <form @submit.prevent="editMode ? update() : store()" @keydown="form.onKeydown($event)">
           <div class="modal-body">
             <alert-error :form="form" message="There were some problems with your input."></alert-error>
+
               <div class="form-group">
-                <label>Course Code</label>
-                <input v-model="form.course_code" type="text" name="course_code"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('course_code') }">
-                <has-error :form="form" field="course_code"></has-error>
+                <select  type="text" name="sy" class="form-control"  required v-model="form.sy" >
+                    <option value="">Please select school year*</option>
+                    <option v-for="schoolyear in schoolyear" :key="schoolyear.id" v-bind:value="schoolyear.id">{{schoolyear.title}}</option>
+                </select>
               </div>
+
               <div class="form-group">
-                <label>Descriptive Title</label>
-                <input v-model="form.descriptive_title" type="text" name="descriptive_title"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('descriptive_title') }">
-                <has-error :form="form" field="descriptive_title"></has-error>
+                <select  type="text" name="semester" class="form-control"  required v-model="form.semester" >
+                    <option value="">Please select semester*</option>
+                    <option v-for="semester in semester" :key="semester.id" v-bind:value="semester.id">{{semester.title}}</option>
+                </select>
               </div>
+
               <div class="form-group">
-                <label>Lecture Hour</label>
-                <input v-model="form.lec_hr" type="text" name="lec_hr"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('lec_hr') }">
-                <has-error :form="form" field="lec_hr"></has-error>
+                <select  type="text" name="curr_year" class="form-control"  required v-model="form.curr_year" >
+                    <option value="">Please select year level*</option>
+                    <option v-for="yearlevel in yearlevel" :key="yearlevel.id" v-bind:value="yearlevel.id">{{yearlevel.title}}</option>
+                </select>
               </div>
+
               <div class="form-group">
-                <label>Laboratory Hour</label>
-                <input v-model="form.lab_hr" type="text" name="lab_hr"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('lab_hr') }">
-                <has-error :form="form" field="lab_hr"></has-error>
+                <select  type="text" name="curr_program_id" class="form-control"  required v-model="form.curr_program_id" >
+                    <option value="">Please select program*</option>
+                    <option v-for="program in program" :key="program.id" v-bind:value="program.id">{{program.program_code}}</option>
+                </select>
               </div>
+
               <div class="form-group">
-                <label>Course Unit</label>
-                <input v-model="form.course_unit" type="text" name="course_unit"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('course_unit') }">
-                <has-error :form="form" field="course_unit"></has-error>
+                <select  type="text" name="curr_course_id" class="form-control"  required v-model="form.curr_course_id" >
+                    <option value="">Please select course*</option>
+                    <option v-for="course in course" :key="course.id" v-bind:value="course.id">{{course.course_code}} - {{course.descriptive_title}}</option>
+                </select>
               </div>
+
               <div class="form-group">
-                <label>Course Prerequisite</label>
-                <input v-model="form.course_pre_req" type="text" name="course_pre_req"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('course_pre_req') }">
-                <has-error :form="form" field="course_pre_req"></has-error>
+                <select  type="text" name="curr_section_id" class="form-control"  required v-model="form.curr_section_id" >
+                    <option value="">Please select section*</option>
+                    <option v-for="section in section" :key="section.id" v-bind:value="section.id">{{section.title}}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Limit Count</label>
+                <input v-model="form.curr_limit_persec" type="text" name="curr_limit_persec"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('curr_limit_persec') }" >
+                <has-error :form="form" field="curr_limit_persec"></has-error>
+              </div>
+
+              <div class="form-group">
+                <label>Days</label>
+                <input v-model="form.sched_days" type="text" name="sched_days"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('sched_days') }" >
+                <has-error :form="form" field="sched_days"></has-error>
+              </div>
+
+              <div class="form-group">
+                <label>Time</label>
+                <input v-model="form.sched_time" type="text" name="sched_time"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('sched_time') }" >
+                <has-error :form="form" field="sched_time"></has-error>
+              </div>
+
+              <div class="form-group">
+                <label>Room</label>
+                <input v-model="form.sched_room" type="text" name="sched_room"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('sched_room') }" >
+                <has-error :form="form" field="sched_room"></has-error>
+              </div>
+
+              <div class="form-group">
+                <select  type="text" name="curr_id_ins" class="form-control"  required v-model="form.curr_id_ins" >
+                    <option value="">Please select instructor*</option>
+                    <option v-for="instructor in instructor" :key="instructor.id" v-bind:value="instructor.id">Prof. {{instructor.firstname}} {{instructor.lastname}}</option>
+                </select>
               </div>
 
           </div>
@@ -160,54 +219,15 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="showModalTitle">{{ form.descriptive_title }}</h5>
-
-          </div>
-            
-          <form @submit.prevent="editMode ? update() : store()" @keydown="form.onKeydown($event)">
+            <h5 class="modal-title" id="showModalTitle">Curriculum</h5>
+          </div>   
           <div class="modal-body">
             <alert-error :form="form" message="There were some problems with your input."></alert-error>
-              <div class="form-group">
-                <label>Course Code</label>
-                <input v-model="form.course_code" type="text" name="course_code"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('course_code') }" readonly>
-                <has-error :form="form" field="course_code"></has-error>
-              </div>
-              <div class="form-group">
-                <label>Descriptive Title</label>
-                <input v-model="form.descriptive_title" type="text" name="descriptive_title"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('descriptive_title') }" readonly>
-                <has-error :form="form" field="descriptive_title"></has-error>
-              </div>
-              <div class="form-group">
-                <label>Lecture Hour</label>
-                <input v-model="form.lec_hr" type="text" name="lec_hr"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('lec_hr') }" readonly>
-                <has-error :form="form" field="lec_hr"></has-error>
-              </div>
-              <div class="form-group">
-                <label>Laboratory Hour</label>
-                <input v-model="form.lab_hr" type="text" name="lab_hr"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('lab_hr') }" readonly>
-                <has-error :form="form" field="lab_hr"></has-error>
-              </div>
-              <div class="form-group">
-                <label>Course Unit</label>
-                <input v-model="form.course_unit" type="text" name="course_unit"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('course_unit') }" readonly>
-                <has-error :form="form" field="course_unit"></has-error>
-              </div>
-              <div class="form-group">
-                <label>Course Prerequisite</label>
-                <input v-model="form.course_pre_req" type="text" name="course_pre_req"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('course_pre_req') }" readonly>
-                <has-error :form="form" field="course_pre_req"></has-error>
-              </div>
+              
           </div>
           <div class="modal-footer">
             <button :disabled="form.busy" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
-          </form>
         </div>
       </div>
     </div>
@@ -223,17 +243,30 @@
         return{
           editMode: false,
           query:'',
-          queryField:'course_code',
-          courses:[],
+          queryField:'',
+          curriculum:[],
+          schoolyear:[],
+          semester:[],
+          yearlevel:[],
+          program:[],
+          course:[],
+          section:[],
+          instructor:[],
           totalcount:'',
           form : new Form({
             id:'',
-            course_code:'',
-            descriptive_title:'',
-            lec_hr:'',
-            lab_hr:'',
-            course_unit:'',
-            course_pre_req:'',
+            sy:'',
+            semester:'',
+            curr_year:'',
+            curr_program_id:'',
+            curr_course_id:'',
+            curr_section_id:'',
+            curr_stud_count:0,
+            curr_limit_persec:'',
+            sched_days:'',
+            sched_time:'',
+            sched_room:'',
+            curr_id_ins:'',
           }),
           pagination:{
             current_page:1,
@@ -258,10 +291,19 @@
           getData(){
             //load data
             this.$Progress.start()
-            axios.get('/api/managecourses?page='+this.pagination.current_page)
+             //other data
+            axios.get('/api/schoolyearlist').then(response=>{this.schoolyear = response.data.data})
+            axios.get('/api/semesterlist').then(response=>{this.semester = response.data.data})
+            axios.get('/api/yearlevellist').then(response=>{this.yearlevel = response.data.data})
+            axios.get('/api/programlist').then(response=>{this.program = response.data.data})
+            axios.get('/api/courselist').then(response=>{this.course = response.data.data})
+            axios.get('/api/sectionlist').then(response=>{this.section = response.data.data})
+            axios.get('/api/instructorinfolist').then(response=>{this.instructor = response.data.data})
+
+            axios.get('/api/managecurriculum?page='+this.pagination.current_page)
               .then(response=>{
                 // console.log(response)
-                this.courses = response.data.data
+                this.curriculum = response.data.data
                 this.pagination = response.data.meta
                 this.totalcount = this.pagination.total
                 this.$Progress.finish()
@@ -270,12 +312,14 @@
                 console.log(e)
                 this.$Progress.fail()
               })
+
+           
           },
           searchData(){
             this.$Progress.start()
-            axios.get('/api/search/courses/'+this.queryField+'/'+this.query+'?page='+this.pagination.current_page)
+            axios.get('/api/search/curriculum/'+this.queryField+'/'+this.query+'?page='+this.pagination.current_page)
             .then(response =>{
-              this.courses = response.data.data
+              this.curriculum = response.data.data
               this.pagination = response.data.meta
               this.$Progress.finish()
             })
@@ -287,7 +331,7 @@
           reload(){
             this.getData()
             this.query=''
-            this.queryField='course_code'
+            this.queryField=''
             this.$snotify.success('Data Successfully Refresh','Success', {
                   timeout: 1000,
                   showProgressBar: false,
@@ -300,7 +344,7 @@
             this.editMode = false
             this.form.reset()
             this.form.clear()
-            $('#coursesModalLong').modal('show')
+            $('#curriculumModalLong').modal('show')
 
           },
           store(){
@@ -308,10 +352,10 @@
             this.$Progress.start()
             this.form.busy = true
             this.form
-              .post('/api/managecourses')
+              .post('/api/managecurriculum')
               .then(response => {
                 this.getData()
-                $('#coursesModalLong').modal('hide')
+                $('#curriculumModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
                     this.$snotify.success('Data Successfully Saved','Success', {
@@ -337,26 +381,26 @@
                 // console.log(e)
               })
           },
-          show(courses) {
+          show(curriculum) {
             this.form.reset();
-            this.form.fill(courses);
+            this.form.fill(curriculum);
             $("#showModalLong").modal("show");
           },
-          edit(courses){
-            $('#coursesModalLong').modal('show')
+          edit(curriculum){
+            $('#curriculumModalLong').modal('show')
             this.editMode = true
             this.form.reset()
             this.form.clear()
-            this.form.fill(courses)
+            this.form.fill(curriculum)
           },
           update(){
             this.$Progress.start()
             this.form.busy = true
             this.form
-              .put('/api/managecourses/'+this.form.id)
+              .put('/api/managecurriculum/'+this.form.id)
               .then(response => {
                 this.getData()
-                $('#coursesModalLong').modal('hide')
+                $('#curriculumModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
                     this.$snotify.success('Data Successfully Updated','Success', {
@@ -382,8 +426,8 @@
                 // console.log(e)
               })
           },
-          destroy(courses){
-            this.form.id = courses.id
+          destroy(curriculum){
+            this.form.id = curriculum.id
             this.$snotify.clear()
             this.$snotify.confirm(
               "You will not be able to recover this data!",
@@ -398,7 +442,7 @@
                     action: toast => {
                       this.$snotify.remove(toast.id);
                       axios
-                          .delete('/api/managecourses/'+this.form.id)
+                          .delete('/api/managecurriculum/'+this.form.id)
                           .then(response =>{
                             this.getData()
                             this.$Progress.finish()

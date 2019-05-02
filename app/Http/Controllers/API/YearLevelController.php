@@ -23,6 +23,12 @@ class YearLevelController extends Controller
         return new OtherSettingsCollection(YearLevel::orderBy('id','DESC')->paginate(15));
     }
 
+    public function yllist()
+    {
+        return new OtherSettingsCollection(YearLevel::get());
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *

@@ -44,23 +44,33 @@ Route::apiResources(['manageenrollment'=>'ManageEnrollmentController']);
 //ManageProgram
 Route::get('search/program/{field}/{query}','ManageProgramController@searchProgram');
 Route::apiResources(['manageprogram'=>'ManageProgramController']);
+Route::get('programlist','ManageProgramController@programlist');
 
 //SchoolYear
 Route::get('search/sy/{field}/{query}','SchoolYearController@searchSY');
 Route::apiResources(['schoolyear'=>'SchoolYearController']);
+Route::get('schoolyearlist','SchoolYearController@sylist');
 
 //Semester
 Route::get('search/sem/{field}/{query}','SemesterController@searchSem');
 Route::apiResources(['semester'=>'SemesterController']);
+Route::get('semesterlist','SemesterController@semlist');
 
 //YearLevel
 Route::get('search/yearlevel/{field}/{query}','YearLevelController@searchYearLevel');
 Route::apiResources(['yearlevel'=>'YearLevelController']);
+Route::get('yearlevellist','YearLevelController@yllist');
 
 //Section
 Route::get('search/section/{field}/{query}','SectionController@searchSEC');
 Route::apiResources(['section'=>'SectionController']);
+Route::get('sectionlist','SectionController@sectionlist');
 
 //Courses
 Route::get('search/courses/{field}/{query}','CoursesController@searchCourses');
 Route::apiResources(['managecourses'=>'CoursesController']);
+Route::get('courselist','CoursesController@courselist');
+
+//Curriculum
+Route::get('search/curriculum/{field}/{query}','CurriculumController@searchCurriculum');
+Route::apiResources(['managecurriculum'=>'CurriculumController']);

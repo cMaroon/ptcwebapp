@@ -23,6 +23,12 @@ class SectionController extends Controller
         return new OtherSettingsCollection(Section::orderBy('id','DESC')->paginate(15));
     }
 
+    public function sectionlist()
+    {
+        return new OtherSettingsCollection(Section::get());
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *

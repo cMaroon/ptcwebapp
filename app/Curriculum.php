@@ -13,13 +13,23 @@ class Curriculum extends Model
 
     //Database Tables
     protected $fillable = [
-        'semester','curr_year','curr_program_id','curr_course_id','curr_section_id','sched_days','sched_time','sched_room'
+        'semester','sy','curr_year','curr_program_id','curr_course_id','curr_section_id','sched_days','sched_time','sched_room','curr_id_ins'
 
     ];
 
     public function currprograms()
     {
-        return $this->belongsTo('App\Program','curr_program_id');
+        return $this->belongsTo('App\ManageProgram','curr_program_id');
+    }
+
+    public function currinstructor()
+    {
+        return $this->belongsTo('App\Instructor','curr_id_ins');
+    }
+
+    public function currsy()
+    {
+        return $this->belongsTo('App\SchoolYear','sy');
     }
 
     public function currcourses()
