@@ -17,7 +17,7 @@ class Courses extends Model
 
     ];
 
-    public function coursescurr()
+    public function coursesCurr()
     {
         return $this->hasMany('App\Curriculum');
     }

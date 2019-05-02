@@ -3,7 +3,7 @@
    <div class="col-md-12">
       <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Student Users Information</h3>
+            <h3 class="card-title">Manage Courses Information</h3>
             <div class="card-tools" style="position: absolute;right:1rem;top:.5rem;">
               <button type="button" class="btn btn-success" @click="create">Add New <i class="fas fa-plus"></i></button>
               <button type="button" class="btn btn-primary" @click="reload">Reload <i class="fas fa-sync"></i></button>
@@ -19,8 +19,8 @@
                 </div>
                 <div class="col-md-2">
                   <select v-model="queryField" class="form-control" id="fields">
-                    <option value="id_num" selected>ID Number</option>
-                    <option value="email">Email</option>
+                    <option value="course_code" selected>Course Code</option>
+                    <option value="descriptive_title">Descriptive Title</option>
                   </select>
                 </div>
                 <div class="col-md-7">
@@ -33,27 +33,33 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>ID Number</th>
-                  <th>Email</th>
-                  <th>Fullname</th>
+                  <th>Course Code</th>
+                  <th>Descriptive Title</th>
+                  <th>Lecture Hour</th>
+                  <th>Laboratory Hour</th>
+                  <th>Course Unit</th>
+                  <th>Course Prerequisite</th>
                   <th class="text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-show="!studentuser.length" v-for="(studentuser, index) in studentuser" :key="studentuser.id">
+                <tr v-show="!courses.length" v-for="(courses, index) in courses" :key="courses.id">
                     <td>{{ index + 1}}</td>
-                    <td hidden>{{ studentuser.id }}</td>
-                    <td>{{ studentuser.id_num }}</td>
-                    <td>{{ studentuser.email }}</td>
-                    <td>{{ studentuser.stud_info.lastname }} {{ studentuser.stud_info.suffixname }}, {{ studentuser.stud_info.firstname }} {{ studentuser.middlename }}</td>
+                    <td hidden>{{ courses.id }}</td>
+                    <td>{{ courses.course_code }}</td>
+                    <td>{{ courses.descriptive_title }}</td>
+                    <td>{{ courses.lec_hr }}</td>
+                    <td>{{ courses.lab_hr }}</td>
+                    <td>{{ courses.course_unit }}</td>
+                    <td>{{ courses.course_pre_req }}</td>
                     <td class="text-center">
-                        <button type="button" @click="show(studentuser)" class="btn btn-info btn-sm">
+                        <button type="button" @click="show(courses)" class="btn btn-info btn-sm">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button type="button" @click="edit(studentuser)" class="btn btn-primary btn-sm">
+                        <button type="button" @click="edit(courses)" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button type="button" @click="destroy(studentuser)" class="btn btn-danger btn-sm">
+                        <button type="button" @click="destroy(courses)" class="btn btn-danger btn-sm">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                         
@@ -61,21 +67,24 @@
 
 
                 </tr>
-                <tr v-show="!studentuser.length">
-                  <td colspan="6">
+                <tr v-show="!courses.length">
+                  <td colspan="8">
                     <div class="alert alert-danger" role="alert">
-                      No Data Found!
+                      <center>No Data Found!</center>
                     </div>
                   </td>
                 </tr>
               </tbody>
               <tfoot>
               <tr>
-                <th>#</th>
-                <th>ID Number</th>
-                <th>Email</th>
-                <th>Fullname</th>
-                <th class="text-center">Action</th>
+                  <th>#</th>
+                  <th>Course Code</th>
+                  <th>Descriptive Title</th>
+                  <th>Lecture Hour</th>
+                  <th>Laboratory Hour</th>
+                  <th>Course Unit</th>
+                  <th>Course Prerequisite</th>
+                  <th class="text-center">Action</th>
               </tr>
               </tfoot>
             </table>
@@ -89,11 +98,11 @@
       </div>
    </div>
    <!-- Modal -->
-    <div class="modal fade" id="studentuserModalLong" tabindex="-1" role="dialog" aria-labelledby="studentuserModalTitle" aria-hidden="true">
+    <div class="modal fade" id="coursesModalLong" tabindex="-1" role="dialog" aria-labelledby="coursesModalTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="studentuserModalTitle">{{ editMode ? "Edit":"Add New"}} Student User</h5>
+            <h5 class="modal-title" id="coursesModalTitle">{{ editMode ? "Edit":"Add New"}} Course</h5>
 
           </div>
             
@@ -101,52 +110,40 @@
           <div class="modal-body">
             <alert-error :form="form" message="There were some problems with your input."></alert-error>
               <div class="form-group">
-                <!-- <label>User ID</label> -->
-                <input v-model="form.user_id" type="text" name="user_id"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('user_id') }" readonly hidden>
-                <has-error :form="form" field="user_id"></has-error>
+                <label>Course Code</label>
+                <input v-model="form.course_code" type="text" name="course_code"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('course_code') }">
+                <has-error :form="form" field="course_code"></has-error>
               </div>
               <div class="form-group">
-                <label>ID Number</label>
-                <input v-model="form.id_num" type="text" name="id_num"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }">
-                <has-error :form="form" field="id_num"></has-error>
+                <label>Descriptive Title</label>
+                <input v-model="form.descriptive_title" type="text" name="descriptive_title"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('descriptive_title') }">
+                <has-error :form="form" field="descriptive_title"></has-error>
               </div>
               <div class="form-group">
-                <label>Email</label>
-                <input v-model="form.email" type="text" name="email"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-                <has-error :form="form" field="email"></has-error>
+                <label>Lecture Hour</label>
+                <input v-model="form.lec_hr" type="text" name="lec_hr"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('lec_hr') }">
+                <has-error :form="form" field="lec_hr"></has-error>
               </div>
               <div class="form-group">
-                <label>First Name</label>
-                <input v-model="form.firstname" type="text" name="firstname"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('firstname') }">
-                <has-error :form="form" field="firstname"></has-error>
+                <label>Laboratory Hour</label>
+                <input v-model="form.lab_hr" type="text" name="lab_hr"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('lab_hr') }">
+                <has-error :form="form" field="lab_hr"></has-error>
               </div>
               <div class="form-group">
-                <label>Middle Name</label>
-                <input v-model="form.middlename" type="text" name="middlename"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('middlename') }">
-                <has-error :form="form" field="middlename"></has-error>
+                <label>Course Unit</label>
+                <input v-model="form.course_unit" type="text" name="course_unit"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('course_unit') }">
+                <has-error :form="form" field="course_unit"></has-error>
               </div>
               <div class="form-group">
-                <label>Last Name</label>
-                <input v-model="form.lastname" type="text" name="lastname"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('lastname') }">
-                <has-error :form="form" field="lastname"></has-error>
-              </div>
-              <div class="form-group">
-                <label>Suffix Name</label>
-                <input v-model="form.suffixname" type="text" name="suffixname"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('suffixname') }">
-                <has-error :form="form" field="suffixname"></has-error>
-              </div>
-              <div class="form-group">
-                <label>Password</label>
-                <input v-model="form.password" type="password" name="password"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
-                <has-error :form="form" field="password"></has-error>
+                <label>Course Prerequisite</label>
+                <input v-model="form.course_pre_req" type="text" name="course_pre_req"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('course_pre_req') }">
+                <has-error :form="form" field="course_pre_req"></has-error>
               </div>
 
           </div>
@@ -163,7 +160,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="showModalTitle">{{ form.lastname }} {{ form.suffixname }}, {{ form.firstname }} {{ form.middlename }}</h5>
+            <h5 class="modal-title" id="showModalTitle">{{ form.descriptive_title }}</h5>
 
           </div>
             
@@ -171,40 +168,40 @@
           <div class="modal-body">
             <alert-error :form="form" message="There were some problems with your input."></alert-error>
               <div class="form-group">
-                <!-- <label>User ID</label> -->
-                <input v-model="form.user_id" type="text" name="user_id"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('user_id') }" readonly hidden>
-                <has-error :form="form" field="user_id"></has-error>
+                <label>Program Code</label>
+                <input v-model="form.program_code" type="text" name="program_code"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('program_code') }" readonly>
+                <has-error :form="form" field="program_code"></has-error>
               </div>
               <div class="form-group">
-                <label>ID Number</label>
-                <input v-model="form.id_num" type="text" name="id_num"
-                  class="form-control" readonly>
+                <label>Descriptive Title</label>
+                <input v-model="form.descriptive_title" type="text" name="descriptive_title"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('descriptive_title') }" readonly>
+                <has-error :form="form" field="descriptive_title"></has-error>
               </div>
               <div class="form-group">
-                <label>Email</label>
-                <input v-model="form.email" type="text" name="email"
-                  class="form-control" readonly>
+                <label>Lecture Hour</label>
+                <input v-model="form.lec_hr" type="text" name="lec_hr"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('lec_hr') }" readonly>
+                <has-error :form="form" field="lec_hr"></has-error>
               </div>
               <div class="form-group">
-                <label>First Name</label>
-                <input v-model="form.firstname" type="text" name="firstname"
-                  class="form-control" readonly>
+                <label>Laboratory Hour</label>
+                <input v-model="form.lab_hr" type="text" name="lab_hr"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('lab_hr') }" readonly>
+                <has-error :form="form" field="lab_hr"></has-error>
               </div>
               <div class="form-group">
-                <label>Middle Name</label>
-                <input v-model="form.middlename" type="text" name="middlename"
-                  class="form-control" readonly>
+                <label>Course Unit</label>
+                <input v-model="form.course_unit" type="text" name="course_unit"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('course_unit') }" readonly>
+                <has-error :form="form" field="course_unit"></has-error>
               </div>
               <div class="form-group">
-                <label>Last Name</label>
-                <input v-model="form.lastname" type="text" name="lastname"
-                  class="form-control" readonly>
-              </div>
-              <div class="form-group">
-                <label>Suffix Name</label>
-                <input v-model="form.suffixname" type="text" name="suffixname"
-                  class="form-control" readonly>
+                <label>Course Prerequisite</label>
+                <input v-model="form.course_pre_req" type="text" name="course_pre_req"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('course_pre_req') }" readonly>
+                <has-error :form="form" field="course_pre_req"></has-error>
               </div>
           </div>
           <div class="modal-footer">
@@ -226,22 +223,17 @@
         return{
           editMode: false,
           query:'',
-          queryField:'id_num',
-          studentuser:[],
+          queryField:'course_code',
+          courses:[],
           totalcount:'',
           form : new Form({
             id:'',
-            id_num:'',
-            email:'',
-            cd_email:'',
-            password:'123456',
-            usertype:'student',
-            user_id:'',
-            firstname:'',
-            middlename:'',
-            lastname:'',
-            suffixname:'',
-
+            course_code:'',
+            descriptive_title:'',
+            lec_hr:'',
+            lab_hr:'',
+            course_unit:'',
+            course_pre_req:'',
           }),
           pagination:{
             current_page:1,
@@ -259,17 +251,17 @@
         }
       },
         mounted() {
-            console.log('Component mounted.')
+            // console.log('Component mounted.')
             this.getData();
         },
         methods:{
           getData(){
             //load data
             this.$Progress.start()
-            axios.get('/api/studentuser?page='+this.pagination.current_page)
+            axios.get('/api/managecourses?page='+this.pagination.current_page)
               .then(response=>{
                 // console.log(response)
-                this.studentuser = response.data.data
+                this.courses = response.data.data
                 this.pagination = response.data.meta
                 this.totalcount = this.pagination.total
                 this.$Progress.finish()
@@ -281,9 +273,9 @@
           },
           searchData(){
             this.$Progress.start()
-            axios.get('/api/search/studentuser/'+this.queryField+'/'+this.query+'?page='+this.pagination.current_page)
+            axios.get('/api/search/courses/'+this.queryField+'/'+this.query+'?page='+this.pagination.current_page)
             .then(response =>{
-              this.studentuser = response.data.data
+              this.courses = response.data.data
               this.pagination = response.data.meta
               this.$Progress.finish()
             })
@@ -295,7 +287,7 @@
           reload(){
             this.getData()
             this.query=''
-            this.queryField='id_num'
+            this.queryField='course_code'
             this.$snotify.success('Data Successfully Refresh','Success', {
                   timeout: 1000,
                   showProgressBar: false,
@@ -308,20 +300,18 @@
             this.editMode = false
             this.form.reset()
             this.form.clear()
-            this.form.user_id = this.totalcount + 1
-            $('#studentuserModalLong').modal('show')
+            $('#coursesModalLong').modal('show')
 
           },
           store(){
             // console.log('Hello')
             this.$Progress.start()
             this.form.busy = true
-            this.form.cd_email = this.form.email
             this.form
-              .post('/api/studentuser')
+              .post('/api/managecourses')
               .then(response => {
                 this.getData()
-                $('#studentuserModalLong').modal('hide')
+                $('#coursesModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
                     this.$snotify.success('Data Successfully Saved','Success', {
@@ -347,32 +337,26 @@
                 // console.log(e)
               })
           },
-          show(studentuser) {
+          show(courses) {
             this.form.reset();
-            this.form.fill(studentuser);
+            this.form.fill(courses);
             $("#showModalLong").modal("show");
-            // console.log(studentuser);
           },
-          edit(studentuser){
-            $('#studentuserModalLong').modal('show')
+          edit(courses){
+            $('#coursesModalLong').modal('show')
             this.editMode = true
             this.form.reset()
             this.form.clear()
-            this.form.fill(studentuser)
-            this.form.user_id = this.form.id
-            this.form.password = '123456'
-            this.form.cd_email = this.form.email
-
-
+            this.form.fill(courses)
           },
           update(){
             this.$Progress.start()
             this.form.busy = true
             this.form
-              .put('/api/studentuser/'+this.form.id)
+              .put('/api/managecourses/'+this.form.id)
               .then(response => {
                 this.getData()
-                $('#studentuserModalLong').modal('hide')
+                $('#coursesModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
                     this.$snotify.success('Data Successfully Updated','Success', {
@@ -398,8 +382,8 @@
                 // console.log(e)
               })
           },
-          destroy(studentuser){
-            this.form.id = studentuser.id
+          destroy(courses){
+            this.form.id = courses.id
             this.$snotify.clear()
             this.$snotify.confirm(
               "You will not be able to recover this data!",
@@ -414,7 +398,7 @@
                     action: toast => {
                       this.$snotify.remove(toast.id);
                       axios
-                          .delete('/api/studentuser/'+this.form.id)
+                          .delete('/api/managecourses/'+this.form.id)
                           .then(response =>{
                             this.getData()
                             this.$Progress.finish()

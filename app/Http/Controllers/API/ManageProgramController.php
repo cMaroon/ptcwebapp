@@ -21,7 +21,7 @@ class ManageProgramController extends Controller
     public function index()
     {
 
-        return new ManageProgramCollection(ManageProgram::with('aID')->orderBy('id','DESC')->paginate(4));
+        return new ManageProgramCollection(ManageProgram::with('aID.instructorInfo')->orderBy('id','DESC')->paginate(4));
     }
 
     /**
@@ -64,7 +64,7 @@ class ManageProgramController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $mp = new ManageProgram();
+        $mp = ManageProgram::findOrfail($id);
         $mp->program_code = $request->program_code;
         $mp->descriptive_title = $request->descriptive_title;
         $mp->advising_id = $request->advising_id;

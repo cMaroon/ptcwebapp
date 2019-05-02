@@ -128,7 +128,7 @@
                     <select  type="text" class="form-control" v-model="form.assoc_curr_id">
                             <option value="" disabled>Please select course*</option>
 
-                        <option v-for="curr in curriculumlist" v-if="curr.curr_program_id === form.enr_program_id && curr.curr_section_id === form.enr_section_id && curr.curr_year === form.enr_yearlevel_id && curr.semester === form.enr_semester" :key="curr.id" v-bind:value="curr.id">
+                        <!-- <option v-for="curr in curriculumlist" v-if="curr.curr_program_id === form.enr_program_id && curr.curr_section_id === form.enr_section_id && curr.curr_year === form.enr_yearlevel_id && curr.semester === form.enr_semester" :key="curr.id" v-bind:value="curr.id"> -->
                             
                            {{curr.currcourses.course_code}} - {{curr.currcourses.descriptive_title}}
                             </option>

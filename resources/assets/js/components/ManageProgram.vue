@@ -14,11 +14,8 @@
             <div class="col-md-12 mt-3">
             <form class="mb-3">
               <div class="row">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-1">
+                <div class="col-md-3" style="text-align:right">
                   <strong>Search By : </strong>
-
                 </div>
                 <div class="col-md-2">
                   <select v-model="queryField" class="form-control" id="fields">
@@ -48,7 +45,7 @@
                     <td hidden>{{ program.id }}</td>
                     <td>{{ program.program_code }}</td>
                     <td>{{ program.descriptive_title }}</td>
-                    <td>{{ program.advising_id }}</td>
+                    <td>Prof. {{ program.a_i_d.instructor_info.firstname }} {{ program.a_i_d.instructor_info.lastname }}</td>
                     <td class="text-center">
                         <button type="button" @click="show(program)" class="btn btn-info btn-sm">
                             <i class="fas fa-eye"></i>
@@ -117,9 +114,12 @@
               </div>
               <div class="form-group">
                 <label>Adivising Officer</label>
-                <input v-model="form.advising_id" type="text" name="advising_id"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('advising_id') }">
-                <has-error :form="form" field="advising_id"></has-error>
+                <select  type="text" class="form-control" v-model="form.advising_id" >
+                  <option value="" disabled>Please select advising officer*</option>
+                  <option v-for="(instructor) in instructorinfo"  :key="instructor.id" v-bind:value="instructor.id">
+                      Prof. {{instructor.firstname}} {{instructor.lastname}}    
+                  </option>
+                </select>
               </div>
           </div>
           <div class="modal-footer">
@@ -156,9 +156,12 @@
               </div>
               <div class="form-group">
                 <label>Adivising Officer</label>
-                <input v-model="form.advising_id" type="text" name="advising_id"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('advising_id') }" readonly>
-                <has-error :form="form" field="advising_id"></has-error>
+                <select  type="text" class="form-control" v-model="form.advising_id" disabled>
+                  <option value="" disabled>Please select advising officer*</option>
+                  <option v-for="(instructor) in instructorinfo"  :key="instructor.id" v-bind:value="instructor.id">
+                      Prof. {{instructor.firstname}} {{instructor.lastname}}    
+                  </option>
+                </select>
               </div>
           </div>
           <div class="modal-footer">
@@ -182,6 +185,7 @@
           query:'',
           queryField:'program_code',
           program:[],
+          instructorinfo:[],
           totalcount:'',
           form : new Form({
             id:'',
@@ -224,6 +228,13 @@
                 console.log(e)
                 this.$Progress.fail()
               })
+            axios.get('/api/instructorinfolist')
+              .then(response=>{
+                // console.log(response)
+                this.instructorinfo = response.data.data
+              })
+
+            
           },
           searchData(){
             this.$Progress.start()
@@ -254,7 +265,6 @@
             this.editMode = false
             this.form.reset()
             this.form.clear()
-            this.form.user_id = this.totalcount + 1
             $('#programModalLong').modal('show')
 
           },

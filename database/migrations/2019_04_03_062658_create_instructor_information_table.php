@@ -21,7 +21,6 @@ class CreateInstructorInformationTable extends Migration
             $table->string('middlename')->nullable();
             $table->string('lastname');
             $table->string('suffixname')->nullable();
-            $table->string('instructor_type')->default('part time');
             $table->string('sex')->nullable();
             $table->string('civil_status')->nullable();
             $table->string('citizenship')->nullable();

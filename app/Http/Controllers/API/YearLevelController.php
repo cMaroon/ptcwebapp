@@ -5,39 +5,54 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OtherSettingsCollection;
+use App\Http\Resources\OtherSettingsResource;
+
 use App\YearLevel;
 
 class YearLevelController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-    
+    protected $table = 'yearlevel_info';
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        return YearLevel::latest()->paginate(15);
-        // || \Gate::allows('isAuthor')
-        // if (\Gate::allows('isSuperAdmin')) {
-            // return Program::latest()->paginate(15);
-        // }
-        
+        return new OtherSettingsCollection(YearLevel::orderBy('id','DESC')->paginate(15));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $this->validate($request,[
-            'program_code' => 'required|string|max:191',
-            'descriptive_title' => 'required|string|max:191',
-        ]);
-        return Program::create([
-            'program_code' => $request['program_code'],
-            'descriptive_title' => $request['descriptive_title'],
+            'title' => 'required|string|max:191',
         ]);
 
+        $yl = new YearLevel();
+        $yl->title = $request->title;
+        $yl->save();
 
+        return new OtherSettingsResource($yl);
+        
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        return new OtherSettingsResource(YearLevel::findOrFail($id));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -48,15 +63,15 @@ class YearLevelController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $program = Program::findOrFail($id);
-        
-
         $this->validate($request,[
-            'program_code' => 'required|string|max:191',
-            'descriptive_title' => 'required|string|max:191',
+            'title' => 'required|string|max:191',
         ]);
 
-        $program->update($request->all());
+        $yl = YearLevel::findOrfail($id);
+        $yl->title = $request->title;
+        $yl->save();
+
+        return new OtherSettingsResource($yl);
     }
 
     /**
@@ -67,16 +82,16 @@ class YearLevelController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('isSuperAdmin');
-        $program = Program::findOrFail($id);
+        $yl = YearLevel::findOrfail($id);
+        $yl->delete();
+        return new OtherSettingsResource($yl);
 
-        // delete the user
-
-        $program->delete();
-
-
-        // return ['message'=>'Program Deleted!'];
     }
 
+    public function searchYearLevel($field,$query)
+    {
+        return new OtherSettingsCollection(YearLevel::where($field,'LIKE',"%$query%")->latest()
+        ->paginate(15));
+    }
 
 }

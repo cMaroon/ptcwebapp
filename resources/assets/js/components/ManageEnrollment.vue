@@ -14,11 +14,8 @@
             <div class="col-md-12 mt-3">
             <form class="mb-3">
               <div class="row">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-1">
+                <div class="col-md-3" style="text-align:right">
                   <strong>Search By : </strong>
-
                 </div>
                 <div class="col-md-2">
                   <select v-model="queryField" class="form-control" id="fields">

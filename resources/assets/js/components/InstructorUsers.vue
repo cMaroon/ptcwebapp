@@ -3,7 +3,7 @@
    <div class="col-md-12">
       <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Student Users Information</h3>
+            <h3 class="card-title">Instructor Users Information</h3>
             <div class="card-tools" style="position: absolute;right:1rem;top:.5rem;">
               <button type="button" class="btn btn-success" @click="create">Add New <i class="fas fa-plus"></i></button>
               <button type="button" class="btn btn-primary" @click="reload">Reload <i class="fas fa-sync"></i></button>
@@ -36,24 +36,26 @@
                   <th>ID Number</th>
                   <th>Email</th>
                   <th>Fullname</th>
+                  <th>Usertype</th>
                   <th class="text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-show="!studentuser.length" v-for="(studentuser, index) in studentuser" :key="studentuser.id">
+                <tr v-show="!instructoruser.length" v-for="(instructoruser, index) in instructoruser" :key="instructoruser.id">
                     <td>{{ index + 1}}</td>
-                    <td hidden>{{ studentuser.id }}</td>
-                    <td>{{ studentuser.id_num }}</td>
-                    <td>{{ studentuser.email }}</td>
-                    <td>{{ studentuser.stud_info.lastname }} {{ studentuser.stud_info.suffixname }}, {{ studentuser.stud_info.firstname }} {{ studentuser.middlename }}</td>
+                    <td hidden>{{ instructoruser.id }}</td>
+                    <td>{{ instructoruser.id_num }}</td>
+                    <td>{{ instructoruser.email }}</td>
+                    <td>{{ instructoruser.lastname }} {{ instructoruser.suffixname }}, {{ instructoruser.firstname }} {{ instructoruser.middlename }}</td>
+                    <td>{{ instructoruser.usertype }}</td>
                     <td class="text-center">
-                        <button type="button" @click="show(studentuser)" class="btn btn-info btn-sm">
+                        <button type="button" @click="show(instructoruser)" class="btn btn-info btn-sm">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button type="button" @click="edit(studentuser)" class="btn btn-primary btn-sm">
+                        <button type="button" @click="edit(instructoruser)" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button type="button" @click="destroy(studentuser)" class="btn btn-danger btn-sm">
+                        <button type="button" @click="destroy(instructoruser)" class="btn btn-danger btn-sm">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                         
@@ -61,7 +63,7 @@
 
 
                 </tr>
-                <tr v-show="!studentuser.length">
+                <tr v-show="!instructoruser.length">
                   <td colspan="6">
                     <div class="alert alert-danger" role="alert">
                       No Data Found!
@@ -75,6 +77,7 @@
                 <th>ID Number</th>
                 <th>Email</th>
                 <th>Fullname</th>
+                <th>Usertype</th>
                 <th class="text-center">Action</th>
               </tr>
               </tfoot>
@@ -89,11 +92,11 @@
       </div>
    </div>
    <!-- Modal -->
-    <div class="modal fade" id="studentuserModalLong" tabindex="-1" role="dialog" aria-labelledby="studentuserModalTitle" aria-hidden="true">
+    <div class="modal fade" id="instructoruserModalLong" tabindex="-1" role="dialog" aria-labelledby="instructoruserModalTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="studentuserModalTitle">{{ editMode ? "Edit":"Add New"}} Student User</h5>
+            <h5 class="modal-title" id="instructoruserModalTitle">{{ editMode ? "Edit":"Add New"}} Instructor User</h5>
 
           </div>
             
@@ -141,6 +144,15 @@
                 <input v-model="form.suffixname" type="text" name="suffixname"
                   class="form-control" :class="{ 'is-invalid': form.errors.has('suffixname') }">
                 <has-error :form="form" field="suffixname"></has-error>
+              </div>
+              <div class="form-group">
+                <label>User Type</label>
+                    <select v-model="form.usertype" type="text" class="form-control" name="usertype"
+                    :class="{ 'is-invalid': form.errors.has('usertype')}">
+                        <option value="" disabled selected>Please select user type*</option>
+                        <option value="instructor">Instructor</option>
+                    </select>
+                <has-error :form="form" field="usertype"></has-error>
               </div>
               <div class="form-group">
                 <label>Password</label>
@@ -206,6 +218,14 @@
                 <input v-model="form.suffixname" type="text" name="suffixname"
                   class="form-control" readonly>
               </div>
+              <div class="form-group">
+                <label>User Type</label>
+                    <select v-model="form.usertype" type="text" class="form-control" name="usertype"
+                    disabled>
+                        <option value="" disabled selected>Please select user type*</option>
+                        <option value="instructor">Instructor</option>
+                    </select>
+              </div>
           </div>
           <div class="modal-footer">
             <button :disabled="form.busy" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -227,15 +247,14 @@
           editMode: false,
           query:'',
           queryField:'id_num',
-          studentuser:[],
+          instructoruser:[],
           totalcount:'',
           form : new Form({
             id:'',
             id_num:'',
             email:'',
-            cd_email:'',
-            password:'123456',
-            usertype:'student',
+            password:'',
+            usertype:'',
             user_id:'',
             firstname:'',
             middlename:'',
@@ -266,10 +285,10 @@
           getData(){
             //load data
             this.$Progress.start()
-            axios.get('/api/studentuser?page='+this.pagination.current_page)
+            axios.get('/api/instructoruser?page='+this.pagination.current_page)
               .then(response=>{
                 // console.log(response)
-                this.studentuser = response.data.data
+                this.instructoruser = response.data.data
                 this.pagination = response.data.meta
                 this.totalcount = this.pagination.total
                 this.$Progress.finish()
@@ -281,9 +300,9 @@
           },
           searchData(){
             this.$Progress.start()
-            axios.get('/api/search/studentuser/'+this.queryField+'/'+this.query+'?page='+this.pagination.current_page)
+            axios.get('/api/search/insturctoruser/'+this.queryField+'/'+this.query+'?page='+this.pagination.current_page)
             .then(response =>{
-              this.studentuser = response.data.data
+              this.instructoruser = response.data.data
               this.pagination = response.data.meta
               this.$Progress.finish()
             })
@@ -309,19 +328,18 @@
             this.form.reset()
             this.form.clear()
             this.form.user_id = this.totalcount + 1
-            $('#studentuserModalLong').modal('show')
+            $('#instructoruserModalLong').modal('show')
 
           },
           store(){
             // console.log('Hello')
             this.$Progress.start()
             this.form.busy = true
-            this.form.cd_email = this.form.email
             this.form
-              .post('/api/studentuser')
+              .post('/api/instructoruser')
               .then(response => {
                 this.getData()
-                $('#studentuserModalLong').modal('hide')
+                $('#instructoruserModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
                     this.$snotify.success('Data Successfully Saved','Success', {
@@ -347,32 +365,30 @@
                 // console.log(e)
               })
           },
-          show(studentuser) {
+          show(instructoruser) {
             this.form.reset();
-            this.form.fill(studentuser);
+            this.form.fill(instructoruser);
             $("#showModalLong").modal("show");
-            // console.log(studentuser);
+            // console.log(adminuser);
           },
-          edit(studentuser){
-            $('#studentuserModalLong').modal('show')
+          edit(instructoruser){
+            $('#instructoruserModalLong').modal('show')
             this.editMode = true
             this.form.reset()
             this.form.clear()
-            this.form.fill(studentuser)
+            this.form.fill(instructoruser)
             this.form.user_id = this.form.id
-            this.form.password = '123456'
-            this.form.cd_email = this.form.email
 
-
+            // this.form.fill(adminuser.admin_info)
           },
           update(){
             this.$Progress.start()
             this.form.busy = true
             this.form
-              .put('/api/studentuser/'+this.form.id)
+              .put('/api/instructoruser/'+this.form.id)
               .then(response => {
                 this.getData()
-                $('#studentuserModalLong').modal('hide')
+                $('#instructoruserModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
                     this.$snotify.success('Data Successfully Updated','Success', {
@@ -398,8 +414,8 @@
                 // console.log(e)
               })
           },
-          destroy(studentuser){
-            this.form.id = studentuser.id
+          destroy(instructoruser){
+            this.form.id = instructoruser.id
             this.$snotify.clear()
             this.$snotify.confirm(
               "You will not be able to recover this data!",
@@ -414,7 +430,7 @@
                     action: toast => {
                       this.$snotify.remove(toast.id);
                       axios
-                          .delete('/api/studentuser/'+this.form.id)
+                          .delete('/api/instructoruser/'+this.form.id)
                           .then(response =>{
                             this.getData()
                             this.$Progress.finish()

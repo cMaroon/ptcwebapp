@@ -16,10 +16,13 @@ import VueRouter from 'vue-router'
 import VueProgressBar from 'vue-progressbar'
 import Snotify, { SnotifyPosition} from 'vue-snotify'
 import Dashboard from './components/Dashboard'
-import Users from './components/AdminUsers'
+import Admin from './components/AdminUsers'
+import Instructor from './components/InstructorUsers'
 import Students from './components/StudentUsers'
 import ManageEnroll from './components/ManageEnrollment'
 import ManageProgram from './components/ManageProgram'
+import ManageCourses from './components/ManageCourses'
+import OtherSettings from './components/OtherSettings'
 
 Vue.use(Snotify, SnotifyOptions, SnotifyPosition)
 Vue.use(VueProgressBar, VueProgressBarOptions)
@@ -57,7 +60,13 @@ const router = new VueRouter({
       {
         path: '/admin/adminusers',
         name: 'admin-users',
-        component: Users,
+        component: Admin,
+        
+      },
+      {
+        path: '/admin/instructors',
+        name: 'admin-instructors',
+        component: Instructor,
         
       },
       {
@@ -76,6 +85,18 @@ const router = new VueRouter({
         path: '/admin/manage-program',
         name: 'admin-manageprogram',
         component: ManageProgram,
+        
+      },
+      {
+        path: '/admin/manage-courses',
+        name: 'admin-managecourses',
+        component: ManageCourses,
+        
+      },
+      {
+        path: '/admin/other-settings',
+        name: 'admin-settings',
+        component: OtherSettings,
         
       },
 

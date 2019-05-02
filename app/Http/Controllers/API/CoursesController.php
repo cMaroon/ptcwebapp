@@ -5,36 +5,30 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CoursesCollection;
+use App\Http\Resources\CoursesResource;
+
 use App\Courses;
 
 class CoursesController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-    
+    protected $table = 'courses_information';
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        // $courses = Courses::all();
-        // || \Gate::allows('isAuthor')
-        // if (\Gate::allows('isSuperAdmin')) {
-            return Courses::latest()->paginate(10);
-        // }
-        
+        return new CoursesCollection(Courses::orderBy('id','DESC')->paginate(15));
     }
 
-    public function CourseList()
-    {
-        $courses = Courses::all();
-        return $courses;
-        // || \Gate::allows('isAuthor')
-        // if (\Gate::allows('isSuperAdmin')) {
-            // return Courses::latest()->paginate(50);
-        // }
-        
-    }
-
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $this->validate($request,[
@@ -44,18 +38,31 @@ class CoursesController extends Controller
             'lab_hr' => 'required',
             'course_unit' => 'required',
         ]);
-        return Courses::create([
-            'course_code' => $request['course_code'],
-            'descriptive_title' => $request['descriptive_title'],
-            'lec_hr' => $request['lec_hr'],
-            'lab_hr' => $request['lab_hr'],
-            'course_unit' => $request['course_unit'],
-            'course_pre_req' => $request['course_pre_req'],
-        ]);
+        // 'course_code','descriptive_title','lec_hr','lab_hr','course_unit','course_pre_req'
 
+        $cs = new Courses();
+        $cs->course_code = $request->course_code;
+        $cs->descriptive_title = $request->descriptive_title;
+        $cs->lec_hr = $request->lec_hr;
+        $cs->lab_hr = $request->lab_hr;
+        $cs->course_unit = $request->course_unit;
+        $cs->course_pre_req = $request->course_pre_req;
+        $cs->save();
 
+        return new CoursesResource($cs);
+        
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        return new CoursesResource(Courses::findOrFail($id));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -66,9 +73,6 @@ class CoursesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $courses = Courses::findOrFail($id);
-        
-
         $this->validate($request,[
             'course_code' => 'required|string|max:191',
             'descriptive_title' => 'required|string|max:191',
@@ -77,8 +81,16 @@ class CoursesController extends Controller
             'course_unit' => 'required',
         ]);
 
-        $courses->update($request->all());
-        return ['message'=>'Updated the program info'];
+        $cs = Courses::findOrfail($id);
+        $cs->course_code = $request->course_code;
+        $cs->descriptive_title = $request->descriptive_title;
+        $cs->lec_hr = $request->lec_hr;
+        $cs->lab_hr = $request->lab_hr;
+        $cs->course_unit = $request->course_unit;
+        $cs->course_pre_req = $request->course_pre_req;
+        $cs->save();
+
+        return new CoursesResource($cs);
     }
 
     /**
@@ -89,29 +101,16 @@ class CoursesController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('isSuperAdmin');
-        $courses = Courses::findOrFail($id);
-
-        // delete the user
-
-        $courses->delete();
-
-
-        return ['message'=>'Courses Deleted!'];
-    }
-
-    public function search(){
-
-        if ($search = \Request::get('q')) {
-            $courses = Courses::where(function($query) use ($search){
-                $query->where('course_code','LIKE',"%$search%")
-                        ->orWhere('descriptive_title','LIKE',"%$search%");
-            })->paginate(20);
-        }else{
-            $courses = Courses::latest()->paginate(10);            
-        }
-
-        return $courses;
+        $cs = Courses::findOrfail($id);
+        $cs->delete();
+        return new CoursesResource($cs);
 
     }
+
+    public function searchCourses($field,$query)
+    {
+        return new CoursesCollection(Courses::where($field,'LIKE',"%$query%")->latest()
+        ->paginate(15));
+    }
+
 }

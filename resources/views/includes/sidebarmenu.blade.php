@@ -17,6 +17,12 @@
           </router-link>
         </li>
         <li class="nav-item">
+          <router-link :to="{ name: 'admin-instructors'}" class="nav-link">
+            <i class="fas fa-chalkboard-teacher nav-icon icon-pink"></i>
+            <p>Instructor User Accounts</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
           <router-link :to="{ name: 'admin-studentlist'}" class="nav-link">
             <i class="fas fa-address-card nav-icon icon-vividorange"></i>
             <p>Student User Accounts</p>
@@ -35,7 +41,7 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link to="./courses" class="nav-link">
+          <router-link :to="{ name: 'admin-managecourses'}" class="nav-link">
             <i class="fas fa-clipboard-list nav-icon icon-blue"></i>
             <p>Manage Courses</p>
           </router-link>
@@ -44,6 +50,12 @@
           <router-link to="./curriculum" class="nav-link">
             <i class="fas fa-table nav-icon icon-teal"></i>
             <p>Manage Curriculum</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link :to="{ name: 'admin-settings'}" class="nav-link">
+            <i class="fas fa-cogs nav-icon icon-white"></i>
+            <p>Other Settings</p>
           </router-link>
         </li>
           {{-- <li class="nav-item">

@@ -5,14 +5,15 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\OtherSettingsCollection;
-use App\Http\Resources\OtherSettingsResource;
+use App\Http\Resources\InstructorUserCollection;
+use App\Http\Resources\InstructorUserResource;
 
-use App\Section;
+use App\Instructor;
+use App\InstructorInformation;
 
-class SectionController extends Controller
+class InstructorInfoController extends Controller
 {
-    protected $table = 'section_info';
+    protected $table = 'instructor_information';
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +21,13 @@ class SectionController extends Controller
      */
     public function index()
     {
-        return new OtherSettingsCollection(Section::orderBy('id','DESC')->paginate(15));
+        return new InstructorUserCollection(InstructorInformation::with('instructorUserID')->orderBy('id','DESC')->paginate(15));
+    }
+
+    public function instructorlist()
+    {
+        return new InstructorUserCollection(InstructorInformation::with('instructorUserID')->get());
+
     }
 
     /**
@@ -31,15 +38,7 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'title' => 'required|string|max:191',
-        ]);
-
-        $sec = new Section();
-        $sec->title = $request->title;
-        $sec->save();
-
-        return new OtherSettingsResource($sec);
+        
         
     }
 
@@ -51,7 +50,7 @@ class SectionController extends Controller
      */
     public function show($id)
     {
-        return new OtherSettingsResource(Section::findOrFail($id));
+        return new InstructorUserResource(InstructorInformation::findOrFail($id));
     }
 
     /**
@@ -63,15 +62,7 @@ class SectionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,[
-            'title' => 'required|string|max:191',
-        ]);
 
-        $sec = Section::findOrfail($id);
-        $sec->title = $request->title;
-        $sec->save();
-
-        return new OtherSettingsResource($sec);
     }
 
     /**
@@ -82,16 +73,7 @@ class SectionController extends Controller
      */
     public function destroy($id)
     {
-        $sec = Section::findOrfail($id);
-        $sec->delete();
-        return new OtherSettingsResource($sec);
 
-    }
-
-    public function searchSEC($field,$query)
-    {
-        return new OtherSettingsCollection(Section::where($field,'LIKE',"%$query%")->latest()
-        ->paginate(15));
     }
 
 }

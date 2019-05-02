@@ -42,4 +42,9 @@ class Instructor extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function instructorInfo()
+    {
+        return $this->hasOne('App\InstructorInformation','id');
+    }
 }

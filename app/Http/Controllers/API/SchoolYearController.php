@@ -8,11 +8,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OtherSettingsCollection;
 use App\Http\Resources\OtherSettingsResource;
 
-use App\Section;
+use App\SchoolYear;
 
-class SectionController extends Controller
+class SchoolYearController extends Controller
 {
-    protected $table = 'section_info';
+    protected $table = 'school_year';
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +20,7 @@ class SectionController extends Controller
      */
     public function index()
     {
-        return new OtherSettingsCollection(Section::orderBy('id','DESC')->paginate(15));
+        return new OtherSettingsCollection(SchoolYear::orderBy('id','DESC')->paginate(15));
     }
 
     /**
@@ -35,11 +35,11 @@ class SectionController extends Controller
             'title' => 'required|string|max:191',
         ]);
 
-        $sec = new Section();
-        $sec->title = $request->title;
-        $sec->save();
+        $sy = new SchoolYear();
+        $sy->title = $request->title;
+        $sy->save();
 
-        return new OtherSettingsResource($sec);
+        return new OtherSettingsResource($sy);
         
     }
 
@@ -51,7 +51,7 @@ class SectionController extends Controller
      */
     public function show($id)
     {
-        return new OtherSettingsResource(Section::findOrFail($id));
+        return new OtherSettingsResource(SchoolYear::findOrFail($id));
     }
 
     /**
@@ -67,11 +67,11 @@ class SectionController extends Controller
             'title' => 'required|string|max:191',
         ]);
 
-        $sec = Section::findOrfail($id);
-        $sec->title = $request->title;
-        $sec->save();
+        $sy = SchoolYear::findOrfail($id);
+        $sy->title = $request->title;
+        $sy->save();
 
-        return new OtherSettingsResource($sec);
+        return new OtherSettingsResource($sy);
     }
 
     /**
@@ -82,15 +82,15 @@ class SectionController extends Controller
      */
     public function destroy($id)
     {
-        $sec = Section::findOrfail($id);
-        $sec->delete();
-        return new OtherSettingsResource($sec);
+        $sy = SchoolYear::findOrfail($id);
+        $sy->delete();
+        return new OtherSettingsResource($sy);
 
     }
 
-    public function searchSEC($field,$query)
+    public function searchSY($field,$query)
     {
-        return new OtherSettingsCollection(Section::where($field,'LIKE',"%$query%")->latest()
+        return new OtherSettingsCollection(SchoolYear::where($field,'LIKE',"%$query%")->latest()
         ->paginate(15));
     }
 

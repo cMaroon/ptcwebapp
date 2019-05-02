@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Semester extends Model
 {
     
-    protected $table = 'semester';
+    protected $table = 'semester_info';
     public $primaryKey = 'id';
 
 

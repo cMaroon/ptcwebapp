@@ -87,6 +87,17 @@ class AdminUserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request,[
+            'id_num' => 'required|string|max:191|unique:users_admin',
+            'firstname' => 'required|string|max:191|alpha_spaces',
+            'middlename' => 'max:191|alpha_spaces|nullable',
+            'lastname' => 'required|string|max:191|alpha_spaces',
+            'suffixname' => 'max:191|alpha_spaces|nullable',
+            'usertype' => 'required|string',
+            'email' => 'required|string|email|max:191|unique:users_admin',
+            'password' => 'required|string|min:6',
+        ]);
+        
         $admininfo = AdminInformation::findOrfail($id);
         // $admininfo->user_id = $request->user_id;
         $admininfo->firstname = $request->firstname;

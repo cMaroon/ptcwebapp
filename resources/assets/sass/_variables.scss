@@ -20,6 +20,7 @@ $teal: #4dc0b5;
 $cyan: #6cb2eb;
 $strongblue: #057ccf;
 $vividorange: #f96f0e;
+$white: #ffff;
 
 .icon-vividorange{
     color:$vividorange; //studentlist
@@ -56,4 +57,7 @@ $vividorange: #f96f0e;
 }
 .icon-cyan{
     color:$cyan; //enrollment manage
+}
+.icon-white{
+    color:$white; //settings
 }
