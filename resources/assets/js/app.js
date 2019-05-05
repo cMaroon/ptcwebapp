@@ -11,6 +11,7 @@ window.Vue = require('vue');
 window.Form = Form
 
 import Vue from 'vue'
+import moment from 'moment';
 import { Form, HasError, AlertError, AlertErrors, AlertSuccess } from 'vform'
 import VueRouter from 'vue-router'
 import VueProgressBar from 'vue-progressbar'
@@ -26,6 +27,7 @@ import ManageCurriculum from './components/ManageCurriculum'
 import ManagaAssesstment from './components/ManageAssesstment'
 import ManagaPayment from './components/ManagePayment'
 import OtherSettings from './components/OtherSettings'
+import PrintEnroll from './components/PrintEnroll'
 
 Vue.use(Snotify, SnotifyOptions, SnotifyPosition)
 Vue.use(VueProgressBar, VueProgressBarOptions)
@@ -120,6 +122,12 @@ const router = new VueRouter({
         component: OtherSettings,
         
       },
+      {
+        path: '/admin/printenroll/:id',
+        name: 'printenroll',
+        component: PrintEnroll,
+        
+      },
 
   ],
 });
@@ -130,6 +138,9 @@ Vue.component(AlertError.name, AlertError)
 Vue.component(AlertErrors.name, AlertErrors)
 Vue.component(AlertSuccess.name, AlertSuccess)
 
+Vue.filter('setDate',function(created){
+  return moment(created).format('MMMM Do YYYY');
+});
 
 const app = new Vue({
   el: '#app',

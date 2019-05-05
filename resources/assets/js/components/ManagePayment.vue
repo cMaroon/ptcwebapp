@@ -3,9 +3,9 @@
    <div class="col-md-12">
       <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Manage Program Information</h3>
+            <h3 class="card-title">Manage Payment Information</h3>
             <div class="card-tools" style="position: absolute;right:1rem;top:.5rem;">
-              <button type="button" class="btn btn-success" @click="create">Add New <i class="fas fa-plus"></i></button>
+              <!-- <button type="button" class="btn btn-success" @click="create">Add New <i class="fas fa-plus"></i></button> -->
               <button type="button" class="btn btn-primary" @click="reload">Reload <i class="fas fa-sync"></i></button>
             </div>
           </div>
@@ -19,8 +19,8 @@
                 </div>
                 <div class="col-md-2">
                   <select v-model="queryField" class="form-control" id="fields">
-                    <option value="program_code" selected>Program Code</option>
-                    <option value="descriptive_title">Descriptive Title</option>
+                    <option value="payment_id_num" selected>ID Number</option>
+                    <option value="payment_form_id">Form ID</option>
                   </select>
                 </div>
                 <div class="col-md-7">
@@ -33,38 +33,72 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Program Code</th>
-                  <th>Descriptive Title</th>
-                  <th>Adivising Officer</th>
+                  <th>ID Number</th>
+                  <th>Form ID</th>
+                  <th>Fullname</th>
+                  <th>School Year</th>
+                  <th>Semester</th>
+                  <th>Year Level</th>
+                  <th>Assessed By</th>
+                  <th>Prelim OR Number</th>
+                  <th>Prelim Amount Paid</th>
+                  <th>Prelim Paid Date</th>
+                  <th>Prelim Issued By</th>
+                  <th>Midterm OR Number</th>
+                  <th>Midterm Amount Paid</th>
+                  <th>Midterm Paid Date</th>
+                  <th>Midterm Issued By</th>
+                  <th>Finals OR Number</th>
+                  <th>Finals Amount Paid</th>
+                  <th>Finals Paid Date</th>
+                  <th>Finals Issued By</th>       
                   <th class="text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-show="!program.length" v-for="(program, index) in program" :key="program.id">
+                <tr v-show="!payment.length" v-for="(payment, index) in payment" :key="payment.id">
                     <td>{{ index + 1}}</td>
-                    <td hidden>{{ program.id }}</td>
-                    <td>{{ program.program_code }}</td>
-                    <td>{{ program.descriptive_title }}</td>
-                    <td>Prof. {{ program.a_i_d.instructor_info.firstname }} {{ program.a_i_d.instructor_info.lastname }}</td>
+                    <td hidden>{{ payment.id }}</td>
+                    <td>{{ payment.payment_id_num }}</td>
+                    <td>{{ payment.payment_form_id }}</td>
+                    <td>{{ payment.py_s_i.lastname }} {{ payment.py_s_i.suffixname }}, {{ payment.py_s_i.firstname }} {{ payment.py_s_i.middlename }}</td>
+                    <td>{{ payment.pysy.title }}</td>
+                    <td>{{ payment.pysem.title }}</td>
+                    <td>{{ payment.pyyl.title }}</td>
+                    <td>{{ payment.assessed_by }}</td>
+                    <td>{{ payment.prelim_or_num }}</td>
+                    <td>{{ payment.prelim_amount_paid }}</td>
+                    <td>{{ payment.prelim_paid_date }}</td>
+                    <td>{{ payment.prelim_issued_by }}</td>
+                    <td>{{ payment.midterm_or_num }}</td>
+                    <td>{{ payment.midterm_amount_paid }}</td>
+                    <td>{{ payment.midterm_paid_date }}</td>
+                    <td>{{ payment.midterm_issued_by }}</td>
+                    <td>{{ payment.finals_or_num }}</td>
+                    <td>{{ payment.finals_amount_paid }}</td>
+                    <td>{{ payment.finals_paid_date }}</td>
+                    <td>{{ payment.finals_issued_by }}</td>
+                    
+                    
                     <td class="text-center">
-                        <button type="button" @click="show(program)" class="btn btn-info btn-sm">
+                        <!-- <button type="button" @click="show(payment)" class="btn btn-info btn-sm">
                             <i class="fas fa-eye"></i>
-                        </button>
-                        <button type="button" @click="edit(program)" class="btn btn-primary btn-sm">
+                        </button> -->
+                        <button type="button" @click="edit(payment)" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button type="button" @click="destroy(program)" class="btn btn-danger btn-sm">
+                        <!-- <button type="button" @click="destroy(payment)" class="btn btn-danger btn-sm">
                             <i class="fas fa-trash-alt"></i>
-                        </button>
+                        </button> -->
                         
                     </td>
 
 
                 </tr>
-                <tr v-show="!program.length">
-                  <td colspan="6">
+                <tr v-show="!payment.length">
+                  <td colspan="21">
                     <div class="alert alert-danger" role="alert">
-                      No Data Found!
+                      <center>No Data Found!</center>
                     </div>
                   </td>
                 </tr>
@@ -72,9 +106,25 @@
               <tfoot>
               <tr>
                   <th>#</th>
-                  <th>Program Code</th>
-                  <th>Descriptive Title</th>
-                  <th>Adivising Officer</th>
+                  <th>ID Number</th>
+                  <th>Form ID</th>
+                  <th>Fullname</th>
+                  <th>School Year</th>
+                  <th>Semester</th>
+                  <th>Year Level</th>
+                  <th>Assessed By</th>
+                  <th>Prelim OR Number</th>
+                  <th>Prelim Amount Paid</th>
+                  <th>Prelim Paid Date</th>
+                  <th>Prelim Issued By</th>
+                  <th>Midterm OR Number</th>
+                  <th>Midterm Amount Paid</th>
+                  <th>Midterm Paid Date</th>
+                  <th>Midterm Issued By</th>
+                  <th>Finals OR Number</th>
+                  <th>Finals Amount Paid</th>
+                  <th>Finals Paid Date</th>
+                  <th>Finals Issued By</th>
                 <th class="text-center">Action</th>
               </tr>
               </tfoot>
@@ -89,38 +139,101 @@
       </div>
    </div>
    <!-- Modal -->
-    <div class="modal fade" id="programModalLong" tabindex="-1" role="dialog" aria-labelledby="programModalTitle" aria-hidden="true">
+    <div class="modal fade" id="paymentModalLong" tabindex="-1" role="dialog" aria-labelledby="paymentModalTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="programModalTitle">{{ editMode ? "Edit":"Add New"}} Program Info</h5>
+            <h5 class="modal-title" id="paymentModalTitle">{{ editMode ? "Edit":"Add New"}} Payment Info <br>
+              Form ID: {{ form.payment_form_id }} |
+              ID Number: {{ form.payment_id_num }} 
+              
+            </h5>
 
           </div>
             
           <form @submit.prevent="editMode ? update() : store()" @keydown="form.onKeydown($event)">
           <div class="modal-body">
             <alert-error :form="form" message="There were some problems with your input."></alert-error>
+
               <div class="form-group">
-                <label>Program Code</label>
-                <input v-model="form.program_code" type="text" name="program_code"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('program_code') }">
-                <has-error :form="form" field="program_code"></has-error>
+                <label>Prelim OR Number</label>
+                <input v-model="form.prelim_or_num" type="text" name="prelim_or_num"
+                  class="form-control" >
               </div>
+
               <div class="form-group">
-                <label>Descriptive Title</label>
-                <input v-model="form.descriptive_title" type="text" name="descriptive_title"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('descriptive_title') }">
-                <has-error :form="form" field="descriptive_title"></has-error>
+                <label>Prelim Amount Paid</label>
+                <input v-model="form.prelim_amount_paid" type="text" name="prelim_amount_paid"
+                  class="form-control" >
               </div>
+
               <div class="form-group">
-                <label>Adivising Officer</label>
-                <select  type="text" class="form-control" v-model="form.advising_id" >
-                  <option value="" disabled>Please select advising officer*</option>
-                  <option v-for="(instructor) in instructorinfo"  :key="instructor.id" v-bind:value="instructor.id">
-                      Prof. {{instructor.firstname}} {{instructor.lastname}}    
-                  </option>
-                </select>
+                <label>Prelim Paid Date</label>
+                <input v-model="form.prelim_paid_date" name="prelim_paid_date" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                
               </div>
+
+              <div class="form-group">
+                <label>Prelim Issued By</label>
+                <input v-model="form.prelim_issued_by" type="text" name="prelim_issued_by"
+                  class="form-control" >
+              </div>
+
+              <div class="form-group">
+                <label>Midterm OR Number</label>
+                <input v-model="form.midterm_or_num" type="text" name="midterm_or_num"
+                  class="form-control" >
+              </div>
+
+              <div class="form-group">
+                <label>Midterm Amount Paid</label>
+                <input v-model="form.midterm_amount_paid" type="text" name="midterm_amount_paid"
+                  class="form-control" >
+              </div>
+
+              <div class="form-group">
+                <label>Midterm Paid Date</label>
+                <input v-model="form.midterm_paid_date" name="midterm_paid_date" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                
+              </div>
+
+              <div class="form-group">
+                <label>Midterm Issued By</label>
+                <input v-model="form.midterm_issued_by" type="text" name="midterm_issued_by"
+                  class="form-control" >
+              </div>
+
+              <div class="form-group">
+                <label>Finals OR Number</label>
+                <input v-model="form.finals_or_num" type="text" name="finals_or_num"
+                  class="form-control" >
+              </div>
+
+              <div class="form-group">
+                <label>Finals Amount Paid</label>
+                <input v-model="form.finals_amount_paid" type="text" name="finals_amount_paid"
+                  class="form-control" >
+              </div>
+
+              <div class="form-group">
+                <label>Finals Paid Date</label>
+                <input v-model="form.finals_paid_date" name="finals_paid_date" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                
+              </div>
+
+              <div class="form-group">
+                <label>Finals Issued By</label>
+                <input v-model="form.finals_issued_by" type="text" name="finals_issued_by"
+                  class="form-control" >
+              </div>
+
+              <div class="form-group">
+                <label>Assessed By</label>
+                <input v-model="form.assessed_by" type="text" name="assessed_by"
+                  class="form-control" readonly>
+              </div>
+              
+              
           </div>
           <div class="modal-footer">
             <button :disabled="form.busy" type="submit" class="btn btn-primary">Save changes</button>
@@ -131,46 +244,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="showModalLong" tabindex="-1" role="dialog" aria-labelledby="showModalTitle" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="showModalTitle">{{ form.descriptive_title }}</h5>
-
-          </div>
-            
-          <form @submit.prevent="editMode ? update() : store()" @keydown="form.onKeydown($event)">
-          <div class="modal-body">
-            <alert-error :form="form" message="There were some problems with your input."></alert-error>
-              <div class="form-group">
-                <label>Program Code</label>
-                <input v-model="form.program_code" type="text" name="program_code"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('program_code') }" readonly>
-                <has-error :form="form" field="program_code"></has-error>
-              </div>
-              <div class="form-group">
-                <label>Descriptive Title</label>
-                <input v-model="form.descriptive_title" type="text" name="descriptive_title"
-                  class="form-control" :class="{ 'is-invalid': form.errors.has('descriptive_title') }" readonly>
-                <has-error :form="form" field="descriptive_title"></has-error>
-              </div>
-              <div class="form-group">
-                <label>Adivising Officer</label>
-                <select  type="text" class="form-control" v-model="form.advising_id" disabled>
-                  <option value="" disabled>Please select advising officer*</option>
-                  <option v-for="(instructor) in instructorinfo"  :key="instructor.id" v-bind:value="instructor.id">
-                      Prof. {{instructor.firstname}} {{instructor.lastname}}    
-                  </option>
-                </select>
-              </div>
-          </div>
-          <div class="modal-footer">
-            <button :disabled="form.busy" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-          </form>
-        </div>
-      </div>
-    </div>
+    
 
    <vue-progress-bar></vue-progress-bar>
    <vue-snotify></vue-snotify>
@@ -183,15 +257,40 @@
         return{
           editMode: false,
           query:'',
-          queryField:'program_code',
-          program:[],
-          instructorinfo:[],
+          queryField:'payment_id_num',
+          payment:[],
           totalcount:'',
           form : new Form({
             id:'',
-            program_code:'',
-            descriptive_title:'',
-            advising_id:'',
+            payment_id_num:'',
+            sy:'',
+            semester:'',
+            yearlevel:'',
+            payment_form_id:'',
+            // tuition_fee:'',
+            // registration_fee:'',
+            // library_fee:'',
+            // medical_fee:'',
+            // cultural_fee:'',
+            // athletic_fee:'',
+            // bookrental_fee:'',
+            // laboratory_fee:'',
+            // penalty_fee:'',
+            // other_fee:'',
+            // total_amount_fee:'',
+            assessed_by:'',
+            prelim_or_num:'',
+            prelim_amount_paid:'',
+            prelim_paid_date:'',
+            prelim_issued_by:'',
+            midterm_or_num:'',
+            midterm_amount_paid:'',
+            midterm_paid_date:'',
+            midterm_issued_by:'',
+            finals_or_num:'',
+            finals_amount_paid:'',
+            finals_paid_date:'',
+            finals_issued_by:'',
           }),
           pagination:{
             current_page:1,
@@ -216,10 +315,10 @@
           getData(){
             //load data
             this.$Progress.start()
-            axios.get('/api/manageprogram?page='+this.pagination.current_page)
+            axios.get('/api/managepayment?page='+this.pagination.current_page)
               .then(response=>{
                 // console.log(response)
-                this.program = response.data.data
+                this.payment = response.data.data
                 this.pagination = response.data.meta
                 this.totalcount = this.pagination.total
                 this.$Progress.finish()
@@ -228,19 +327,13 @@
                 console.log(e)
                 this.$Progress.fail()
               })
-            axios.get('/api/instructorinfolist')
-              .then(response=>{
-                // console.log(response)
-                this.instructorinfo = response.data.data
-              })
 
-            
           },
           searchData(){
             this.$Progress.start()
-            axios.get('/api/search/program/'+this.queryField+'/'+this.query+'?page='+this.pagination.current_page)
+            axios.get('/api/search/payment/'+this.queryField+'/'+this.query+'?page='+this.pagination.current_page)
             .then(response =>{
-              this.program = response.data.data
+              this.payment = response.data.data
               this.pagination = response.data.meta
               this.$Progress.finish()
             })
@@ -252,7 +345,7 @@
           reload(){
             this.getData()
             this.query=''
-            this.queryField='program_code'
+            this.queryField='paymnet_id_num'
             this.$snotify.success('Data Successfully Refresh','Success', {
                   timeout: 1000,
                   showProgressBar: false,
@@ -265,7 +358,7 @@
             this.editMode = false
             this.form.reset()
             this.form.clear()
-            $('#programModalLong').modal('show')
+            $('#paymentModalLong').modal('show')
 
           },
           store(){
@@ -273,10 +366,10 @@
             this.$Progress.start()
             this.form.busy = true
             this.form
-              .post('/api/manageprogram')
+              .post('/api/managepayment')
               .then(response => {
                 this.getData()
-                $('#programModalLong').modal('hide')
+                $('#paymentModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
                     this.$snotify.success('Data Successfully Saved','Success', {
@@ -302,27 +395,27 @@
                 // console.log(e)
               })
           },
-          show(program) {
+          show(payment) {
             this.form.reset();
-            this.form.fill(program);
+            this.form.fill(payment);
             $("#showModalLong").modal("show");
             // console.log(studentuser);
           },
-          edit(program){
-            $('#programModalLong').modal('show')
+          edit(payment){
+            $('#paymentModalLong').modal('show')
             this.editMode = true
             this.form.reset()
             this.form.clear()
-            this.form.fill(program)
+            this.form.fill(payment)
           },
           update(){
             this.$Progress.start()
             this.form.busy = true
             this.form
-              .put('/api/manageprogram/'+this.form.id)
+              .put('/api/managepayment/'+this.form.id)
               .then(response => {
                 this.getData()
-                $('#programModalLong').modal('hide')
+                $('#paymentModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
                     this.$snotify.success('Data Successfully Updated','Success', {
@@ -348,8 +441,8 @@
                 // console.log(e)
               })
           },
-          destroy(program){
-            this.form.id = program.id
+          destroy(payment){
+            this.form.id = payment.id
             this.$snotify.clear()
             this.$snotify.confirm(
               "You will not be able to recover this data!",
@@ -364,7 +457,7 @@
                     action: toast => {
                       this.$snotify.remove(toast.id);
                       axios
-                          .delete('/api/manageprogram/'+this.form.id)
+                          .delete('/api/managepayment/'+this.form.id)
                           .then(response =>{
                             this.getData()
                             this.$Progress.finish()

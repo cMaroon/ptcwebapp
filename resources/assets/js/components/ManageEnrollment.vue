@@ -66,9 +66,12 @@
                         <button type="button" @click="edit(enrollment)" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button type="button"  class="btn btn-success btn-sm">
+                        <router-link :to="{name: 'printenroll', params:{id:enrollment.id}}" >
+                           <i class="fas fa-print icon-green"></i>
+                        </router-link>
+                        <!-- <button type="button"  class="btn btn-success btn-sm">
                             <i class="fas fa-print"></i>
-                        </button>
+                        </button> -->
                         <button type="button" @click="destroy(enrollment)" class="btn btn-danger btn-sm">
                             <i class="fas fa-trash-alt"></i>
                         </button>

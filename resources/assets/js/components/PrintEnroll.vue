@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row mt-2" v-if="$gate.isSuperAdmin()">
+        <div class="row mt-2" >
                     <!-- <div class="container" >
                             <div class="row" > --> 
                                 <!-- <div class="col-12" > -->
@@ -318,21 +318,14 @@
         data(){
           return{
             editmode: false,
-            // courses:{},
-            // yearlevel:{},
-            // semester:{},
-            // enrollment : [],
+
             enrollmentassoc : {},
-            // curriculum:{},
-            // student:{},
-            // totalunit:{},
-            datetoday: new Date('2011-04-11T10:20:30Z'),
+
+            // datetoday: new Date('2011-04-11T10:20:30Z'),
             form: new Form({
                 id : '',
                 assoc_form_id:'',
                 assoc_curr_id:'',
-                assoc_prof_id:'',
-                assoc_final_grade:'',
                 enr_program_id:'',
             
 
@@ -340,34 +333,43 @@
 
           }
         },
+        mounted() {
+            console.log('Component mounted.')
+            this.getData();
+        },
         methods: {
+            getData(){
+            //load data
+            this.$Progress.start()
+            // axios.get('/api/currlist').then(response=>{this.currlist = response.data.data})
+            // axios.get('/api/sectionlist').then(response=>{this.section = response.data.data})
+            // axios.get('/api/schoolyearlist').then(response=>{this.schoolyear = response.data.data})
+            // axios.get('/api/semesterlist').then(response=>{this.semester = response.data.data})
+            // axios.get('/api/yearlevellist').then(response=>{this.yearlevel = response.data.data})
+            // axios.get('/api/programlist').then(response=>{this.program = response.data.data})
+            // axios.get('/api/studentlist').then(response=>{this.studentlist = response.data.data})
+            axios.get('/api/search/assoc/assoc_form_id/'+this.$route.params.id)
+                .then(response=>{
+                console.log(response)
+                  this.enrollmentassoc = response.data.data
+                  })
+                  .catch(e => {
+                    this.$Progress.fail()
+                    // console.log(e)
+                  })
+          },
 
             printme() {
               window.print();
 
-          },
+            },
 
-          loadEnrollment(){
-            // if(this.$gate.isStudent()){
-                                     
-                axios.get("/api/enrollmentassoc/"+this.$route.params.id).then(({data}) =>(this.enrollmentassoc = data))
-                .then($data=>{this.totalrecord=$data.total});
-            // }
-
-
-            
-          }
+          
 
          
         },
 
-        created() {
-           this.loadEnrollment();
-           Fire.$on('AfterCreate',() => {
-               this.loadEnrollment();
-           });
-          //  setInterval(() => this.loadUsers(), 15000);
-        },
+        
         computed: {
            totalunits:function(){
                let sum = 0;
