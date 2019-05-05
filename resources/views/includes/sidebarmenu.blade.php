@@ -53,6 +53,18 @@
           </router-link>
         </li>
         <li class="nav-item">
+          <router-link :to="{ name: 'admin-manageassesstment'}" class="nav-link">
+            <i class="fas fa-file-invoice nav-icon icon-teal"></i>
+            <p>Manage Assesstment</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link :to="{ name: 'admin-managepayment'}" class="nav-link">
+            <i class="fas fa-receipt nav-icon icon-teal"></i>
+            <p>Manage Payment</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
           <router-link :to="{ name: 'admin-settings'}" class="nav-link">
             <i class="fas fa-cogs nav-icon icon-white"></i>
             <p>Other Settings</p>

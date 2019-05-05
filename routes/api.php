@@ -36,10 +36,22 @@ Route::get('search/studentinfo/{field}/{query}','StudentUserController@searchInf
 Route::get('search/studentuser/{field}/{query}','StudentUserController@searchUser');
 Route::apiResources(['studentuser'=>'StudentUserController']);
 Route::apiResources(['studentinfo'=>'StudentInfoController']);
+Route::get('studentlist','StudentUserController@studentlist');
 
 //ManageEnrollment
 Route::get('search/studentenrolled/{field}/{query}','ManageEnrollmentController@searchEnroll');
 Route::apiResources(['manageenrollment'=>'ManageEnrollmentController']);
+Route::apiResources(['manageenrollment'=>'ManageEnrollmentController']);
+
+//ManageEnrollmentAssoc
+Route::get('search/assoc/{field}/{query}','ManageEnrollmentAssocController@searchAssoc');
+Route::apiResources(['assoc'=>'ManageEnrollmentAssocController']);
+
+//ManagePayment
+Route::get('search/payment/{field}/{query}','ManagePaymentController@searchPayment');
+Route::apiResources(['managepayment'=>'ManagePaymentController']);
+Route::get('paymentlist','ManagePaymentController@paymentlist');
+
 
 //ManageProgram
 Route::get('search/program/{field}/{query}','ManageProgramController@searchProgram');
@@ -74,3 +86,4 @@ Route::get('courselist','CoursesController@courselist');
 //Curriculum
 Route::get('search/curriculum/{field}/{query}','CurriculumController@searchCurriculum');
 Route::apiResources(['managecurriculum'=>'CurriculumController']);
+Route::get('currlist','CurriculumController@currlist');

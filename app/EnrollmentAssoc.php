@@ -13,13 +13,13 @@ class EnrollmentAssoc extends Model
 
     //Database Tables
     protected $fillable = [
-        'assoc_form_id','assoc_curr_id','assoc_prof_id','assoc_final_grade','advising_status'
+        'assoc_form_id','assoc_curr_id'
 
     ];
 
     public function assocformid()
     {
-        return $this->belongsTo('App\Enrollment','assoc_form_id');
+        return $this->belongsTo('App\ManageEnrollment','assoc_form_id');
     }
 
     public function assoccurrid()
@@ -27,8 +27,5 @@ class EnrollmentAssoc extends Model
         return $this->belongsTo('App\Curriculum','assoc_curr_id');
     }
 
-    public function assocprofid()
-    {
-        // return $this->belongsTo('App\YearLevel','enr_year');
-    }
+    
 }

@@ -19,7 +19,7 @@ class CreatePaymentInformationTable extends Migration
             $table->integer('sy')->unsigned();
             $table->integer('semester')->unsigned();
             $table->integer('yearlevel')->unsigned();
-            $table->integer('payment_form_id')->unsigned();;
+            $table->integer('payment_form_id')->unsigned();
             $table->integer('tuition_fee')->nullable();
             $table->integer('registration_fee')->nullable();
             $table->integer('library_fee')->nullable();
@@ -46,7 +46,7 @@ class CreatePaymentInformationTable extends Migration
             $table->timestamps();
 
             $table->foreign('payment_id_num')->references('id_num')->on('student_information')->onDelete('cascade');
-            $table->foreign('payment_form_id')->references('id')->on('enrollment_information')->onDelete('cascade');
+            $table->foreign('payment_form_id')->references('enr_form_id')->on('enrollment_information')->onDelete('cascade');
             $table->foreign('semester')->references('id')->on('semester_info')->onDelete('cascade');
             $table->foreign('yearlevel')->references('id')->on('yearlevel_info')->onDelete('cascade');
             $table->foreign('sy')->references('id')->on('school_year')->onDelete('cascade');

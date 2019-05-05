@@ -25,6 +25,12 @@ class StudentUserController extends Controller
         return new StudentUserCollection(Student::with('studInfo')->orderBy('id','DESC')->paginate(15));
     }
 
+    public function studentlist()
+    {
+        return new StudentUserCollection(Student::get());
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *

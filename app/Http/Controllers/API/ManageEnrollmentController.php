@@ -9,6 +9,7 @@ use App\Http\Resources\ManageEnrollmentCollection;
 use App\Http\Resources\ManageEnrollmentResource;
 
 use App\ManageEnrollment;
+use App\ManagePayment;
 
 class ManageEnrollmentController extends Controller
 {
@@ -21,7 +22,7 @@ class ManageEnrollmentController extends Controller
     public function index()
     {
 
-        return new ManageEnrollmentCollection(ManageEnrollment::orderBy('id','DESC')->paginate(15));
+        return new ManageEnrollmentCollection(ManageEnrollment::with('enrollprograms','studinfo','enrollassoc','enrsy','enrsem','enryearlevel','enrsection')->orderBy('id','DESC')->paginate(15));
     }
 
     /**
@@ -31,8 +32,7 @@ class ManageEnrollmentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        
+    {      
 
         $me = new ManageEnrollment();
         $me->enr_form_id = $request->enr_form_id;
@@ -43,6 +43,14 @@ class ManageEnrollmentController extends Controller
         $me->enr_program_id = $request->enr_program_id;
         $me->total_course_unit = $request->total_course_unit;
         $me->save();
+
+        // $mp = new ManagePayment();
+        // $mp->payment_id_num = $request->payment_id_num;
+        // $mp->sy = $request->sy;
+        // $mp->semester = $request->semester;
+        // $mp->yearlevel = $request->yearlevel;
+        // $mp->payment_form_id = $request->payment_form_id;
+        // $mp->save();
         
         return new ManageEnrollmentResource($me);
         
@@ -56,7 +64,7 @@ class ManageEnrollmentController extends Controller
      */
     public function show($id)
     {
-        return new ManageEnrollmentResource(ManageEnrollment::findOrFail($id));
+        return new ManageEnrollmentResource(ManageEnrollment::with('enrollprograms','studinfo','enrollassoc','enrsy','enrsem','enryearlevel','enrsection')->findOrFail($id));
     }
 
     /**
@@ -68,8 +76,7 @@ class ManageEnrollmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $me = new ManageEnrollment();
-        $me->enr_form_id = $request->enr_form_id;
+        $me = ManageEnrollment::findOrfail($id);
         $me->sy = $request->sy;
         $me->semester = $request->semester;
         $me->yearlevel = $request->yearlevel;
@@ -77,6 +84,13 @@ class ManageEnrollmentController extends Controller
         $me->enr_program_id = $request->enr_program_id;
         $me->total_course_unit = $request->total_course_unit;
         $me->save();
+
+        // $mp = ManagePayment::findOrfail($id);
+        // $mp->payment_id_num = $request->payment_id_num;
+        // $mp->sy = $request->sy;
+        // $mp->semester = $request->semester;
+        // $mp->yearlevel = $request->yearlevel;
+        // $mp->save();
         
         return new ManageEnrollmentResource($me);
     }
@@ -90,13 +104,15 @@ class ManageEnrollmentController extends Controller
     public function destroy($id)
     {
         $me = ManageEnrollment::findOrfail($id);
+        $mp = ManagePayment::findOrfail($id);
         $me->delete();
-        return new ManageEnrollmentResource($me);
+        $mp->delete();
+        return new ManageEnrollmentResource($me,$mp);
     }
 
     public function searchEnroll($field,$query)
     {
-        return new ManageEnrollmentCollection(ManageEnrollment::where($field,'LIKE',"%$query%")->latest()
+        return new ManageEnrollmentCollection(ManageEnrollment::with('enrollprograms','studinfo','enrollassoc','enrsy','enrsem','enryearlevel','enrsection')->where($field,'LIKE',"%$query%")->latest()
         ->paginate(15));
     }
 }

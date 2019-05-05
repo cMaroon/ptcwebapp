@@ -23,6 +23,12 @@ class CurriculumController extends Controller
         return new CurriculumCollection(Curriculum::with('currsy','currprograms','currcourses','currsemester','curryearlevel','currsection','currinstructor')->orderBy('id','DESC')->paginate(10));
     }
 
+    public function currlist()
+    {
+        return new CurriculumCollection(Curriculum::with('currsy','currprograms','currcourses','currsemester','curryearlevel','currsection','currinstructor')->get());
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *

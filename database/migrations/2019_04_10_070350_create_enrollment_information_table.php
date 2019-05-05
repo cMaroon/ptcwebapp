@@ -29,7 +29,6 @@ class CreateEnrollmentInformationTable extends Migration
             $table->foreign('enr_program_id')->references('id')->on('program_information')->onDelete('cascade');
             $table->foreign('semester')->references('id')->on('semester_info')->onDelete('cascade');
             $table->foreign('yearlevel')->references('id')->on('yearlevel_info')->onDelete('cascade');
-            $table->foreign('section')->references('id')->on('section_info')->onDelete('cascade');
             $table->foreign('sy')->references('id')->on('school_year')->onDelete('cascade');
         });
     }
