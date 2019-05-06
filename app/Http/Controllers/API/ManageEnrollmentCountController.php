@@ -11,7 +11,7 @@ use App\Http\Resources\ManageEnrollmentResource;
 use App\ManageEnrollment;
 use App\ManagePayment;
 
-class ManageEnrollmentController extends Controller
+class ManageEnrollmentCountController extends Controller
 {
     protected $table = 'enrollment_information';
     /**
@@ -34,26 +34,7 @@ class ManageEnrollmentController extends Controller
     public function store(Request $request)
     {      
 
-        $me = new ManageEnrollment();
-        $me->enr_form_id = $request->enr_form_id;
-        $me->sy = $request->sy;
-        $me->semester = $request->semester;
-        $me->yearlevel = $request->yearlevel;
-        $me->enr_id_num = $request->enr_id_num;
-        $me->enr_program_id = $request->enr_program_id;
-        $me->total_course_unit = $request->total_course_unit;
-        $me->save();
-
-        // $mp = new ManagePayment();
-        // $mp->payment_id_num = $request->payment_id_num;
-        // $mp->sy = $request->sy;
-        // $mp->semester = $request->semester;
-        // $mp->yearlevel = $request->yearlevel;
-        // $mp->payment_form_id = $request->payment_form_id;
-        // $mp->save();
-        
-        return new ManageEnrollmentResource($me);
-        
+       
     }
 
     /**
@@ -77,21 +58,10 @@ class ManageEnrollmentController extends Controller
     public function update(Request $request, $id)
     {
         $me = ManageEnrollment::findOrfail($id);
-        $me->sy = $request->sy;
-        $me->semester = $request->semester;
-        $me->yearlevel = $request->yearlevel;
-        $me->enr_id_num = $request->enr_id_num;
-        $me->enr_program_id = $request->enr_program_id;
         $me->total_course_unit = $request->total_course_unit;
         $me->total_lab = $request->total_lab;
         $me->save();
 
-        // $mp = ManagePayment::findOrfail($id);
-        // $mp->payment_id_num = $request->payment_id_num;
-        // $mp->sy = $request->sy;
-        // $mp->semester = $request->semester;
-        // $mp->yearlevel = $request->yearlevel;
-        // $mp->save();
         
         return new ManageEnrollmentResource($me);
     }
@@ -105,7 +75,9 @@ class ManageEnrollmentController extends Controller
     public function destroy($id)
     {
         $me = ManageEnrollment::findOrfail($id);
+        $mp = ManagePayment::findOrfail($id);
         $me->delete();
+        $mp->delete();
         return new ManageEnrollmentResource($me,$mp);
     }
 

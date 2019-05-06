@@ -20,6 +20,7 @@ import Dashboard from './components/Dashboard'
 import Admin from './components/AdminUsers'
 import Instructor from './components/InstructorUsers'
 import Students from './components/StudentUsers'
+import StudentInfo from './components/StudentInformation'
 import ManageEnroll from './components/ManageEnrollment'
 import ManageProgram from './components/ManageProgram'
 import ManageCourses from './components/ManageCourses'
@@ -78,6 +79,12 @@ const router = new VueRouter({
         path: '/admin/studentusers',
         name: 'admin-studentlist',
         component: Students,
+        
+      },
+      {
+        path: '/admin/studentinformation',
+        name: 'admin-studentinfo',
+        component: StudentInfo,
         
       },
       {

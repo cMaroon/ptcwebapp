@@ -29,6 +29,12 @@
           </router-link>
         </li>
         <li class="nav-item">
+          <router-link :to="{ name: 'admin-studentinfo'}" class="nav-link">
+            <i class="fas fa-address-card nav-icon icon-indigo"></i>
+            <p>Student Personal Information</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
           <router-link :to="{ name: 'admin-managenroll'}" class="nav-link">
             <i class="fas fa-archive nav-icon icon-cyan"></i>
             <p>Manage Enrollment</p>

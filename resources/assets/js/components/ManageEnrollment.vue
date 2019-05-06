@@ -42,6 +42,7 @@
                   <th>Year Level</th>
                   <th>Program</th>
                   <th>Total Course Unit</th>
+                  <th>Total Laboratory Unit</th>
                   <th class="text-center">Action</th>
                 </tr>
               </thead>
@@ -58,6 +59,8 @@
                     <td>{{ enrollment.enryearlevel.title }}</td>
                     <td>{{ enrollment.enrollprograms.program_code }}</td>
                     <td>{{ enrollment.total_course_unit }}</td>
+                    <td>{{ enrollment.total_lab}}</td>
+
                     
                     <td class="text-center">
                         <button type="button" @click="show(enrollment)" class="btn btn-info btn-sm">
@@ -66,8 +69,8 @@
                         <button type="button" @click="edit(enrollment)" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <router-link :to="{name: 'printenroll', params:{id:enrollment.id}}" >
-                           <i class="fas fa-print icon-green"></i>
+                        <router-link :to="{name: 'printenroll', params:{id:enrollment.id}}" class="btn btn-success btn-sm" >
+                           <i class="fas fa-print"></i>
                         </router-link>
                         <!-- <button type="button"  class="btn btn-success btn-sm">
                             <i class="fas fa-print"></i>
@@ -81,7 +84,7 @@
                   </template>
                 </tr>
                 <tr v-show="!enrollment.length">
-                  <td colspan="10">
+                  <td colspan="11">
                     <div class="alert alert-danger" role="alert">
                       <center>No Data Found!</center>
                     </div>
@@ -99,6 +102,7 @@
                   <th>Year Level</th>
                   <th>Program</th>
                   <th>Total Course Unit</th>
+                  <th>Total Laboratory Unit</th>
                   <th class="text-center">Action</th>
               </tr>
               </tfoot>
@@ -234,7 +238,6 @@
               <div class="form-group">
                 <label>Select Section First</label>
                 <select  type="text" name="section_id" class="form-control"  required v-model="form.section_id" >
-                    <option selected value="">Please select section first*</option>
                     <option v-for="section in section" :key="section.id" v-bind:value="section.id">{{section.title}}</option>
                 </select>
               </div>
@@ -242,8 +245,7 @@
               <div class="form-group">
                 <label>Select Curriculum</label>
                 <select  type="text" name="assoc_curr_id" class="form-control"  required v-model="form.assoc_curr_id" >
-                    <option value="">Please select curriculum*</option>
-                    <option v-for="currlist in currlist" v-if="currlist.sy === form.sy && currlist.semester === form.semester && currlist.curr_year === form.yearlevel && currlist.curr_section_id === form.section_id && currlist.curr_program_id === form.enr_program_id" :key="currlist.id" v-bind:value="currlist.id">
+                    <option v-for="currlist in currlist" v-if="currlist.sy === form.sy && currlist.semester === form.semester && currlist.curr_year === form.yearlevel && currlist.curr_section_id === form.section_id && currlist.curr_program_id === form.enr_program_id " :key="currlist.id" v-bind:value="currlist.id">
                     {{ currlist.currcourses.course_code}} - {{ currlist.currcourses.descriptive_title}} 
                     </option>
                 </select>
@@ -258,8 +260,16 @@
               </div>
 
               <div class="form-group">
+                <label>Laboratory Unit</label>
+                <select  type="text" name="lab_unit" class="form-control"  required v-model="form.lab_unit" >
+                    <option v-for="currlist in currlist" v-if="currlist.id === form.assoc_curr_id" :key="currlist.id" v-bind:value="currlist.currcourses.lab_hr">{{ currlist.currcourses.lab_hr}} Units
+                    </option>
+                </select>
+              </div>
+
+              <div class="form-group">
                 <label>Student Count</label>
-                <select  type="text" name="assoc_curr_id" class="form-control"  required v-model="form.curr_stud_count" >
+                <select  type="text" name="curr_stud_count" class="form-control"  required v-model="form.curr_stud_count" >
                     <option v-for="currlist in currlist" v-if="currlist.id === form.assoc_curr_id" :key="currlist.id" v-bind:value="currlist.curr_stud_count">{{ currlist.curr_stud_count}} Student/s
                     </option>
                 </select>
@@ -369,6 +379,7 @@
             yearlevel:'',
             enr_program_id:'',
             total_course_unit:0,
+            total_lab:0,
             fullname:'',
             yltitle:'',
             progtitle:'',
@@ -378,7 +389,9 @@
             assoc_curr_id:'',
             section_id:'',
             course_unit:'',
-            curr_stud_count:'',
+            lab_unit:0,
+            curr_stud_count:0,
+            assessed_by:'Rowena B. Del Rosario',
           }),
           pagination:{
             current_page:1,
@@ -454,6 +467,7 @@
             this.form.clear()
             this.form.enr_form_id = '2019' + Math.floor(Math.random() * 100000);
             this.form.payment_form_id = this.form.enr_form_id
+            this.total_lab = this.total_lab
             $('#enrollmentModalLong').modal('show')
 
           },
@@ -491,8 +505,8 @@
                 this.$Progress.fail()
                 // console.log(e)
               })
+            
             this.form.post('/api/managepayment')
-
           },
           show(enrollment) {
             this.form.reset();
@@ -637,8 +651,13 @@
             // console.log('Hello')
             this.$Progress.start()
             this.form.busy = true
-            this.form.total_course_unit = this.form.total_course_unit + this.form.course_unit
+            this.form.total_lab = parseInt(this.form.total_lab) + parseInt(this.form.lab_unit)
+            this.form.total_course_unit = parseInt(this.form.total_course_unit) + parseInt(this.form.course_unit)
+            this.form
+              .put('/api/manageenrollmentcount/'+this.form.id)
             this.form.curr_stud_count = this.form.curr_stud_count + 1 
+            this.form
+              .put('/api/curriculumcount/'+this.form.assoc_curr_id)
             this.form
               .post('/api/assoc')
               .then(response => {
@@ -669,10 +688,8 @@
                 this.$Progress.fail()
                 // console.log(e)
               })
-              this.form
-              .put('/api/manageenrollment/'+this.form.id)
-            this.form
-              .put('/api/managecurriculum/'+this.form.assoc_curr_id)
+              
+            
               
           },
           showAssoc(assoc) {

@@ -21,7 +21,7 @@ class ManageEnrollmentAssocController extends Controller
     public function index()
     {
 
-        return new ManageEnrollmentAssocCollection(EnrollmentAssoc::with('assocformid','assoccurrid.currsemester','assoccurrid.curryearlevel','assoccurrid.currcourses','assoccurrid.currsection')->orderBy('id','DESC')->paginate(15));
+        return new ManageEnrollmentAssocCollection(EnrollmentAssoc::with('assocformid.payment','assocformid.studinfo.studInfo','assoccurrid.currsemester','assoccurrid.curryearlevel','assoccurrid.currcourses','assoccurrid.currsection','assoccurrid.currprograms')->orderBy('id','DESC')->paginate(15));
     }
 
     /**
@@ -50,7 +50,7 @@ class ManageEnrollmentAssocController extends Controller
      */
     public function show($id)
     {
-        return new ManageEnrollmentAssocResource(EnrollmentAssoc::with('assocformid','assoccurrid.currsemester','assoccurrid.curryearlevel','assoccurrid.currcourses','assoccurrid.currsection')->findOrFail($id));
+        return new ManageEnrollmentAssocResource(EnrollmentAssoc::with('assocformid.payment','assocformid.studinfo.studInfo','assoccurrid.currsemester','assoccurrid.curryearlevel','assoccurrid.currcourses','assoccurrid.currsection','assoccurrid.currprograms')->findOrFail($id));
     }
 
     /**
@@ -85,7 +85,7 @@ class ManageEnrollmentAssocController extends Controller
 
     public function searchAssoc($field,$query)
     {
-        return new ManageEnrollmentAssocCollection(EnrollmentAssoc::with('assocformid','assoccurrid.currsemester','assoccurrid.curryearlevel','assoccurrid.currcourses','assoccurrid.currsection')->where($field,'LIKE',"%$query%")->latest()
+        return new ManageEnrollmentAssocCollection(EnrollmentAssoc::with('assocformid.payment','assocformid.studinfo.studInfo','assoccurrid.currsemester','assoccurrid.curryearlevel','assoccurrid.currcourses','assoccurrid.currsection','assoccurrid.currprograms')->where($field,'LIKE',"%$query%")->latest()
         ->paginate(15));
     }
 }

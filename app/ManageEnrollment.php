@@ -13,9 +13,14 @@ class ManageEnrollment extends Model
 
     //Database Tables
     protected $fillable = [
-        'enr_form_id','sy','semester','yearlevel','section','enr_id_num','enr_program_id','total_course_unit'
+        'enr_form_id','sy','semester','yearlevel','section','enr_id_num','enr_program_id','total_course_unit','total_lab'
 
     ];
+
+    public function payment()
+    {
+        return $this->belongsTo('App\ManagePayment','enr_form_id','payment_form_id');
+    }
 
     public function enrollprograms()
     {

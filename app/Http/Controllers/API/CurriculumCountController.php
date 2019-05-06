@@ -5,15 +5,14 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\StudentUserCollection;
-use App\Http\Resources\StudentUserResource;
+use App\Http\Resources\CurriculumCollection;
+use App\Http\Resources\CurriculumResource;
 
-use App\Student;
-use App\StudentInformation;
+use App\Curriculum;
 
-class StudentInfoController extends Controller
+class CurriculumCountController extends Controller
 {
-    protected $table = 'student_information';
+    protected $table = 'curriculum_information';
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +20,13 @@ class StudentInfoController extends Controller
      */
     public function index()
     {
-        return new StudentUserCollection(StudentInformation::with('studentUserID')->orderBy('id','DESC')->paginate(1));
+        return new CurriculumCollection(Curriculum::with('currsy','currprograms','currcourses','currsemester','curryearlevel','currsection','currinstructor')->orderBy('id','DESC')->paginate(10));
+    }
+
+    public function currlist()
+    {
+        return new CurriculumCollection(Curriculum::with('currsy','currprograms','currcourses','currsemester','curryearlevel','currsection','currinstructor')->get());
+
     }
 
     /**
@@ -32,7 +37,7 @@ class StudentInfoController extends Controller
      */
     public function store(Request $request)
     {
-        
+       
         
     }
 
@@ -44,7 +49,7 @@ class StudentInfoController extends Controller
      */
     public function show($id)
     {
-        return new AdminUserResource(AdminInformation::findOrFail($id));
+        return new CurriculumResource(Curriculum::with('currsy','currprograms','currcourses','currsemester','curryearlevel','currsection','currinstructor')->findOrFail($id));
     }
 
     /**
@@ -56,7 +61,15 @@ class StudentInfoController extends Controller
      */
     public function update(Request $request, $id)
     {
+     
 
+        $cu = Curriculum::findOrfail($id);
+
+        $cu->curr_stud_count = $request->curr_stud_count;
+
+        $cu->save();
+
+        return new CurriculumResource($cu);
     }
 
     /**
@@ -67,7 +80,12 @@ class StudentInfoController extends Controller
      */
     public function destroy($id)
     {
+        $cu = Curriculum::findOrfail($id);
+        $cu->delete();
+        return new CurriculumResource($cu);
 
     }
+
+
 
 }

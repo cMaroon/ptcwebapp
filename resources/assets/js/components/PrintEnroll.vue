@@ -48,11 +48,11 @@
                                                     {{enrollmentassoc.data[0].assocformid.studinfo.firstname}} 
                                                     {{enrollmentassoc.data[0].assocformid.studinfo.middlename}}<br>
                                                     <strong>Address: </strong>
-                                                    {{enrollmentassoc.data[0].assocformid.studinfo.ca_st_num}} 
-                                                    {{enrollmentassoc.data[0].assocformid.studinfo.ca_st_name}} 
-                                                    {{enrollmentassoc.data[0].assocformid.studinfo.ca_subd}} 
-                                                    {{enrollmentassoc.data[0].assocformid.studinfo.ca_brgy}} 
-                                                    {{enrollmentassoc.data[0].assocformid.studinfo.ca_city}}<br>
+                                                    {{enrollmentassoc.data[0].assocformid.studinfo.stud_info.ca_st_num}} 
+                                                    {{enrollmentassoc.data[0].assocformid.studinfo.stud_info.ca_st_name}} 
+                                                    {{enrollmentassoc.data[0].assocformid.studinfo.stud_info.ca_subd}} 
+                                                    {{enrollmentassoc.data[0].assocformid.studinfo.stud_info.ca_brgy}} 
+                                                    {{enrollmentassoc.data[0].assocformid.studinfo.stud_info.ca_city}}<br>
                                                 </address>
                                                 </div>
 
@@ -61,7 +61,7 @@
                                                 
                                                 <b>Form ID# {{enrollmentassoc.data[0].assocformid.enr_form_id}}</b><br>
                                                 <b>Program Code: </b> {{enrollmentassoc.data[0].assoccurrid.currprograms.program_code}}<br>
-                                                <b>Year Level: </b> {{enrollmentassoc.data[0].assocformid.studinfo.studyearlevel.title}}<br>
+                                                <b>Year Level: </b> {{enrollmentassoc.data[0].assoccurrid.curryearlevel.title}}<br>
                                                 <b>Semester: </b> {{enrollmentassoc.data[0].assoccurrid.currsemester.title}}<br>
                                                 <!-- <b>Student Status: </b> Regular<br> -->
                                                 
@@ -112,82 +112,92 @@
 
                                             <div class="row" >
                                                 <div class="col-4">
+                                            <template v-if="enrollmentassoc.data">
                                                 <p class="lead">Semestral Fees:</p>
                                                     <div class="table-responsive">
                                                     <table class="table">
                                                         <tbody><tr>
-                                                            <th style="width:50%">Tuition Fee: </th>
+                                                            <th style="width:50%">Tuition Fee: {{enrollmentassoc.data[0].assocformid.payment.tuition_fee}} </th>
                                                             <td></td>
 
                                                         </tr>
                                                         <tr>
-                                                            <th>Registration Fee: </th>
+                                                            <th style="width:50%">Reg Fee: {{enrollmentassoc.data[0].assocformid.payment.registration_fee}} </th>
                                                             <td></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Library Fee: </th>
+                                                            <th>Library Fee: {{enrollmentassoc.data[0].assocformid.payment.library_fee}} </th>
                                                             <td></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Medical Fee: </th>
+                                                            <th>Medical Fee: {{enrollmentassoc.data[0].assocformid.payment.medical_fee}}</th>
                                                             <td></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Cultural: </th>
+                                                            <th>Cultural Fee: {{enrollmentassoc.data[0].assocformid.payment.cultural_fee}}</th>
                                                             <td></td>
                                                             </tr>
 
                                                         </tbody></table>
                                                 </div>
-
+                                        </template>
                                                 </div>
+                                             
                                                 <!-- /.col -->
                                                 <div class="col-4">
-                                                <p class="lead" style=" text-align: left">Total Units: {{totalunits}} </p>
+                                                <template v-if="enrollmentassoc.data">
+                                                    
+                                                <p class="lead" style=" text-align: left">Total Units: {{enrollmentassoc.data[0].assocformid.total_course_unit}} </p>
+                                                    </template> 
                                                 
                                                     <div class="table-responsive">
+                                                        <template v-if="enrollmentassoc.data">
                                                     <table class="table">
                                                         <tbody><tr>
                                                         <th style="width:50%">
-                                                            Athletic:</th>
+                                                            Athletic: {{enrollmentassoc.data[0].assocformid.payment.athletic_fee}}</th>
                                                             <td></td>
 
                                                         </tr>
                                                         <tr>
-                                                            <th>Book Rental: </th>
+                                                            <th>Book Rental: {{enrollmentassoc.data[0].assocformid.payment.bookrental_fee}} </th>
                                                             <td></td>
                                                             </tr>
                                                             <tr>
-                                                                <th>Laboratory: </th>
+                                                                <th>Laboratory: {{enrollmentassoc.data[0].assocformid.payment.laboratory_fee}}</th>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
-                                                                <th>Penalty: </th>
+                                                                <th>Penalty: {{enrollmentassoc.data[0].assocformid.payment.penalty_fee}} </th>
                                                                 <td></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th>Others: </th>
+                                                                    <th>Others: {{enrollmentassoc.data[0].assocformid.payment.other_fee}} </th>
                                                                     <td></td>
                                                                 </tr>
                     
                                                     </tbody></table>
+                                                        </template>
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
-                                                <p class="lead" style=" text-align: left">Total Lab: {{totallab}} </p>
+                                                <template v-if="enrollmentassoc.data">
                                                     
-
+                                                <p class="lead" style=" text-align: left">Total Lab: {{enrollmentassoc.data[0].assocformid.total_lab}} </p>
+                                                    </template> 
+                                
                                                 <div class="table-responsive">
+                                                <template v-if="enrollmentassoc.data">
                                                     <table class="table">
                                                     <tbody><tr>
                                                         <th style="width:50%">
                                                         Advising Officer: </th>
-                                                        <template v-if="enrollmentassoc.data">
+                                                        <!-- <template v-if="enrollmentassoc.data">
                                                         <td><small>{{enrollmentassoc.data[0].assocformid.studinfo.studprograms.advisingid.advising_officer_name}}</small></td>
-                                                        </template>
+                                                        </template> -->
                                                     </tr>
                                                     <tr>
-                                                        <th>Assessed By:  </th>
+                                                        <th>Assessed By: {{enrollmentassoc.data[0].assocformid.payment.assessed_by}} </th>
                                                                     <td></td>
 
                                                     </tr>
@@ -197,7 +207,7 @@
 
                                                     </tr>
                                                     <tr>
-                                                        <th>Total Amount: </th>
+                                                        <th>Total Amount: {{enrollmentassoc.data[0].assocformid.payment.total_amount_fee}}</th>
                                                                     <td></td>
 
                                                     </tr>
@@ -209,27 +219,31 @@
 
 
                                                     </tbody></table>
+                                    </template>
+
                                                 </div>
                                                 </div>
                                             <!-- OR NO -->
+                                                <template v-if="enrollmentassoc.data">
+
                                                 <div class="col-4">      
                                                 <p class="lead">Prelim:</p>
                                                 <div class="table-responsive">
                                                     <table class="table">
                                                     <tbody><tr>
                                                         <th style="width:55%">
-                                                       OR #:
+                                                       OR #: {{enrollmentassoc.data[0].assocformid.payment.prelim_or_num}}
                                                        </th>
                                                         
                                                     </tr>
                                                     <tr>
-                                                        <th>Amount Paid: </th>
+                                                        <th>Amount Paid: {{enrollmentassoc.data[0].assocformid.payment.prelim_amount_paid}} </th>
                                                     </tr>
                                                     <tr>
-                                                        <th>Date: </th>
+                                                        <th>Date: {{enrollmentassoc.data[0].assocformid.payment.prelim_paid_date}} </th>
                                                     </tr>
                                                     <tr>
-                                                        <th>Issued By: </th>
+                                                        <th>Issued By: {{enrollmentassoc.data[0].assocformid.payment.prelim_issued_by}}</th>
                                                     </tr>
 
 
@@ -243,18 +257,18 @@
                                                     <table class="table">
                                                     <tbody><tr>
                                                         <th style="width:55%">
-                                                       OR #:
+                                                       OR #: {{enrollmentassoc.data[0].assocformid.payment.midterm_or_num}}
                                                        </th>
                                                         
                                                     </tr>
                                                     <tr>
-                                                        <th>Amount Paid: </th>
+                                                        <th>Amount Paid: {{enrollmentassoc.data[0].assocformid.payment.midterm_amount_paid}} </th>
                                                     </tr>
                                                     <tr>
-                                                        <th>Date: </th>
+                                                        <th>Date: {{enrollmentassoc.data[0].assocformid.payment.midterm_paid_date}} </th>
                                                     </tr>
                                                     <tr>
-                                                        <th>Issued By: </th>
+                                                        <th>Issued By: {{enrollmentassoc.data[0].assocformid.payment.midterm_issued_by}} </th>
                                                     </tr>
 
 
@@ -268,28 +282,27 @@
                                                     <table class="table">
                                                     <tbody><tr>
                                                         <th style="width:55%">
-                                                       OR #:
+                                                       OR #: {{enrollmentassoc.data[0].assocformid.payment.finals_or_num}}
                                                        </th>
                                                         
                                                     </tr>
                                                     <tr>
-                                                        <th>Amount Paid: </th>
+                                                        <th>Amount Paid: {{enrollmentassoc.data[0].assocformid.payment.finals_amount_paid}} </th>
                                                     </tr>
                                                     <tr>
-                                                        <th>Date: </th>
+                                                        <th>Date: {{enrollmentassoc.data[0].assocformid.payment.finals_paid_date}} </th>
                                                     </tr>
                                                     <tr>
-                                                        <th>Issued By: </th>
+                                                        <th>Issued By: {{enrollmentassoc.data[0].assocformid.payment.finals_issued_by}} </th>
                                                     </tr>
 
 
                                                     </tbody></table>
                                                 </div>
                                                 </div>
-
+                                                </template>
 
                                                 <!-- /.col -->
-
                                             </div>
 
                                             <div class="col-3"><br>
@@ -333,40 +346,33 @@
 
           }
         },
-        mounted() {
-            console.log('Component mounted.')
-            this.getData();
-        },
+        
         methods: {
-            getData(){
-            //load data
-            this.$Progress.start()
-            // axios.get('/api/currlist').then(response=>{this.currlist = response.data.data})
-            // axios.get('/api/sectionlist').then(response=>{this.section = response.data.data})
-            // axios.get('/api/schoolyearlist').then(response=>{this.schoolyear = response.data.data})
-            // axios.get('/api/semesterlist').then(response=>{this.semester = response.data.data})
-            // axios.get('/api/yearlevellist').then(response=>{this.yearlevel = response.data.data})
-            // axios.get('/api/programlist').then(response=>{this.program = response.data.data})
-            // axios.get('/api/studentlist').then(response=>{this.studentlist = response.data.data})
-            axios.get('/api/search/assoc/assoc_form_id/'+this.$route.params.id)
-                .then(response=>{
-                console.log(response)
-                  this.enrollmentassoc = response.data.data
-                  })
-                  .catch(e => {
-                    this.$Progress.fail()
-                    // console.log(e)
-                  })
-          },
+            
 
             printme() {
               window.print();
 
             },
 
+            loadEnrollment(){
+            // if(this.$gate.isStudent()){
+                                     
+                axios.get("/api/search/assoc/assoc_form_id/"+this.$route.params.id).then(({data}) =>(this.enrollmentassoc = data))
+                .then($data=>{this.totalrecord=$data.total});
+            // }
+
+
+            
+          }
+
           
 
          
+        },
+        created() {
+           this.loadEnrollment();
+           
         },
 
         

@@ -45,7 +45,7 @@
                     <td hidden>{{ studentuser.id }}</td>
                     <td>{{ studentuser.id_num }}</td>
                     <td>{{ studentuser.email }}</td>
-                    <td>{{ studentuser.stud_info.lastname }} {{ studentuser.stud_info.suffixname }}, {{ studentuser.stud_info.firstname }} {{ studentuser.middlename }}</td>
+                    <td>{{ studentuser.stud_info.lastname }} {{ studentuser.stud_info.suffixname }}, {{ studentuser.stud_info.firstname }} {{ studentuser.stud_info.middlename }}</td>
                     <td class="text-center">
                         <button type="button" @click="show(studentuser)" class="btn btn-info btn-sm">
                             <i class="fas fa-eye"></i>
