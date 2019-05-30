@@ -27,7 +27,7 @@ class StudentUserController extends Controller
 
     public function studentlist()
     {
-        return new StudentUserCollection(Student::get());
+        return new StudentUserCollection(Student::orderBy('lastname','ASC')->get());
 
     }
 

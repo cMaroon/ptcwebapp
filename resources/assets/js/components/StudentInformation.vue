@@ -20,6 +20,7 @@
                 <div class="col-md-2">
                   <select v-model="queryField" class="form-control" id="fields">
                     <option value="id_num" selected>ID Number</option>
+                    <option value="lastname" selected>Lastname</option>
                   </select>
                 </div>
                 <div class="col-md-7">
@@ -34,6 +35,7 @@
                   <th>#</th>
                   <th>ID Number</th>
                   <th>Fullname</th>
+                  <th>Sex</th>
                   <th>Address</th>
                   <th class="text-center">Action</th>
                 </tr>
@@ -44,6 +46,7 @@
                     <td hidden>{{ studentuser.id }}</td>
                     <td>{{ studentuser.id_num }}</td>
                     <td>{{ studentuser.lastname }} {{ studentuser.suffixname }}, {{ studentuser.firstname }} {{ studentuser.middlename }}</td>
+                    <td>{{ studentuser.sex }}</td>
                     <td>{{ studentuser.ca_st_num }} {{ studentuser.ca_st_name }} {{ studentuser.ca_subd }} {{ studentuser.ca_brgy }} {{ studentuser.ca_city }}</td>
                     <td class="text-center">
                         <!-- <button type="button" @click="show(studentuser)" class="btn btn-info btn-sm">
@@ -61,7 +64,7 @@
 
                 </tr>
                 <tr v-show="!studentuser.length">
-                  <td colspan="5">
+                  <td colspan="6">
                     <div class="alert alert-danger" role="alert">
                       No Data Found!
                     </div>
@@ -73,6 +76,7 @@
                 <th>#</th>
                 <th>ID Number</th>
                 <th>Fullname</th>
+                <th>Sex</th>
                 <th>Address</th>
                 <th class="text-center">Action</th>
               </tr>
@@ -92,7 +96,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="studentuserModalTitle">{{ editMode ? "Edit":"Add New"}} Address - {{ this.form.id_num }}
+            <h5 class="modal-title" id="studentuserModalTitle">{{ editMode ? "Edit":"Add New"}} Information - {{ this.form.id_num }}
               <br>Fullname : {{ this.form.lastname }} {{ this.form.suffixname }}, {{ this.form.firstname }} {{ this.form.middlename }}
             </h5>
 
@@ -131,6 +135,15 @@
                 <input v-model="form.ca_city" type="text" name="ca_city"
                   class="form-control" :class="{ 'is-invalid': form.errors.has('ca_city') }">
                 <has-error :form="form" field="ca_city"></has-error>
+              </div>
+              <div class="form-group">
+                <label>Sex</label>
+                <select  type="text" name="sex" class="form-control"  required v-model="form.sex" >
+                    <option value="">Please select sex*</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                   
+                </select>
               </div>
               
 
@@ -171,6 +184,7 @@
             ca_subd:'',
             ca_brgy:'',
             ca_city:'',
+            sex:'',
 
           }),
           pagination:{
@@ -299,7 +313,7 @@
             this.form
               .put('/api/studentinfo/'+this.form.id)
               .then(response => {
-                this.getData()
+                this.reload()
                 $('#studentuserModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
@@ -310,6 +324,7 @@
                           pauseOnHover: false,
                           position: "rightTop",
                         });
+                        
                   }else{
                     this.$Progress.fail()
                     this.$snotify.error('Something went wrong try again later','Error', {

@@ -39,6 +39,7 @@
                   <th>Fullname</th>
                   <th>School Year</th>
                   <th>Semester</th>
+                  <th>Status</th>
                   <th>Year Level</th>
                   <th>Program</th>
                   <th>Total Course Unit</th>
@@ -56,9 +57,10 @@
                     <td>{{ enrollment.studinfo.lastname }} {{ enrollment.studinfo.suffixname }}, {{ enrollment.studinfo.firstname }} {{ enrollment.studinfo.middlename }}</td>
                     <td>{{ enrollment.enrsy.title }}</td>
                     <td>{{ enrollment.enrsem.title }}</td>
+                    <td>{{ enrollment.isStatus }}</td>
                     <td>{{ enrollment.enryearlevel.title }}</td>
                     <td>{{ enrollment.enrollprograms.program_code }}</td>
-                    <td>{{ enrollment.total_course_unit }}</td>
+                    <td style="text-align:center; ">{{ enrollment.total_course_unit }}</td>
                     <td>{{ enrollment.total_lab}}</td>
 
                     
@@ -69,9 +71,16 @@
                         <button type="button" @click="edit(enrollment)" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                         </button>
+                      <template v-if="enrollment.isStatus != 'Adding'">
                         <router-link :to="{name: 'printenroll', params:{id:enrollment.id}}" class="btn btn-success btn-sm" >
                            <i class="fas fa-print"></i>
                         </router-link>
+                      </template>
+                      <template v-if="enrollment.isStatus == 'Adding'">
+                        <router-link :to="{name: 'printadd', params:{id:enrollment.id}}" class="btn btn-success btn-sm" >
+                           <i class="fas fa-print"></i>
+                        </router-link>
+                      </template>
                         <!-- <button type="button"  class="btn btn-success btn-sm">
                             <i class="fas fa-print"></i>
                         </button> -->
@@ -84,7 +93,7 @@
                   </template>
                 </tr>
                 <tr v-show="!enrollment.length">
-                  <td colspan="11">
+                  <td colspan="12">
                     <div class="alert alert-danger" role="alert">
                       <center>No Data Found!</center>
                     </div>
@@ -99,6 +108,7 @@
                   <th>Fullname</th>
                   <th>School Year</th>
                   <th>Semester</th>
+                  <th>Status</th>
                   <th>Year Level</th>
                   <th>Program</th>
                   <th>Total Course Unit</th>
@@ -126,6 +136,7 @@
               <!-- ID: {{form.id}} -->
               Form ID: {{ form.enr_form_id }} |
               ID Number: {{ form.enr_id_num }} |
+              Status: {{ form.isStatus }} <br>
               Fullname: {{ form.fullname }} |
               Year Level: {{ form.yltitle }} |
               Program: {{ form.progtitle }}
@@ -154,12 +165,19 @@
                           <tr>
                             <th>#</th>
                             <th>Form ID</th>
+                            <template v-if="form.isStatus == 'Adding'">
+                              <th>Program Code</th>
+                              <th>Year Level</th>
+                            </template>
+                            
                             <th>Course</th>
                             <th>Description</th>
                             <th>Section</th>
                             <th>Days</th>
                             <th>Time</th>
                             <th>Room</th>
+                            <th>Course Unit</th>
+                            <th>Lab Unit</th>
                             <th class="text-center">Action</th>
                           </tr>
                         </thead>
@@ -169,13 +187,19 @@
                               <td>{{ index + 1}}</td>
                               <td hidden>{{ assoc.id }}</td>
                               <td>{{ assoc.assocformid.enr_form_id }}</td>
+                            <template v-if="form.isStatus == 'Adding'">
+                              <td>{{ assoc.assoccurrid.currprograms.program_code }}</td>
+                              <td>{{ assoc.assoccurrid.curryearlevel.title }}</td>
+                            </template>
                               <td>{{ assoc.assoccurrid.currcourses.course_code }}</td>
                               <td>{{ assoc.assoccurrid.currcourses.descriptive_title }}</td>
                               <td>{{ assoc.assoccurrid.currsection.title }}</td>
                               <td>{{ assoc.assoccurrid.sched_days }}</td>
                               <td>{{ assoc.assoccurrid.sched_time }}</td>
                               <td>{{ assoc.assoccurrid.sched_room }}</td>
-                                                            
+                              <td>{{ assoc.assoccurrid.currcourses.course_unit }}</td>
+                              <td>{{ assoc.assoccurrid.currcourses.lab_hr }}</td>
+        
                               <td class="text-center">
                                   
                                   
@@ -188,7 +212,7 @@
                             </template>
                           </tr>
                           <tr v-show="!assoc.length">
-                            <td colspan="9">
+                            <td colspan="13">
                               <div class="alert alert-danger" role="alert">
                                 <center>No Data Found!</center>
                               </div>
@@ -199,12 +223,18 @@
                         <tr>
                           <th>#</th>
                           <th>Form ID</th>
+                          <template v-if="form.isStatus == 'Adding'">
+                              <th>Program Code</th>
+                              <th>Year Level</th>
+                            </template>
                           <th>Course</th>
                           <th>Description</th>
                           <th>Section</th>
                           <th>Days</th>
                           <th>Time</th>
                           <th>Room</th>
+                          <th>Course Unit</th>
+                          <th>Lab Unit</th>
                             <th class="text-center">Action</th>
                         </tr>
                         </tfoot>
@@ -243,11 +273,29 @@
               </div>
 
               <div class="form-group">
+                <template v-if="form.isStatus == 'Adding'">
+                    <label>Select Program</label>
+                    <select  type="text" name="enr_program_id" class="form-control"  required v-model="form.enr_program_id" >
+                        <option value="">Please select program*</option>
+                        <option v-for="program in program" :key="program.id" v-bind:value="program.id">{{program.program_code}}-{{program.descriptive_title}} </option>
+                    </select>
+                    <br>
+
+                    <label>Select Year Level</label>
+                <select  type="text" name="yearlevel" class="form-control"  required v-model="form.yearlevel" >
+                    <option value="">Please select year level*</option>
+                    <option v-for="yearlevel in yearlevel" :key="yearlevel.id" v-bind:value="yearlevel.id">{{yearlevel.title}}</option>
+                </select>
+              
+                </template>
+              </div>
+
+              <div class="form-group">
                 <label>Select Curriculum</label>
                 <select  type="text" name="assoc_curr_id" class="form-control"  required v-model="form.assoc_curr_id" >
-                    <option v-for="currlist in currlist" v-if="currlist.sy === form.sy && currlist.semester === form.semester && currlist.curr_year === form.yearlevel && currlist.curr_section_id === form.section_id && currlist.curr_program_id === form.enr_program_id " :key="currlist.id" v-bind:value="currlist.id">
-                    {{ currlist.currcourses.course_code}} - {{ currlist.currcourses.descriptive_title}} 
-                    </option>
+                      <option v-for="currlist in currlist" v-if="currlist.sy === form.sy && currlist.semester === form.semester && currlist.curr_year === form.yearlevel && currlist.curr_section_id === form.section_id && currlist.curr_program_id === form.enr_program_id " :key="currlist.id" v-bind:value="currlist.id">
+                      {{ currlist.currcourses.course_code}} - {{ currlist.currcourses.descriptive_title}} 
+                      </option>
                 </select>
               </div>
 
@@ -270,7 +318,7 @@
               <div class="form-group">
                 <label>Student Count</label>
                 <select  type="text" name="curr_stud_count" class="form-control"  required v-model="form.curr_stud_count" >
-                    <option v-for="currlist in currlist" v-if="currlist.id === form.assoc_curr_id" :key="currlist.id" v-bind:value="currlist.curr_stud_count">{{ currlist.curr_stud_count}} Student/s
+                    <option v-for="currlist in currlist" v-if="currlist.id === form.assoc_curr_id && currlist.curr_limit_persec>currlist.curr_stud_count" :key="currlist.id" v-bind:value="currlist.curr_stud_count">{{ currlist.curr_stud_count}} Student/s
                     </option>
                 </select>
               </div>
@@ -317,6 +365,15 @@
               </div>
 
               <div class="form-group">
+                <select  type="text" name="isStatus" class="form-control"  required v-model="form.isStatus" >
+                    <option value="">Please select status*</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Irregular">Irregular</option>
+                    <option value="Adding">Adding</option>
+                </select>
+              </div>
+
+              <div class="form-group">
                 <select  type="text" name="enr_id_num" class="form-control"  required v-model="form.enr_id_num" >
                     <option value="">Please select student*</option>
                     <option v-for="studentlist in studentlist" :key="studentlist.id" v-bind:value="studentlist.id_num">{{studentlist.lastname}}, {{studentlist.firstname}} ( {{studentlist.id_num}} ) </option>
@@ -335,6 +392,16 @@
                     <option value="">Please select program*</option>
                     <option v-for="program in program" :key="program.id" v-bind:value="program.id">{{program.program_code}}-{{program.descriptive_title}} </option>
                 </select>
+              </div>
+              <div class="form-group" v-show="editMode==true">
+                <label>Total Course Unit</label>
+                <input v-model="form.total_course_unit" type="text" name="total_course_unit"
+                  class="form-control" >
+              </div>
+              <div class="form-group" v-show="editMode==true">
+                <label>Total Lab Unit</label>
+                <input v-model="form.total_lab" type="text" name="total_lab"
+                  class="form-control" >
               </div>
 
           </div>
@@ -359,7 +426,7 @@
         return{
           editMode: false,
           query:'',
-          queryField:'enr_form_id',
+          queryField:'enr_id_num',
           enrollment:[],
           studentlist:[],
           currlist:[],
@@ -376,6 +443,7 @@
             enr_id_num:'',
             sy:'',
             semester:'',
+            isStatus:'',
             yearlevel:'',
             enr_program_id:'',
             total_course_unit:0,
@@ -391,7 +459,8 @@
             course_unit:'',
             lab_unit:0,
             curr_stud_count:0,
-            assessed_by:'Rowena B. Del Rosario',
+            assessed_by:'Rowena Del Rosario',
+            course_id:'',
           }),
           pagination:{
             current_page:1,
@@ -505,13 +574,14 @@
                 this.$Progress.fail()
                 // console.log(e)
               })
-            
+            this.form.assessed_by = 'Rowena Del Rosario'
             this.form.post('/api/managepayment')
           },
           show(enrollment) {
             this.form.reset();
             this.form.fill(enrollment);
             this.form.fullname = enrollment.studinfo.firstname +' '+ enrollment.studinfo.lastname
+            this.form.isStatus = enrollment.isStatus
             this.form.yltitle = enrollment.enryearlevel.title
             this.form.progtitle = enrollment.enrollprograms.program_code
             this.form.total_course_unit = enrollment.total_course_unit
@@ -642,6 +712,7 @@
           },
           createAssoc(){
             this.editMode = false
+            this.form.id = this.form.assoc_form_id
             // this.form.reset()
             // this.form.clear()
             $('#assocModalLong').modal('show')
@@ -739,6 +810,9 @@
           },
           destroyAssoc(assoc){
             this.form.course_unit = assoc.assoccurrid.currcourses.course_unit
+            this.form.lab_unit = assoc.assoccurrid.currcourses.lab_hr
+            this.form.course_id = assoc.assoc_curr_id
+            this.form.curr_stud_count = parseInt(assoc.assoccurrid.curr_stud_count) - 1
             this.$snotify.clear()
             this.$snotify.confirm(
               "You will not be able to recover this data!",
@@ -751,11 +825,14 @@
                   {
                     text: "Yes",
                     action: toast => {
-                      this.$snotify.remove(toast.id);
-                      this.form.total_course_unit = this.form.total_course_unit - this.form.course_unit
+                      this.$snotify.remove(toast.id);  
                       this.form
-                      .put('/api/manageenrollment/'+this.form.id)
-                       this.form.id = assoc.id
+                        .put('/api/curriculumcount/'+this.form.course_id)
+                      this.form.total_lab = parseInt(this.form.total_lab) - parseInt(this.form.lab_unit)
+                      this.form.total_course_unit = parseInt(this.form.total_course_unit) - parseInt(this.form.course_unit)
+                      this.form
+                        .put('/api/manageenrollmentcount/'+this.form.id)
+                      this.form.id = assoc.id
                       axios
                           .delete('/api/assoc/'+this.form.id)
                           .then(response =>{

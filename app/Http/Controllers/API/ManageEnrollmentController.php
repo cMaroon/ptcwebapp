@@ -22,7 +22,18 @@ class ManageEnrollmentController extends Controller
     public function index()
     {
 
-        return new ManageEnrollmentCollection(ManageEnrollment::with('enrollprograms','studinfo','enrollassoc','enrsy','enrsem','enryearlevel','enrsection')->orderBy('id','DESC')->paginate(15));
+        return new ManageEnrollmentCollection(ManageEnrollment::with('enrollprograms','studinfo','enrollassoc','enrsy','enrsem','enryearlevel','enrsection')->orderBy('id','DESC')->paginate(10));
+    }
+
+    public function enrolllist()
+    {
+        return new ManageEnrollmentCollection(ManageEnrollment::with('enrsy')->orderBy('id','DESC')->where('sy',2)->paginate(1));
+
+    }
+
+    public function searchEnrollList($field,$query)
+    {
+        return new ManageEnrollmentCollection(ManageEnrollment::where($field,'LIKE',"%$query%")->get());
     }
 
     /**
@@ -38,6 +49,7 @@ class ManageEnrollmentController extends Controller
         $me->enr_form_id = $request->enr_form_id;
         $me->sy = $request->sy;
         $me->semester = $request->semester;
+        $me->isStatus = $request->isStatus;
         $me->yearlevel = $request->yearlevel;
         $me->enr_id_num = $request->enr_id_num;
         $me->enr_program_id = $request->enr_program_id;
@@ -79,6 +91,7 @@ class ManageEnrollmentController extends Controller
         $me = ManageEnrollment::findOrfail($id);
         $me->sy = $request->sy;
         $me->semester = $request->semester;
+        $me->isStatus = $request->isStatus;
         $me->yearlevel = $request->yearlevel;
         $me->enr_id_num = $request->enr_id_num;
         $me->enr_program_id = $request->enr_program_id;

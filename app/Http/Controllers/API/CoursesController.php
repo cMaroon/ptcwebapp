@@ -25,7 +25,7 @@ class CoursesController extends Controller
 
     public function courselist()
     {
-        return new CoursesCollection(Courses::get());
+        return new CoursesCollection(Courses::orderBy('course_code','ASC')->get());
 
     }
 

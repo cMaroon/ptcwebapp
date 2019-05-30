@@ -6,6 +6,9 @@
             <h3 class="card-title">Manage Assesstment Information</h3>
             <div class="card-tools" style="position: absolute;right:1rem;top:.5rem;">
               <!-- <button type="button" class="btn btn-success" @click="create">Add New <i class="fas fa-plus"></i></button> -->
+              <router-link :to="{name: 'printsummarya'}" class="btn btn-success btn-md" >
+                           Print Summary <i class="fas fa-print"></i>
+              </router-link>
               <button type="button" class="btn btn-primary" @click="reload">Reload <i class="fas fa-sync"></i></button>
             </div>
           </div>
@@ -33,26 +36,32 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>ID Number</th>
+                  <th style="width:180; ">ID Num</th>
                   <th>Form ID</th>
-                  <th>Fullname</th>
-                  <th>Total Course Unit</th>
-                  <th>Total Lab Unit</th>
-                  <th>School Year</th>
+                  <th style="width:130; ">Fullname</th>
+                  <th>Address</th>
+                  <th>TCU</th>
+                  <th>TLU</th>
+                  <th>SY</th>
                   <th>Semester</th>
-                  <th>Year Level</th>
-                  <th>Tuition Fee</th>
-                  <th>Registration Fee</th>
-                  <th>Library Fee</th>
-                  <th>Medical Fee</th>
-                  <th>Cultural Fee</th>
-                  <th>Athletic Fee</th>
-                  <th>Book Rental Fee</th>
-                  <th>Laboratory Fee</th>
-                  <th>Penalty Fee</th>
-                  <th>Other Fee</th>
-                  <th>Total Amount Fee</th>
-                  <th>Assessed By</th>
+                  <th>Status</th>
+                  <th>YL</th>
+                  <th>Category</th>
+                  <th>TF</th>
+                  <th>RF</th>
+                  <th>LF</th>
+                  <th>MF</th>
+                  <th>CF</th>
+                  <th>AF</th>
+                  <th>BRF</th>
+                  <th>LABF</th>
+                  <th>PF</th>
+                  <th>OF</th>
+                  <th>TAF</th>
+                  <th>DTP</th>
+                  <th>BAL</th>
+                  <th>DAP</th>
+                  <th>ABy</th>
                   <th class="text-center">Action</th>
                 </tr>
               </thead>
@@ -60,25 +69,33 @@
                 <tr v-show="!payment.length" v-for="(payment, index) in payment" :key="payment.id">
                     <td>{{ index + 1}}</td>
                     <td hidden>{{ payment.id }}</td>
-                    <td>{{ payment.payment_id_num }}</td>
+                    <td style="width:180; ">{{ payment.payment_id_num }}</td>
                     <td>{{ payment.payment_form_id }}</td>
-                    <td>{{ payment.py_s_i.lastname }} {{ payment.py_s_i.suffixname }}, {{ payment.py_s_i.firstname }} {{ payment.py_s_i.middlename }}</td>
+                    <td style="width:130; ">{{ payment.py_s_i.lastname }} {{ payment.py_s_i.suffixname }}, {{ payment.py_s_i.firstname }} {{ payment.py_s_i.middlename }}</td>
+                    <td>
+                      <!-- {{ payment.py_s_i.stud_info.ca_st_num }} {{ payment.py_s_i.stud_info.ca_st_name }} {{ payment.py_s_i.stud_info.ca_subd }} {{ payment.py_s_i.stud_info.ca_brgy }} -->
+                       {{ payment.py_s_i.stud_info.ca_city }}</td>
                     <td>{{ payment.py_f_i_d.total_course_unit }}</td>
                     <td>{{ payment.py_f_i_d.total_lab }}</td>
                     <td>{{ payment.pysy.title }}</td>
                     <td>{{ payment.pysem.title }}</td>
+                    <td>{{ payment.py_f_i_d.isStatus }}</td>
                     <td>{{ payment.pyyl.title }}</td>
-                    <td>{{ payment.tuition_fee }}</td>
-                    <td>{{ payment.registration_fee }}</td>
-                    <td>{{ payment.library_fee }}</td>
-                    <td>{{ payment.medical_fee }}</td>
-                    <td>{{ payment.cultural_fee }}</td>
-                    <td>{{ payment.athletic_fee }}</td>
-                    <td>{{ payment.bookrental_fee }}</td>
-                    <td>{{ payment.laboratory_fee }}</td>
-                    <td>{{ payment.penalty_fee }}</td>
-                    <td>{{ payment.other_fee }}</td>
-                    <td>{{ payment.total_amount_fee }}</td>
+                    <td>{{ payment.category }}</td>
+                    <td>{{ currencyFormat(payment.tuition_fee) }}</td>
+                    <td>{{ currencyFormat(payment.registration_fee) }}</td>
+                    <td>{{ currencyFormat(payment.library_fee) }}</td>
+                    <td>{{ currencyFormat(payment.medical_fee) }}</td>
+                    <td>{{ currencyFormat(payment.cultural_fee) }}</td>
+                    <td>{{ currencyFormat(payment.athletic_fee) }}</td>
+                    <td>{{ currencyFormat(payment.bookrental_fee) }}</td>
+                    <td>{{ currencyFormat(payment.laboratory_fee) }}</td>
+                    <td>{{ currencyFormat(payment.penalty_fee) }}</td>
+                    <td>{{ currencyFormat(payment.other_fee) }}</td>
+                    <td>{{ currencyFormat(payment.total_amount_fee) }}</td>
+                    <td>{{ currencyFormat(payment.downpayment_topaid) }}</td>
+                    <td> {{ currencyFormat(payment.balance_fee) }} </td>
+                    <td> {{ currencyFormat(payment.downpayment_amount_paid) }} </td>
                     <td>{{ payment.assessed_by }}</td>
                     
                     <td class="text-center">
@@ -97,7 +114,7 @@
 
                 </tr>
                 <tr v-show="!payment.length">
-                  <td colspan="22">
+                  <td colspan="28">
                     <div class="alert alert-danger" role="alert">
                       <center>No Data Found!</center>
                     </div>
@@ -107,9 +124,37 @@
               <tfoot>
               <tr>
                   <th>#</th>
+                  <th style="width:180; ">ID Num</th>
+                  <th>Form ID</th>
+                  <th style="width:130; ">Fullname</th>
+                  <th>Address</th>
+                  <th>TCU</th>
+                  <th>TLU</th>
+                  <th>SY</th>
+                  <th>Semester</th>
+                  <th>Status</th>
+                  <th>YL</th>
+                  <th>Category</th>
+                  <th>TF</th>
+                  <th>RF</th>
+                  <th>LF</th>
+                  <th>MF</th>
+                  <th>CF</th>
+                  <th>AF</th>
+                  <th>BRF</th>
+                  <th>LABF</th>
+                  <th>PF</th>
+                  <th>OF</th>
+                  <th>TAF</th>
+                  <th>DTP</th>
+                  <th>BAL</th>
+                  <th>DAP</th>
+                  <th>ABy</th>
+                  <!-- <th>#</th>
                   <th>ID Number</th>
                   <th>Form ID</th>
                   <th>Fullname</th>
+                  <th>Address</th>
                   <th>Total Course Unit</th>
                   <th>Total Lab Unit</th>
                   <th>School Year</th>
@@ -126,7 +171,7 @@
                   <th>Penalty Fee</th>
                   <th>Other Fee</th>
                   <th>Total Amount Fee</th>
-                  <th>Assessed By</th>
+                  <th>Assessed By</th> -->
                 <th class="text-center">Action</th>
               </tr>
               </tfoot>
@@ -147,7 +192,8 @@
           <div class="modal-header">
             <h5 class="modal-title" id="paymentModalTitle">{{ editMode ? "Edit":"Add New"}} Payment Info <br>
               Form ID: {{ form.payment_form_id }} |
-              ID Number: {{ form.payment_id_num }} 
+              ID Number: {{ form.payment_id_num }} <br>
+              Total Course Unit : {{ form.total_course_unit }} | Total Lab Unit : {{ form.total_lab }}
               
             </h5>
 
@@ -158,11 +204,18 @@
             <alert-error :form="form" message="There were some problems with your input."></alert-error>
 
               <div class="form-group">
+                <label>Category</label>
+                <select  type="text" name="category" class="form-control" v-model="category" >
+                    <option v-for="residency in residency" :key="residency.id" v-bind:value="residency.id">{{residency.title}} - {{residency.description}}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
                 <label>Tuition Fee</label>
                 <input v-model="form.tuition_fee" type="text" name="tuition_fee"
                   class="form-control" >
               </div>
-
+            <template v-if="form.isStatus != 'Adding'">    
               <div class="form-group">
                 <label>Registration Fee</label>
                 <input v-model="form.registration_fee" type="text" name="registration_fee"
@@ -198,6 +251,7 @@
                 <input v-model="form.bookrental_fee" type="text" name="bookrental_fee"
                   class="form-control" >
               </div>
+            </template>
 
               <div class="form-group">
                 <label>Laboratoy Fee</label>
@@ -254,7 +308,9 @@
           editMode: false,
           query:'',
           queryField:'payment_id_num',
+          category:'',
           payment:[],
+          residency:[],
           totalcount:'',
           form : new Form({
             id:'',
@@ -263,18 +319,24 @@
             semester:'',
             yearlevel:'',
             payment_form_id:'',
+            category_id:'',
             tuition_fee:'',
-            registration_fee:'',
-            library_fee:'',
-            medical_fee:'',
-            cultural_fee:'',
-            athletic_fee:'',
-            bookrental_fee:'',
+            registration_fee:'75.00',
+            library_fee:'40.00',
+            medical_fee:'50.00',
+            cultural_fee:'15.00',
+            athletic_fee:'15.00',
+            bookrental_fee:'0.00',
             laboratory_fee:'',
-            penalty_fee:'',
-            other_fee:'',
+            penalty_fee:'0.00',
+            other_fee:'300.00',
             total_amount_fee:'',
-            assessed_by:'Rowena'
+            assessed_by:'Rowena Del Rosario',
+            total_course_unit:'',
+            total_lab:'',
+            downpayment_topaid:'',
+            m_fee:'',
+            isStatus:'',
             // prelim_or_num:'',
             // prelim_amount_paid:'',
             // prelim_paid_date:'',
@@ -301,6 +363,17 @@
             // console.log(newQuery)
             this.searchData()
           }
+        },
+        category:function(newCategory){
+         if(newCategory!=null){
+            this.form.tuition_fee = parseFloat(this.form.total_course_unit) * parseFloat(this.residency[newCategory-1].isTF)
+            this.form.laboratory_fee = parseFloat(this.form.total_lab) * 100
+            this.form.category_id = this.residency[newCategory-1].id
+            this.form.m_fee = parseFloat(this.form.registration_fee)+parseFloat(this.form.library_fee)+parseFloat(this.form.medical_fee)+parseFloat(this.form.cultural_fee)+parseFloat(this.form.athletic_fee)+parseFloat(this.form.other_fee)
+            this.form.downpayment_topaid = ((parseFloat(this.form.tuition_fee) + parseFloat(this.form.laboratory_fee))*.30)+parseFloat(this.form.m_fee)
+         }
+            
+          
         }
       },
         mounted() {
@@ -323,6 +396,10 @@
                 console.log(e)
                 this.$Progress.fail()
               })
+            axios.get('/api/rclist')
+            .then(response=>{
+              this.residency = response.data.data
+            })
 
           },
           searchData(){
@@ -341,7 +418,7 @@
           reload(){
             this.getData()
             this.query=''
-            this.queryField='paymnet_id_num'
+            this.queryField='payment_id_num'
             this.$snotify.success('Data Successfully Refresh','Success', {
                   timeout: 1000,
                   showProgressBar: false,
@@ -402,8 +479,33 @@
             $('#paymentModalLong').modal('show')
             this.editMode = true
             this.form.reset()
-            this.form.clear()
+            // this.form.clear()
             this.form.fill(payment)
+            this.form.total_course_unit = payment.py_f_i_d.total_course_unit
+            this.form.total_lab = payment.py_f_i_d.total_lab
+            this.form.isStatus = payment.py_f_i_d.isStatus
+            this.category = payment.category
+            if(payment.tuition_fee==null && this.form.isStatus!='Adding'){
+              this.form.registration_fee='75.00'
+              this.form.library_fee='40.00'
+              this.form.medical_fee='50.00'
+              this.form.cultural_fee='15.00'
+              this.form.athletic_fee='15.00'
+              this.form.bookrental_fee='0.00'
+              this.form.penalty_fee='0.00'
+              this.form.other_fee='300.00'
+            }
+            if(payment.tuition_fee==null && this.form.isStatus=='Adding'){
+              this.form.registration_fee='0.00'
+              this.form.library_fee='0.00'
+              this.form.medical_fee='0.00'
+              this.form.cultural_fee='0.00'
+              this.form.athletic_fee='0.00'
+              this.form.bookrental_fee='0.00'
+              this.form.penalty_fee='0.00'
+              this.form.other_fee='0.00'
+            }
+           
           },
           update(){
             this.$Progress.start()
@@ -423,6 +525,7 @@
                           pauseOnHover: false,
                           position: "rightTop",
                         });
+                      this.getData()
                   }else{
                     this.$Progress.fail()
                     this.$snotify.error('Something went wrong try again later','Error', {
@@ -486,6 +589,11 @@
               }
             )
 
+          },
+          currencyFormat: function(value,decimals,symbol='PHP'){
+              let val = (value/1).toFixed(2).replace(',',',')
+              return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")
+            //   return this.roundFormat(value,2) + ' ' + symbol;
           }
         }
     }

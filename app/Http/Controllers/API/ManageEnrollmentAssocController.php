@@ -85,7 +85,12 @@ class ManageEnrollmentAssocController extends Controller
 
     public function searchAssoc($field,$query)
     {
-        return new ManageEnrollmentAssocCollection(EnrollmentAssoc::with('assocformid.payment','assocformid.studinfo.studInfo','assoccurrid.currsemester','assoccurrid.curryearlevel','assoccurrid.currcourses','assoccurrid.currsection','assoccurrid.currprograms')->where($field,'LIKE',"%$query%")->latest()
+        return new ManageEnrollmentAssocCollection(EnrollmentAssoc::with('assocformid.payment','assocformid.studinfo.studInfo','assoccurrid.currsemester','assoccurrid.curryearlevel','assoccurrid.currcourses','assoccurrid.currsection','assoccurrid.currprograms')->where($field,'LIKE',"$query")->latest()
         ->paginate(15));
+    }
+
+    public function searchClassList($field,$query)
+    {
+        return new ManageEnrollmentAssocCollection(EnrollmentAssoc::with('assocformid.studinfo','assoccurrid.currsemester','assoccurrid.curryearlevel','assoccurrid.currcourses','assoccurrid.currsection','assoccurrid.currprograms')->where($field,'LIKE',"%$query%")->get());
     }
 }

@@ -29,6 +29,9 @@ import ManagaAssesstment from './components/ManageAssesstment'
 import ManagaPayment from './components/ManagePayment'
 import OtherSettings from './components/OtherSettings'
 import PrintEnroll from './components/PrintEnroll'
+import PrintAdd from './components/PrintAdd'
+import PrintClass from './components/PrintClass'
+import PrintSummaryA from './components/PrintAssesstment'
 
 Vue.use(Snotify, SnotifyOptions, SnotifyPosition)
 Vue.use(VueProgressBar, VueProgressBarOptions)
@@ -133,6 +136,24 @@ const router = new VueRouter({
         path: '/admin/printenroll/:id',
         name: 'printenroll',
         component: PrintEnroll,
+        
+      },
+      {
+        path: '/admin/printadd/:id',
+        name: 'printadd',
+        component: PrintAdd,
+        
+      },
+      {
+        path: '/admin/printclass/:id',
+        name: 'printclass',
+        component: PrintClass,
+        
+      },
+      {
+        path: '/admin/printsummary',
+        name: 'printsummarya',
+        component: PrintSummaryA,
         
       },
 

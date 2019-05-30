@@ -19,12 +19,16 @@
                 </div>
                 <div class="col-md-2">
                   <select v-model="queryField" class="form-control" id="fields">
-                    <!-- <option value="sy" selected>Course Code</option>
-                    <option value="descriptive_title">Descriptive Title</option> -->
+                    <option value="curr_program_id" selected>Program</option>
+                    <!-- <option value="descriptive_title">Descriptive Title</option> -->
                   </select>
                 </div>
                 <div class="col-md-7">
-                  <input v-model="query" type="text" class="form-control" placeholder="Search">
+                  <!-- <input v-model="query" type="text" class="form-control" placeholder="Search"> -->
+                <select  type="text" name="curr_program_id" class="form-control"  required v-model="query" >
+                    <option value="">Please select program*</option>
+                    <option v-for="program in program" :key="program.id" v-bind:value="program.id">{{program.program_code}}</option>
+                </select>
                 </div>
               </div>
             </form>
@@ -50,7 +54,7 @@
               </thead>
               <tbody>
                 <tr v-show="!curriculum.length" v-for="(curriculum, index) in curriculum" :key="curriculum.id">
-                  <template v-if="curriculum.sy === 2" >
+                  <template v-if="curriculum.currsy.isActive === 1" >
                   
                     <td>{{ index + 1}}</td>
                     <td hidden>{{ curriculum.id }}</td>
@@ -58,7 +62,7 @@
                     <td>{{ curriculum.currsemester.title }}</td>
                     <td>{{ curriculum.curryearlevel.title }}</td>
                     <td>{{ curriculum.currprograms.program_code }}</td>
-                    <td>{{ curriculum.currcourses.course_code }}</td>
+                    <td>{{ curriculum.currcourses.course_code }} - {{ curriculum.currcourses.descriptive_title }}</td>
                     <td>{{ curriculum.currsection.title }}</td>
                     <td>{{ curriculum.curr_stud_count }}</td>
                     <td>{{ curriculum.curr_limit_persec }}</td>
@@ -73,6 +77,9 @@
                         <button type="button" @click="edit(curriculum)" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i>
                         </button>
+                        <router-link :to="{name: 'printclass', params:{id:curriculum.id}}" class="btn btn-success btn-sm" >
+                           <i class="fas fa-print"></i>
+                        </router-link>
                         <button type="button" @click="destroy(curriculum)" class="btn btn-danger btn-sm">
                             <i class="fas fa-trash-alt"></i>
                         </button>
@@ -154,7 +161,7 @@
               <div class="form-group">
                 <select  type="text" name="curr_program_id" class="form-control"  required v-model="form.curr_program_id" >
                     <option value="">Please select program*</option>
-                    <option v-for="program in program" :key="program.id" v-bind:value="program.id">{{program.program_code}}</option>
+                    <option v-for="program in program" :key="program.id" v-bind:value="program.id">{{program.program_code}} - {{program.descriptive_title}}</option>
                 </select>
               </div>
 
@@ -245,7 +252,7 @@
         return{
           editMode: false,
           query:'',
-          queryField:'',
+          queryField:'curr_program_id',
           curriculum:[],
           schoolyear:[],
           semester:[],
@@ -333,7 +340,7 @@
           reload(){
             this.getData()
             this.query=''
-            this.queryField=''
+            this.queryField='curr_program_id'
             this.$snotify.success('Data Successfully Refresh','Success', {
                   timeout: 1000,
                   showProgressBar: false,
@@ -401,7 +408,7 @@
             this.form
               .put('/api/managecurriculum/'+this.form.id)
               .then(response => {
-                this.getData()
+                this.reload()
                 $('#curriculumModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()

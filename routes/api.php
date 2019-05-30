@@ -40,15 +40,19 @@ Route::get('studentlist','StudentUserController@studentlist');
 
 //ManageEnrollment
 Route::get('search/studentenrolled/{field}/{query}','ManageEnrollmentController@searchEnroll');
+Route::get('search/studentenrolledlist/{field}/{query}','ManageEnrollmentController@searchEnrollList');
 Route::apiResources(['manageenrollment'=>'ManageEnrollmentController']);
 Route::apiResources(['manageenrollmentcount'=>'ManageEnrollmentCountController']);
+Route::get('enrolllist','ManageEnrollmentController@enrolllist');
 
 //ManageEnrollmentAssoc
 Route::get('search/assoc/{field}/{query}','ManageEnrollmentAssocController@searchAssoc');
+Route::get('search/classlist/{field}/{query}','ManageEnrollmentAssocController@searchClassList');
 Route::apiResources(['assoc'=>'ManageEnrollmentAssocController']);
 
 //ManagePayment
 Route::get('search/payment/{field}/{query}','ManagePaymentController@searchPayment');
+Route::get('search/summarypayment/{field}/{query}','ManagePaymentController@searchPaymentList');
 Route::apiResources(['managepayment'=>'ManagePaymentController']);
 Route::apiResources(['manageassesstment'=>'ManageAssesstmentController']);
 Route::get('paymentlist','ManagePaymentController@paymentlist');
@@ -89,3 +93,8 @@ Route::get('search/curriculum/{field}/{query}','CurriculumController@searchCurri
 Route::apiResources(['managecurriculum'=>'CurriculumController']);
 Route::apiResources(['curriculumcount'=>'CurriculumCountController']);
 Route::get('currlist','CurriculumController@currlist');
+
+//Residency Category
+Route::get('search/rc/{field}/{query}','ResidencyCategoryController@searchRC');
+Route::apiResources(['residencycategory'=>'ResidencyCategoryController']);
+Route::get('rclist','ResidencyCategoryController@rclist');

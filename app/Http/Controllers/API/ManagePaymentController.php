@@ -21,13 +21,18 @@ class ManagePaymentController extends Controller
     public function index()
     {
 
-        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI','pysy','pysem','pysem','pyyl')->orderBy('id','DESC')->paginate(15));
+        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pyyl')->orderBy('id','DESC')->paginate(10));
     }
 
     public function paymentlist()
     {
-        return new ManagePaymentCollection(ManagePayment::get());
+        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pyyl')->orderBy('id','DESC')->where('sy',2)->paginate(10000));
 
+    }
+
+    public function searchPaymentList($field,$query)
+    {
+        return new ManagePaymentCollection(ManagePayment::with('pyFID.enrollprograms','pysy','pysem','pyyl')->orderBy('id','DESC')->where($field,'LIKE',"%$query%")->get());
     }
 
     /**
@@ -57,6 +62,10 @@ class ManagePaymentController extends Controller
         $mp->other_fee = $request->other_fee;
         $mp->total_amount_fee = $request->total_amount_fee;
         $mp->assessed_by = $request->assessed_by;
+        $mp->downpayment_or_num = $request->downpayment_or_num;
+        $mp->downpayment_amount_paid = $request->downpayment_amount_paid;
+        $mp->downpayment_paid_date = $request->downpayment_paid_date;
+        $mp->downpayment_issued_by = $request->downpayment_issued_by;
         $mp->prelim_or_num = $request->prelim_or_num;
         $mp->prelim_amount_paid = $request->prelim_amount_paid;
         $mp->prelim_paid_date = $request->prelim_paid_date;
@@ -83,7 +92,7 @@ class ManagePaymentController extends Controller
      */
     public function show($id)
     {
-        return new ManagePaymentResource(ManagePayment::with('pyFID','pySI','pysy','pysem','pysem','pyyl')->findOrFail($id));
+        return new ManagePaymentResource(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pysem','pyyl')->findOrFail($id));
     }
 
     /**
@@ -97,14 +106,33 @@ class ManagePaymentController extends Controller
     {
         $mp = ManagePayment::findOrfail($id);
 
+
+        $mp->yearlevel = $request->yearlevel;
+        $mp->balance_fee = $request->balance_fee;
+        // Adding
+        $mp->adding_or_num = $request->adding_or_num;
+        $mp->adding_amount_paid = $request->adding_amount_paid;
+        $mp->adding_paid_date = $request->adding_paid_date;
+        $mp->adding_issued_by = $request->adding_issued_by;
+        // Downpayment
+        $mp->downpayment_or_num = $request->downpayment_or_num;
+        $mp->downpayment_amount_paid = $request->downpayment_amount_paid;
+        $mp->downpayment_paid_date = $request->downpayment_paid_date;
+        $mp->downpayment_issued_by = $request->downpayment_issued_by;
+        // $mp->prelim_topaid = $request->prelim_topaid;
+        // Prelim
         $mp->prelim_or_num = $request->prelim_or_num;
         $mp->prelim_amount_paid = $request->prelim_amount_paid;
         $mp->prelim_paid_date = $request->prelim_paid_date;
         $mp->prelim_issued_by = $request->prelim_issued_by;
+        // $mp->midterm_topaid = $request->midterm_topaid;
+        // Midterm
         $mp->midterm_or_num = $request->midterm_or_num;
         $mp->midterm_amount_paid = $request->midterm_amount_paid;
         $mp->midterm_paid_date = $request->midterm_paid_date;
         $mp->midterm_issued_by = $request->midterm_issued_by;
+        // $mp->finals_topaid = $request->finals_topaid;
+        // Finals
         $mp->finals_or_num = $request->finals_or_num;
         $mp->finals_amount_paid = $request->finals_amount_paid;
         $mp->finals_paid_date = $request->finals_paid_date;
@@ -129,7 +157,7 @@ class ManagePaymentController extends Controller
 
     public function searchPayment($field,$query)
     {
-        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI','pysy','pysem','pysem','pyyl')->where($field,'LIKE',"%$query%")->latest()
+        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pysem','pyyl')->where($field,'LIKE',"%$query%")->latest()
         ->paginate(15));
     }
 }

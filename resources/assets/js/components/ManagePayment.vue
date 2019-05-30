@@ -40,6 +40,10 @@
                   <th>Semester</th>
                   <th>Year Level</th>
                   <th>Assessed By</th>
+                  <th>Downpayment OR Number</th>
+                  <th>Downpayment Amount Paid</th>
+                  <th>Downpayment Paid Date</th>
+                  <th>Downpayment Issued By</th>
                   <th>Prelim OR Number</th>
                   <th>Prelim Amount Paid</th>
                   <th>Prelim Paid Date</th>
@@ -51,7 +55,11 @@
                   <th>Finals OR Number</th>
                   <th>Finals Amount Paid</th>
                   <th>Finals Paid Date</th>
-                  <th>Finals Issued By</th>       
+                  <th>Finals Issued By</th>
+                  <th>Adding OR Number</th>
+                  <th>Adding Amount Paid</th>
+                  <th>Adding Paid Date</th>
+                  <th>Adding Issued By</th>       
                   <th class="text-center">Action</th>
                 </tr>
               </thead>
@@ -66,6 +74,10 @@
                     <td>{{ payment.pysem.title }}</td>
                     <td>{{ payment.pyyl.title }}</td>
                     <td>{{ payment.assessed_by }}</td>
+                    <td>{{ payment.downpayment_or_num }}</td>
+                    <td>{{ payment.downpayment_amount_paid }}</td>
+                    <td>{{ payment.downpayment_paid_date }}</td>
+                    <td>{{ payment.downpayment_issued_by }}</td>
                     <td>{{ payment.prelim_or_num }}</td>
                     <td>{{ payment.prelim_amount_paid }}</td>
                     <td>{{ payment.prelim_paid_date }}</td>
@@ -78,6 +90,10 @@
                     <td>{{ payment.finals_amount_paid }}</td>
                     <td>{{ payment.finals_paid_date }}</td>
                     <td>{{ payment.finals_issued_by }}</td>
+                    <td>{{ payment.adding_or_num }}</td>
+                    <td>{{ payment.adding_amount_paid }}</td>
+                    <td>{{ payment.adding_paid_date }}</td>
+                    <td>{{ payment.adding_issued_by }}</td>
                     
                     
                     <td class="text-center">
@@ -96,7 +112,7 @@
 
                 </tr>
                 <tr v-show="!payment.length">
-                  <td colspan="21">
+                  <td colspan="25">
                     <div class="alert alert-danger" role="alert">
                       <center>No Data Found!</center>
                     </div>
@@ -113,6 +129,10 @@
                   <th>Semester</th>
                   <th>Year Level</th>
                   <th>Assessed By</th>
+                  <th>Downpayment OR Number</th>
+                  <th>Downpayment Amount Paid</th>
+                  <th>Downpayment Paid Date</th>
+                  <th>Downpayment Issued By</th>
                   <th>Prelim OR Number</th>
                   <th>Prelim Amount Paid</th>
                   <th>Prelim Paid Date</th>
@@ -145,7 +165,8 @@
           <div class="modal-header">
             <h5 class="modal-title" id="paymentModalTitle">{{ editMode ? "Edit":"Add New"}} Payment Info <br>
               Form ID: {{ form.payment_form_id }} |
-              ID Number: {{ form.payment_id_num }} 
+              ID Number: {{ form.payment_id_num }} <br>
+              Total Amount Fee : {{ form.total_amount_fee }}
               
             </h5>
 
@@ -155,6 +176,69 @@
           <div class="modal-body">
             <alert-error :form="form" message="There were some problems with your input."></alert-error>
 
+            <div class="form-group">
+                <select  type="text" name="assess" class="form-control"  required v-model="form.assess" >
+                    <option value="Downpayment">Downpayment</option>
+                    <option value="Adding">Adding</option>
+                    <option value="Prelim">Prelim</option>
+                    <option value="Midterm">Midterm</option>
+                    <option value="Finals">Finals</option>
+                </select>
+              </div>
+
+            <template v-if="form.assess == 'Downpayment'">
+            <div class="form-group">
+                <label>Downpayment OR Number</label>
+                <input v-model="form.downpayment_or_num" type="text" name="downpayment_or_num"
+                  class="form-control" >
+              </div>
+
+              <div class="form-group">
+                <label>Downpayment Amount Paid</label>
+                <input v-model="form.downpayment_amount_paid" type="text" name="downpayment_amount_paid"
+                  class="form-control" >
+              </div>
+
+              <div class="form-group">
+                <label>Downpayment Paid Date</label>
+                <input v-model="form.downpayment_paid_date" name="downpayment_paid_date" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                
+              </div>
+
+              <div class="form-group">
+                <label>Downpayment Issued By</label>
+                <input v-model="form.downpayment_issued_by" type="text" name="downpayment_issued_by"
+                  class="form-control" >
+              </div>
+                </template>
+
+            <template v-if="form.assess == 'Adding'">
+              <div class="form-group">
+                <label>Adding OR Number</label>
+                <input v-model="form.adding_or_num" type="text" name="adding_or_num"
+                  class="form-control" >
+              </div>
+
+              <div class="form-group">
+                <label>Adding Amount Paid</label>
+                <input v-model="form.adding_amount_paid" type="text" name="adding_amount_paid"
+                  class="form-control" >
+              </div>
+
+              <div class="form-group">
+                <label>Adding Paid Date</label>
+                <input v-model="form.adding_paid_date" name="adding_paid_date" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                
+              </div>
+
+              <div class="form-group">
+                <label>Adding Issued By</label>
+                <input v-model="form.adding_issued_by" type="text" name="adding_issued_by"
+                  class="form-control" >
+              </div>
+                </template>
+
+            <template v-if="form.assess == 'Prelim'">
               <div class="form-group">
                 <label>Prelim OR Number</label>
                 <input v-model="form.prelim_or_num" type="text" name="prelim_or_num"
@@ -178,7 +262,9 @@
                 <input v-model="form.prelim_issued_by" type="text" name="prelim_issued_by"
                   class="form-control" >
               </div>
+            </template>
 
+            <template v-if="form.assess == 'Midterm'">
               <div class="form-group">
                 <label>Midterm OR Number</label>
                 <input v-model="form.midterm_or_num" type="text" name="midterm_or_num"
@@ -202,7 +288,9 @@
                 <input v-model="form.midterm_issued_by" type="text" name="midterm_issued_by"
                   class="form-control" >
               </div>
+            </template>
 
+            <template v-if="form.assess == 'Finals'">
               <div class="form-group">
                 <label>Finals OR Number</label>
                 <input v-model="form.finals_or_num" type="text" name="finals_or_num"
@@ -226,6 +314,7 @@
                 <input v-model="form.finals_issued_by" type="text" name="finals_issued_by"
                   class="form-control" >
               </div>
+            </template>
 
               <div class="form-group">
                 <label>Assessed By</label>
@@ -267,6 +356,7 @@
             semester:'',
             yearlevel:'',
             payment_form_id:'',
+            balance_fee:'',
             // tuition_fee:'',
             // registration_fee:'',
             // library_fee:'',
@@ -277,8 +367,16 @@
             // laboratory_fee:'',
             // penalty_fee:'',
             // other_fee:'',
-            // total_amount_fee:'',
+            total_amount_fee:'',
             assessed_by:'',
+            adding_or_num:'',
+            adding_amount_paid:'',
+            adding_paid_date:'',
+            adding_issued_by:'',
+            downpayment_or_num:'',
+            downpayment_amount_paid:'',
+            downpayment_paid_date:'',
+            downpayment_issued_by:'',
             prelim_or_num:'',
             prelim_amount_paid:'',
             prelim_paid_date:'',
@@ -291,6 +389,7 @@
             finals_amount_paid:'',
             finals_paid_date:'',
             finals_issued_by:'',
+            assess:'',
           }),
           pagination:{
             current_page:1,
@@ -345,7 +444,7 @@
           reload(){
             this.getData()
             this.query=''
-            this.queryField='paymnet_id_num'
+            this.queryField='payment_id_num'
             this.$snotify.success('Data Successfully Refresh','Success', {
                   timeout: 1000,
                   showProgressBar: false,
@@ -369,6 +468,8 @@
               .post('/api/managepayment')
               .then(response => {
                 this.getData()
+                this.query=''
+                this.queryField='payment_id_num'
                 $('#paymentModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
@@ -411,10 +512,13 @@
           update(){
             this.$Progress.start()
             this.form.busy = true
+            this.form.balance_fee = parseFloat(this.form.total_amount_fee) - parseFloat(this.form.downpayment_amount_paid)
             this.form
               .put('/api/managepayment/'+this.form.id)
               .then(response => {
                 this.getData()
+                this.query=''
+                this.queryField='payment_id_num'
                 $('#paymentModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
@@ -488,6 +592,11 @@
               }
             )
 
+          },
+          currencyFormat: function(value,decimals,symbol='PHP'){
+              let val = (value/1).toFixed(2).replace(',',',')
+              return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")
+            //   return this.roundFormat(value,2) + ' ' + symbol;
           }
         }
     }

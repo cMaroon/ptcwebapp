@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row mt-2" v-if="$gate.isSuperAdmin()">
+        <div class="row mt-2">
                     <!-- <div class="container" >
                             <div class="row" > -->
                                 <!-- <div class="col-12" > -->
@@ -17,23 +17,22 @@
                                             <!-- title row -->
                                             <div class="row" >
 
-                                        <div class="col-md-2">
-                                            <img src="/img/logo.png" style="width:100px" class="img-circle elevation-2" >
-                                                <!-- </h4> -->
+                                                <div class="col-md-2">
+                                                    <img src="/img/logo.png" style="width:100px; background-position:relative;" class="img-circle elevation-2" >
+                                                        <!-- </h4> -->
                                                 </div>
-                                        <div class="col-md-10">
-                                                <small class="float-right">Printed Date: {{Date.now() | setDate}}</small>
+                                                <div class="col-md-10">
+                                                        <small class="float-right">Printed Date: {{Date.now() | setDate}}</small>
 
-                                            <br>
-                                                <h2>Pateros Technological College</h2>
-                                                <h4>Class List Course : {{currstud.data[0].assoccurrid.currcourses.course_code}} of {{currstud.data[0].assoccurrid.currprograms.program_code}} {{currstud.data[0].assoccurrid.curryearlevel.title}} - {{currstud.data[0].assoccurrid.currsection.title}}</h4>
-                                                
-                                        </div>
+                                                        <template v-if="currstud.data">
+                                                        <h2>Pateros Technological College</h2>
+                                                        <h4>Class List Course : {{currstud.data[0].assoccurrid.currcourses.course_code}} - {{currstud.data[0].assoccurrid.currcourses.descriptive_title}}<br>{{currstud.data[0].assoccurrid.currprograms.program_code}} - {{currstud.data[0].assoccurrid.currprograms.descriptive_title}} <br>
+                                                        {{currstud.data[0].assoccurrid.curryearlevel.title}} - Section {{currstud.data[0].assoccurrid.currsection.title}}</h4>
+                                                        </template>
+                                                </div>
                                         
                                                 <!-- /.col -->
                                             </div>
-                                        <br>
-
                                             <!-- Table row -->
                                             <div class="row" >
                                                 <div class="col-12 table-responsive" >
@@ -52,7 +51,7 @@
                                                     <td style="width:3px; padding:15px;">{{index+1}}</td>
                                                     <td style="width:200px; padding:15px;">{{currstuds.assocformid.enr_id_num}}</td>
                                                     <td style="width:350px; padding:15px;">{{currstuds.assocformid.studinfo.lastname}} {{currstuds.assocformid.studinfo.suffixname}} , {{currstuds.assocformid.studinfo.firstname}} {{currstuds.assocformid.studinfo.middlename | firstletter}}.</td>
-                                                    <td style="width:250px; padding:15px;">{{currstuds.assocformid.studinfo.cd_email}}</td>
+                                                    <td style="width:250px; padding:15px;">{{currstuds.assocformid.studinfo.email}}</td>
                                                     <td style="width:250px; padding:15px;"></td>
 
                                                         
@@ -65,7 +64,7 @@
                                             </div>
                                             <!-- /.row -->
 
-                                            </div>
+                                </div>
                                             <small >College St., Brgy. Sto. Rosario-Kanluran, Pateros, Metro-Manila Telephone: 02-640-5375 / 02-640-5389</small>
 
                                             <!-- /.invoice --> 
@@ -97,7 +96,7 @@
           loadClass(){
             // if(this.$gate.isStudent()){
                                      
-                axios.get("/api/currassoc/"+this.$route.params.id).then(({data}) =>(this.currstud = data))
+                axios.get("/api/search/classlist/assoc_curr_id/"+this.$route.params.id).then(({data}) =>(this.currstud = data))
                 .then($data=>{this.totalrecord=$data.total});
             // }
 
@@ -110,9 +109,7 @@
 
         created() {
            this.loadClass();
-           Fire.$on('AfterCreate',() => {
-               this.loadClass();
-           });
+          
           //  setInterval(() => this.loadUsers(), 15000);
         },
         computed: {

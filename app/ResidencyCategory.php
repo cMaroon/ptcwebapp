@@ -4,16 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SchoolYear extends Model
+class ResidencyCategory extends Model
 {
     
-    protected $table = 'school_year';
+    protected $table = 'residency_category';
     public $primaryKey = 'id';
 
 
     //Database Tables
     protected $fillable = [
-        'title','isActive'
+        'title','description'
 
     ];
 

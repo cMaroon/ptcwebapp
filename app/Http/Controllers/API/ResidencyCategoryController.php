@@ -8,11 +8,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OtherSettingsCollection;
 use App\Http\Resources\OtherSettingsResource;
 
-use App\SchoolYear;
+use App\ResidencyCategory;
 
-class SchoolYearController extends Controller
+class ResidencyCategoryController extends Controller
 {
-    protected $table = 'school_year';
+    protected $table = 'residency_category';
     /**
      * Display a listing of the resource.
      *
@@ -20,12 +20,12 @@ class SchoolYearController extends Controller
      */
     public function index()
     {
-        return new OtherSettingsCollection(SchoolYear::orderBy('id','DESC')->paginate(15));
+        return new OtherSettingsCollection(ResidencyCategory::orderBy('id','DESC')->paginate(15));
     }
 
-    public function sylist()
+    public function rclist()
     {
-        return new OtherSettingsCollection(SchoolYear::orderBy('id','DESC')->get());
+        return new OtherSettingsCollection(ResidencyCategory::orderBy('id','ASC')->get());
 
     }
 
@@ -39,14 +39,15 @@ class SchoolYearController extends Controller
     {
         $this->validate($request,[
             'title' => 'required|string|max:191',
+            'description' => 'required|string|max:191',
         ]);
 
-        $sy = new SchoolYear();
-        $sy->title = $request->title;
-        $sy->isActive = $request->isActive;
-        $sy->save();
+        $rc = new ResidencyCategory();
+        $rc->title = $request->title;
+        $rc->description = $request->description;
+        $rc->save();
 
-        return new OtherSettingsResource($sy);
+        return new OtherSettingsResource($rc);
         
     }
 
@@ -58,7 +59,7 @@ class SchoolYearController extends Controller
      */
     public function show($id)
     {
-        return new OtherSettingsResource(SchoolYear::findOrFail($id));
+        return new OtherSettingsResource(ResidencyCategory::findOrFail($id));
     }
 
     /**
@@ -72,14 +73,15 @@ class SchoolYearController extends Controller
     {
         $this->validate($request,[
             'title' => 'required|string|max:191',
+            'description' => 'required|string|max:191',
         ]);
 
-        $sy = SchoolYear::findOrfail($id);
-        $sy->title = $request->title;
-        $sy->isActive = $request->isActive;
-        $sy->save();
+        $rc = ResidencyCategory::findOrfail($id);
+        $rc->title = $request->title;
+        $rc->description = $request->description;
+        $rc->save();
 
-        return new OtherSettingsResource($sy);
+        return new OtherSettingsResource($rc);
     }
 
     /**
@@ -90,15 +92,15 @@ class SchoolYearController extends Controller
      */
     public function destroy($id)
     {
-        $sy = SchoolYear::findOrfail($id);
-        $sy->delete();
-        return new OtherSettingsResource($sy);
+        $rc = ResidencyCategory::findOrfail($id);
+        $rc->delete();
+        return new OtherSettingsResource($rc);
 
     }
 
-    public function searchSY($field,$query)
+    public function searchRC($field,$query)
     {
-        return new OtherSettingsCollection(SchoolYear::where($field,'LIKE',"%$query%")->latest()
+        return new OtherSettingsCollection(ResidencyCategory::where($field,'LIKE',"%$query%")->latest()
         ->paginate(15));
     }
 

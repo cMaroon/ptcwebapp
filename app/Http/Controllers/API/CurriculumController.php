@@ -140,7 +140,8 @@ class CurriculumController extends Controller
 
     public function searchCurriculum($field,$query)
     {
-        return new CurriculumCollection(Curriculum::with('currsy','currprograms','currcourses','currsemester','curryearlevel','currsection','currinstructor')->where($field,'LIKE',"%$query%")->latest()
+        return new CurriculumCollection(Curriculum::with('currsy','currprograms','currcourses','currsemester','curryearlevel','currsection','currinstructor')
+        ->where($field,'LIKE',"%$query%")->latest()
         ->paginate(10));
     }
 

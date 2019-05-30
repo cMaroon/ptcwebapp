@@ -21,7 +21,7 @@ class ManageAssesstmentController extends Controller
     public function index()
     {
 
-        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI','pysy','pysem','pysem','pyyl')->orderBy('id','DESC')->paginate(4));
+        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pysem','pyyl')->orderBy('id','DESC')->paginate(4));
     }
 
     public function paymentlist()
@@ -45,6 +45,7 @@ class ManageAssesstmentController extends Controller
         $mp->semester = $request->semester;
         $mp->yearlevel = $request->yearlevel;
         $mp->payment_form_id = $request->payment_form_id;
+        $mp->category = $request->category_id;
         $mp->tuition_fee = $request->tuition_fee;
         $mp->registration_fee = $request->registration_fee;
         $mp->library_fee = $request->library_fee;
@@ -72,7 +73,7 @@ class ManageAssesstmentController extends Controller
      */
     public function show($id)
     {
-        return new ManagePaymentResource(ManagePayment::with('pyFID','pySI','pysy','pysem','pysem','pyyl')->findOrFail($id));
+        return new ManagePaymentResource(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pysem','pyyl')->findOrFail($id));
     }
 
     /**
@@ -90,6 +91,7 @@ class ManageAssesstmentController extends Controller
         $mp->semester = $request->semester;
         $mp->yearlevel = $request->yearlevel;
         $mp->payment_form_id = $request->payment_form_id;
+        $mp->category = $request->category_id;
         $mp->tuition_fee = $request->tuition_fee;
         $mp->registration_fee = $request->registration_fee;
         $mp->library_fee = $request->library_fee;
@@ -102,6 +104,7 @@ class ManageAssesstmentController extends Controller
         $mp->other_fee = $request->other_fee;
         $mp->total_amount_fee = $request->total_amount_fee;
         $mp->assessed_by = $request->assessed_by;
+        $mp->downpayment_topaid = $request->downpayment_topaid;
 
         $mp->save();
         
@@ -123,7 +126,7 @@ class ManageAssesstmentController extends Controller
 
     public function searchPayment($field,$query)
     {
-        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI','pysy','pysem','pysem','pyyl')->where($field,'LIKE',"%$query%")->latest()
+        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pysem','pyyl')->where($field,'LIKE',"%$query%")->latest()
         ->paginate(15));
     }
 }

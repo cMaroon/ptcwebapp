@@ -21,7 +21,7 @@ class StudentInformationController extends Controller
     public function index()
     {
 
-        return new StudentUserCollection(StudentInformation::orderBy('id','DESC')->paginate(15));
+        return new StudentUserCollection(StudentInformation::orderBy('lastname','ASC')->paginate(15));
     }
 
     public function studentInfoList()
@@ -40,6 +40,7 @@ class StudentInformationController extends Controller
     {
        
         $studentinfo = new StudentInformation();
+        $studentinfo->sex = $request->sex;
         $studentinfo->ca_st_num = $request->ca_st_num;
         $studentinfo->ca_st_name = $request->ca_st_name;
         $studentinfo->ca_subd = $request->ca_subd;
@@ -73,6 +74,7 @@ class StudentInformationController extends Controller
     public function update(Request $request, $id)
     {
         $studentinfo = StudentInformation::findOrfail($id);
+        $studentinfo->sex = $request->sex;
         $studentinfo->ca_st_num = $request->ca_st_num;
         $studentinfo->ca_st_name = $request->ca_st_name;
         $studentinfo->ca_subd = $request->ca_subd;
