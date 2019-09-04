@@ -21,19 +21,21 @@ class ManagePaymentController extends Controller
     public function index()
     {
 
-        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pyyl')->orderBy('id','DESC')->paginate(10));
+        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pyyl','pycat')->orderBy('id','DESC')->paginate(10));
     }
 
     public function paymentlist()
     {
-        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pyyl')->orderBy('id','DESC')->where('sy',2)->paginate(10000));
+        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pyyl','pycat')->orderBy('id','DESC')->where('sy',2)->paginate(10000));
 
     }
 
     public function searchPaymentList($field,$query)
     {
-        return new ManagePaymentCollection(ManagePayment::with('pyFID.enrollprograms','pysy','pysem','pyyl')->orderBy('id','DESC')->where($field,'LIKE',"%$query%")->get());
+        return new ManagePaymentCollection(ManagePayment::with('pyFID.enrollprograms','pySI.studInfo','pysy','pysem','pyyl','pycat')->orderBy('id','DESC')->where($field,'LIKE',"%$query%")->get());
     }
+
+  
 
     /**
      * Store a newly created resource in storage.
@@ -59,7 +61,14 @@ class ManagePaymentController extends Controller
         $mp->bookrental_fee = $request->bookrental_fee;
         $mp->laboratory_fee = $request->laboratory_fee;
         $mp->penalty_fee = $request->penalty_fee;
-        $mp->other_fee = $request->other_fee;
+        //
+        $mp->idval_fee = $request->idval_fee;
+        $mp->guidance_fee = $request->guidance_fee;
+        $mp->ptccup_fee = $request->ptccup_fee;
+        $mp->studenthb_fee = $request->studenthb_fee;
+        $mp->insurance_fee = $request->insurance_fee;
+        $mp->ssc_fee = $request->ssc_fee;
+        //
         $mp->total_amount_fee = $request->total_amount_fee;
         $mp->assessed_by = $request->assessed_by;
         $mp->downpayment_or_num = $request->downpayment_or_num;
@@ -92,7 +101,7 @@ class ManagePaymentController extends Controller
      */
     public function show($id)
     {
-        return new ManagePaymentResource(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pysem','pyyl')->findOrFail($id));
+        return new ManagePaymentResource(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pysem','pyyl','pycat')->findOrFail($id));
     }
 
     /**
@@ -121,18 +130,21 @@ class ManagePaymentController extends Controller
         $mp->downpayment_issued_by = $request->downpayment_issued_by;
         // $mp->prelim_topaid = $request->prelim_topaid;
         // Prelim
+        $mp->prelim_topaid = $request->prelim_topaid;
         $mp->prelim_or_num = $request->prelim_or_num;
         $mp->prelim_amount_paid = $request->prelim_amount_paid;
         $mp->prelim_paid_date = $request->prelim_paid_date;
         $mp->prelim_issued_by = $request->prelim_issued_by;
         // $mp->midterm_topaid = $request->midterm_topaid;
         // Midterm
+        $mp->midterm_topaid = $request->midterm_topaid;
         $mp->midterm_or_num = $request->midterm_or_num;
         $mp->midterm_amount_paid = $request->midterm_amount_paid;
         $mp->midterm_paid_date = $request->midterm_paid_date;
         $mp->midterm_issued_by = $request->midterm_issued_by;
         // $mp->finals_topaid = $request->finals_topaid;
         // Finals
+        $mp->finals_topaid = $request->finals_topaid;
         $mp->finals_or_num = $request->finals_or_num;
         $mp->finals_amount_paid = $request->finals_amount_paid;
         $mp->finals_paid_date = $request->finals_paid_date;
@@ -157,7 +169,7 @@ class ManagePaymentController extends Controller
 
     public function searchPayment($field,$query)
     {
-        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pysem','pyyl')->where($field,'LIKE',"%$query%")->latest()
+        return new ManagePaymentCollection(ManagePayment::with('pyFID','pySI.studInfo','pysy','pysem','pysem','pyyl','pycat')->where($field,'LIKE',"%$query%")->latest()
         ->paginate(15));
     }
 }

@@ -97,7 +97,7 @@ class StudentUserController extends Controller
     public function update(Request $request, $id)
     {
         $studentinfo = StudentInformation::findOrfail($id);
-        // $admininfo->user_id = $request->user_id;
+        $studentinfo->id_num = $request->id_num;
         $studentinfo->firstname = $request->firstname;
         $studentinfo->middlename = $request->middlename;
         $studentinfo->lastname = $request->lastname;

@@ -55,7 +55,14 @@ class ManageAssesstmentController extends Controller
         $mp->bookrental_fee = $request->bookrental_fee;
         $mp->laboratory_fee = $request->laboratory_fee;
         $mp->penalty_fee = $request->penalty_fee;
-        $mp->other_fee = $request->other_fee;
+        //
+        $mp->idval_fee = $request->idval_fee;
+        $mp->guidance_fee = $request->guidance_fee;
+        $mp->ptccup_fee = $request->ptccup_fee;
+        $mp->studenthb_fee = $request->studenthb_fee;
+        $mp->insurance_fee = $request->insurance_fee;
+        $mp->ssc_fee = $request->ssc_fee;
+        //
         $mp->total_amount_fee = $request->total_amount_fee;
         $mp->assessed_by = $request->assessed_by;
 
@@ -101,7 +108,14 @@ class ManageAssesstmentController extends Controller
         $mp->bookrental_fee = $request->bookrental_fee;
         $mp->laboratory_fee = $request->laboratory_fee;
         $mp->penalty_fee = $request->penalty_fee;
-        $mp->other_fee = $request->other_fee;
+        //
+        $mp->idval_fee = $request->idval_fee;
+        $mp->guidance_fee = $request->guidance_fee;
+        $mp->ptccup_fee = $request->ptccup_fee;
+        $mp->studenthb_fee = $request->studenthb_fee;
+        $mp->insurance_fee = $request->insurance_fee;
+        $mp->ssc_fee = $request->ssc_fee;
+        //
         $mp->total_amount_fee = $request->total_amount_fee;
         $mp->assessed_by = $request->assessed_by;
         $mp->downpayment_topaid = $request->downpayment_topaid;

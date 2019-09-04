@@ -368,10 +368,13 @@
           update(){
             this.$Progress.start()
             this.form.busy = true
+            
             this.form
               .put('/api/studentuser/'+this.form.id)
               .then(response => {
                 this.getData()
+                this.query=''
+                this.queryField='id_num'
                 $('#studentuserModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()

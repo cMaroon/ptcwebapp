@@ -18,7 +18,7 @@
                         <p class="login-box-msg">Student Panel</p>
                         <p class="login-box-msg">Sign in to start your session</p>
                   {{-- form --}}
-                  <form method="POST" action="{{ route('admin.login.submit') }}">
+                  <form method="POST" action="{{ route('student.login.submit') }}">
                     @csrf
                     <div class="form-group row">
 

@@ -86,28 +86,10 @@
           </li> --}}
         {{-- @endcan --}}
 
-        @can('isStudent')
-          <li class="nav-item">
-                <router-link to="/profile" class="nav-link">
-                    <i class="nav-icon fas fa-user icon-orange"></i>
-                        <p>
-                        Profile
-                        </p>
-                </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/enrollment" class="nav-link">
-                <i class="fas fa-tasks nav-icon icon-green"></i>
-                <p>Enrollment</p>
-              </router-link>
-            </li>
-          @endcan
+        
             <li class="nav-item">
 
-                @if ((Auth::user()->usertype) == 'superadmin' || 
-                (Auth::user()->usertype) !== 'registrar' || 
-                (Auth::user()->usertype) !== 'cashier' || 
-                (Auth::user()->usertype) !== 'assestment')
+                @if ((Auth::user()->usertype) == 'superadmin')
                     <a class="nav-link" href="{{ route('admin.logout') }}"
                         onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">
@@ -116,8 +98,15 @@
                                   {{ __('Logout') }}
                               </p>
                     </a>
-                @else
-                
+                @elseif ((Auth::user()->usertype)== 'student')
+                    <a class="nav-link" href="{{ route('student.logout') }}"
+                            onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+                                  <i class="nav-icon fas fa-power-off icon-red"></i>
+                                  <p>
+                                      {{ __('Logout') }}
+                                  </p>
+                        </a>
                 @endif
 
                     
@@ -129,7 +118,8 @@
                 @if ((Auth::user()->usertype) !== 'superadmin' && 
                 (Auth::user()->usertype) !== 'registrar' && 
                 (Auth::user()->usertype) !== 'cashier' && 
-                (Auth::user()->usertype) !== 'assestment')
+                (Auth::user()->usertype) !== 'assestment' &&
+                (Auth::user()->usertype) !== 'student')
                 
                 {{Auth::user()->usertype}}
                 @else

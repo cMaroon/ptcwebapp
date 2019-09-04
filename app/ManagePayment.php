@@ -28,7 +28,12 @@ class ManagePayment extends Model
         'bookrental_fee',
         'laboratory_fee',
         'penalty_fee',
-        'other_fee',
+        'idval_fee',
+        'guidance_fee',
+        'ptccup_fee',
+        'studenthb_fee',
+        'insurance_fee',
+        'ssc_fee',
         'total_amount_fee',
         'balance_fee',
         'assessed_by',
@@ -41,14 +46,17 @@ class ManagePayment extends Model
         'downpayment_amount_paid',
         'downpayment_paid_date',
         'downpayment_issued_by',
+        'prelim_topaid',
         'prelim_or_num',
         'prelim_amount_paid',
         'prelim_paid_date',
         'prelim_issued_by',
+        'midterm_topaid',
         'midterm_or_num',
         'midterm_amount_paid',
         'midterm_paid_date',
         'midterm_issued_by',
+        'finals_topaid',
         'finals_or_num',
         'finals_amount_paid',
         'finals_paid_date',
@@ -82,6 +90,13 @@ class ManagePayment extends Model
         return $this->belongsTo('App\YearLevel','yearlevel');
 
     }
+
+    public function pycat()
+    {
+        return $this->belongsTo('App\ResidencyCategory','category');
+    }
+
+    
 
 
 

@@ -3,7 +3,7 @@
    <div class="col-md-12">
       <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Manage Enrollment</h3>
+            <h3 class="card-title">Manage My Enrollment</h3>
             <div class="card-tools" style="position: absolute;right:1rem;top:.5rem;">
               <button type="button" class="btn btn-success" @click="create">Add New <i class="fas fa-plus"></i></button>
               <button type="button" class="btn btn-primary" @click="reload">Reload <i class="fas fa-sync"></i></button>
@@ -60,7 +60,7 @@
                     <td>{{ enrollment.isStatus }}</td>
                     <td>{{ enrollment.enryearlevel.title }}</td>
                     <td>{{ enrollment.enrollprograms.program_code }}</td>
-                    <td >{{ enrollment.total_course_unit }}</td>
+                    <td style="text-align:center; ">{{ enrollment.total_course_unit }}</td>
                     <td>{{ enrollment.total_lab}}</td>
 
                     
@@ -165,17 +165,17 @@
                         <thead>
                           <tr>
                             <th>#</th>
-                            <!-- <th>Form ID</th> -->
-                            
+                            <th>Form ID</th>
+                            <template v-if="form.isStatus == 'Adding'">
                               <th>Program Code</th>
                               <th>Year Level</th>
-                            
+                            </template>
                             
                             <th>Course</th>
-                            <th style="width:3250px; ">Description</th>
+                            <th>Description</th>
                             <th>Section</th>
                             <th>Days</th>
-                            <th style="width:1250px; ">Time</th>
+                            <th>Time</th>
                             <th>Room</th>
                             <th>Course Unit</th>
                             <th>Lab Unit</th>
@@ -187,16 +187,16 @@
                             <template v-if="assoc.assocformid.sy === 2" >
                               <td>{{ index + 1}}</td>
                               <td hidden>{{ assoc.id }}</td>
-                              <!-- <td>{{ assoc.assocformid.enr_form_id }}</td> -->
-                            
+                              <td>{{ assoc.assocformid.enr_form_id }}</td>
+                            <template v-if="form.isStatus == 'Adding'">
                               <td>{{ assoc.assoccurrid.currprograms.program_code }}</td>
                               <td>{{ assoc.assoccurrid.curryearlevel.title }}</td>
-                           
+                            </template>
                               <td>{{ assoc.assoccurrid.currcourses.course_code }}</td>
-                              <td style="width:3250px; ">{{ assoc.assoccurrid.currcourses.descriptive_title }}</td>
+                              <td>{{ assoc.assoccurrid.currcourses.descriptive_title }}</td>
                               <td>{{ assoc.assoccurrid.currsection.title }}</td>
                               <td>{{ assoc.assoccurrid.sched_days }}</td>
-                              <td style="width:1250px; ">{{ assoc.assoccurrid.sched_time }}</td>
+                              <td>{{ assoc.assoccurrid.sched_time }}</td>
                               <td>{{ assoc.assoccurrid.sched_room }}</td>
                               <td>{{ assoc.assoccurrid.currcourses.course_unit }}</td>
                               <td>{{ assoc.assoccurrid.currcourses.lab_hr }}</td>
@@ -223,11 +223,11 @@
                         <tfoot>
                         <tr>
                           <th>#</th>
-                          <!-- <th>Form ID</th> -->
-                          
+                          <th>Form ID</th>
+                          <template v-if="form.isStatus == 'Adding'">
                               <th>Program Code</th>
                               <th>Year Level</th>
-                            
+                            </template>
                           <th>Course</th>
                           <th>Description</th>
                           <th>Section</th>
@@ -266,10 +266,15 @@
           <div class="modal-body">
             <alert-error :form="form" message="There were some problems with your input."></alert-error>
               
-              
+              <div class="form-group">
+                <label>Select Section First</label>
+                <select  type="text" name="section_id" class="form-control"  required v-model="form.section_id" >
+                    <option v-for="section in section" :key="section.id" v-bind:value="section.id">{{section.title}}</option>
+                </select>
+              </div>
 
               <div class="form-group">
-                <!-- <template v-if="form.isStatus == 'Adding'"> -->
+                <template v-if="form.isStatus == 'Adding'">
                     <label>Select Program</label>
                     <select  type="text" name="enr_program_id" class="form-control"  required v-model="form.enr_program_id" >
                         <option value="">Please select program*</option>
@@ -283,14 +288,7 @@
                     <option v-for="yearlevel in yearlevel" :key="yearlevel.id" v-bind:value="yearlevel.id">{{yearlevel.title}}</option>
                 </select>
               
-                <!-- </template> -->
-              </div>
-
-              <div class="form-group">
-                <label>Select Section First</label>
-                <select  type="text" name="section_id" class="form-control"  required v-model="form.section_id" >
-                    <option v-for="section in section" :key="section.id" v-bind:value="section.id">{{section.title}}</option>
-                </select>
+                </template>
               </div>
 
               <div class="form-group">
@@ -465,21 +463,6 @@
             assessed_by:'Rowena Del Rosario',
             course_id:'',
             created_at:'',
-            registration_fee:'75.00',
-            library_fee:'40.00',
-            medical_fee:'50.00',
-            cultural_fee:'15.00',
-            athletic_fee:'15.00',
-            bookrental_fee:'0.00',
-            penalty_fee:'0.00',
-            //
-            idval_fee:'150.00',
-            guidance_fee:'50.00',
-            ptccup_fee:'50.00',
-            ssc_fee:'50.00',
-            studenthb_fee:'50.00',
-            insurance_fee:'50.00',
-            //
           }),
           pagination:{
             current_page:1,
@@ -511,7 +494,7 @@
             axios.get('/api/yearlevellist').then(response=>{this.yearlevel = response.data.data})
             axios.get('/api/programlist').then(response=>{this.program = response.data.data})
             axios.get('/api/studentlist').then(response=>{this.studentlist = response.data.data})
-            axios.get('/api/manageenrollment?page='+this.pagination.current_page)
+            axios.get('/api/myenrollment?page='+this.pagination.current_page)
               .then(response=>{
                 // console.log(response)
                 this.enrollment = response.data.data
@@ -540,7 +523,7 @@
           reload(){
             this.getData()
             this.query=''
-            this.queryField='enr_id_num'
+            this.queryField='enr_form_id'
             this.$snotify.success('Data Successfully Refresh','Success', {
                   timeout: 1000,
                   showProgressBar: false,
@@ -570,22 +553,6 @@
                 this.getData()
                 $('#enrollmentModalLong').modal('hide')
                   if(this.form.successful){
-                    this.form.registration_fee='75.00'
-                    this.form.library_fee='40.00'
-                    this.form.medical_fee='50.00'
-                    this.form.cultural_fee='15.00'
-                    this.form.athletic_fee='15.00'
-                    this.form.bookrental_fee='0.00'
-                    this.form.penalty_fee='0.00'
-                    //
-                    this.form.idval_fee='150.00'
-                    this.form.guidance_fee='50.00'
-                    this.form.ptccup_fee='50.00'
-                    this.form.ssc_fee='50.00'
-                    this.form.studenthb_fee='50.00'
-                    this.form.insurance_fee='50.00'
-                    this.form.assessed_by = 'Rowena Del Rosario'
-                    this.form.post('/api/managepayment')
                     this.$Progress.finish()
                     this.$snotify.success('Data Successfully Saved','Success', {
                           timeout: 3000,
@@ -609,7 +576,8 @@
                 this.$Progress.fail()
                 // console.log(e)
               })
-              
+            this.form.assessed_by = 'Rowena Del Rosario'
+            this.form.post('/api/managepayment')
           },
           show(enrollment) {
             this.form.reset();
@@ -648,8 +616,6 @@
               .put('/api/manageenrollment/'+this.form.id)
               .then(response => {
                 this.getData()
-                this.query=''
-                this.queryField='enr_id_num'
                 $('#enrollmentModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
@@ -695,8 +661,6 @@
                           .delete('/api/manageenrollment/'+this.form.id)
                           .then(response =>{
                             this.getData()
-                            this.query=''
-                            this.queryField='enr_id_num'
                             this.$Progress.finish()
                             this.$snotify.success('Data Successfully Deleted','Success', {
                                 timeout: 3000,
@@ -772,13 +736,11 @@
               .post('/api/assoc')
               .then(response => {
                 this.getAssocData()
-                this.query=''
-                this.queryField='enr_id_num'
-                // this.getData()
+                this.getData()
                 $('#assocModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
-                    this.$snotify.success('Curriculum Successfully Saved','Success', {
+                    this.$snotify.success('Data Successfully Saved','Success', {
                           timeout: 3000,
                           showProgressBar: false,
                           closeOnClick: false,
@@ -869,7 +831,6 @@
                       this.$snotify.remove(toast.id);  
                       this.form
                         .put('/api/curriculumcount/'+this.form.course_id)
-                        
                       this.form.total_lab = parseInt(this.form.total_lab) - parseInt(this.form.lab_unit)
                       this.form.total_course_unit = parseInt(this.form.total_course_unit) - parseInt(this.form.course_unit)
                       this.form
@@ -879,11 +840,8 @@
                           .delete('/api/assoc/'+this.form.id)
                           .then(response =>{
                             this.getAssocData()
-                            this.query=''
-                            this.queryField='enr_id_num'
                             this.getData()
                             this.$Progress.finish()
-                            $('#showModalLong').modal('hide')
                             this.$snotify.success('Data Successfully Deleted','Success', {
                                 timeout: 3000,
                                 showProgressBar: false,
@@ -896,7 +854,8 @@
                           .catch(e => {
                             this.$Progress.fail()
                             // console.log(e)
-                          })                    
+                          })
+                    
                     },
                     bold: true
                   },

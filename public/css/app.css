@@ -30565,5 +30565,7 @@ a.text-dark:focus {
 
 @page {
   margin: 0;
+  size: portrait;
+  font-size: 12pt;
 }
 

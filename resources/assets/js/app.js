@@ -32,6 +32,9 @@ import PrintEnroll from './components/PrintEnroll'
 import PrintAdd from './components/PrintAdd'
 import PrintClass from './components/PrintClass'
 import PrintSummaryA from './components/PrintAssesstment'
+//student
+import DashboardStudent from './components/Dashboard-student'
+import MyEnroll from './components/MyEnrollment'
 
 Vue.use(Snotify, SnotifyOptions, SnotifyPosition)
 Vue.use(VueProgressBar, VueProgressBarOptions)
@@ -154,6 +157,19 @@ const router = new VueRouter({
         path: '/admin/printsummary',
         name: 'printsummarya',
         component: PrintSummaryA,
+        
+      },
+      //student
+      {
+        path: '/student/dashboard',
+        name: 'student-dashboard',
+        component: DashboardStudent,
+        
+      },
+      {
+        path: '/student/myenroll',
+        name: 'student-myenroll',
+        component: MyEnroll,
         
       },
 

@@ -7,11 +7,12 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ManageEnrollmentCollection;
 use App\Http\Resources\ManageEnrollmentResource;
+use Illuminate\Support\Facades\Auth;
 
 use App\ManageEnrollment;
 use App\ManagePayment;
 
-class ManageEnrollmentController extends Controller
+class MyEnrollmentController extends Controller
 {
     protected $table = 'enrollment_information';
     /**
@@ -19,10 +20,17 @@ class ManageEnrollmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
+        $student = Auth::user();
+        dd(Auth::user());
 
-        return new ManageEnrollmentCollection(ManageEnrollment::with('enrollprograms','studinfo','enrollassoc','enrsy','enrsem','enryearlevel','enrsection')->orderBy('id','DESC')->paginate(10));
+        // return new ManageEnrollmentCollection(ManageEnrollment::with('enrollprograms','studinfo','enrollassoc','enrsy','enrsem','enryearlevel','enrsection')->orderBy('id','DESC')->where('enr_id_num','=',$user_id_num)->latest()->paginate(10));
     }
 
     public function enrolllist()
@@ -119,7 +127,7 @@ class ManageEnrollmentController extends Controller
     {
         $me = ManageEnrollment::findOrfail($id);
         $me->delete();
-        return new ManageEnrollmentResource($me);
+        return new ManageEnrollmentResource($me,$mp);
     }
 
     public function searchEnroll($field,$query)

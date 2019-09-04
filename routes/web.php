@@ -41,6 +41,8 @@ Route::group(['prefix' => 'student'], function(){
     Route::post('/login', 'AuthStudent\LoginController@login')->name('student.login.submit');
     Route::get('/dashboard', 'StudentController@index')->name('student.home');
     Route::get('/logout','AuthStudent\LoginController@logoutStudent')->name('student.logout');
+
+    Route::get('/{path}',"StudentController@index")->where('path','([A-z\d-\/_.]+)?');
 });
 
 

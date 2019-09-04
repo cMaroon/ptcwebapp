@@ -98,3 +98,6 @@ Route::get('currlist','CurriculumController@currlist');
 Route::get('search/rc/{field}/{query}','ResidencyCategoryController@searchRC');
 Route::apiResources(['residencycategory'=>'ResidencyCategoryController']);
 Route::get('rclist','ResidencyCategoryController@rclist');
+
+//Student Side
+Route::apiResources(['myenrollment'=>'MyEnrollmentController']);

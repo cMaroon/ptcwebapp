@@ -40,27 +40,25 @@
                   <th>Form ID</th>
                   <th style="width:130; ">Fullname</th>
                   <th>Address</th>
-                  <th>TCU</th>
-                  <th>TLU</th>
+                  <th>Total Course Unit</th>
+                  <th>Total Laboratory Hour</th>
                   <th>SY</th>
                   <th>Semester</th>
                   <th>Status</th>
                   <th>YL</th>
-                  <th>Category</th>
-                  <th>TF</th>
-                  <th>RF</th>
-                  <th>LF</th>
+                  <th>Tuition Fee</th>
+                  <th>Laboratory Fee</th>
+                  <th>Down-payment to Paid</th>
+                  <th>Partial Payment</th>
+                  <th>Balance</th>
+                  <th>Registration Fee</th>
+                  <th>Library Fee</th>
                   <th>MF</th>
                   <th>CF</th>
                   <th>AF</th>
                   <th>BRF</th>
-                  <th>LABF</th>
                   <th>PF</th>
-                  <th>OF</th>
                   <th>TAF</th>
-                  <th>DTP</th>
-                  <th>BAL</th>
-                  <th>DAP</th>
                   <th>ABy</th>
                   <th class="text-center">Action</th>
                 </tr>
@@ -81,21 +79,19 @@
                     <td>{{ payment.pysem.title }}</td>
                     <td>{{ payment.py_f_i_d.isStatus }}</td>
                     <td>{{ payment.pyyl.title }}</td>
-                    <td>{{ payment.category }}</td>
                     <td>{{ currencyFormat(payment.tuition_fee) }}</td>
-                    <td>{{ currencyFormat(payment.registration_fee) }}</td>
+                    <td>{{ currencyFormat(payment.laboratory_fee) }}</td>
+                    <td>{{ currencyFormat(payment.downpayment_topaid) }}</td>
+                    <td>{{ currencyFormat(payment.downpayment_amount_paid) }}</td>
+                    <td>{{ currencyFormat(payment.balance_fee) }} </td>
+                    <td>{{ currencyFormat(payment.registration_fee)}}</td>
                     <td>{{ currencyFormat(payment.library_fee) }}</td>
                     <td>{{ currencyFormat(payment.medical_fee) }}</td>
                     <td>{{ currencyFormat(payment.cultural_fee) }}</td>
                     <td>{{ currencyFormat(payment.athletic_fee) }}</td>
                     <td>{{ currencyFormat(payment.bookrental_fee) }}</td>
-                    <td>{{ currencyFormat(payment.laboratory_fee) }}</td>
                     <td>{{ currencyFormat(payment.penalty_fee) }}</td>
-                    <td>{{ currencyFormat(payment.other_fee) }}</td>
                     <td>{{ currencyFormat(payment.total_amount_fee) }}</td>
-                    <td>{{ currencyFormat(payment.downpayment_topaid) }}</td>
-                    <td> {{ currencyFormat(payment.balance_fee) }} </td>
-                    <td> {{ currencyFormat(payment.downpayment_amount_paid) }} </td>
                     <td>{{ payment.assessed_by }}</td>
                     
                     <td class="text-center">
@@ -128,27 +124,25 @@
                   <th>Form ID</th>
                   <th style="width:130; ">Fullname</th>
                   <th>Address</th>
-                  <th>TCU</th>
-                  <th>TLU</th>
+                  <th>Total Course Unit</th>
+                  <th>Total Laboratory Hour</th>
                   <th>SY</th>
                   <th>Semester</th>
                   <th>Status</th>
                   <th>YL</th>
-                  <th>Category</th>
-                  <th>TF</th>
-                  <th>RF</th>
-                  <th>LF</th>
+                  <th>Tuition Fee</th>
+                  <th>Laboratory Fee</th>
+                  <th>Down-payment to Paid</th>
+                  <th>Partial Payment</th>
+                  <th>Balance</th>
+                  <th>Registration Fee</th>
+                  <th>Library Fee</th>
                   <th>MF</th>
                   <th>CF</th>
                   <th>AF</th>
                   <th>BRF</th>
-                  <th>LABF</th>
                   <th>PF</th>
-                  <th>OF</th>
                   <th>TAF</th>
-                  <th>DTP</th>
-                  <th>BAL</th>
-                  <th>DAP</th>
                   <th>ABy</th>
                   <!-- <th>#</th>
                   <th>ID Number</th>
@@ -203,55 +197,47 @@
           <div class="modal-body">
             <alert-error :form="form" message="There were some problems with your input."></alert-error>
 
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label>Category</label>
                 <select  type="text" name="category" class="form-control" v-model="category" >
                     <option v-for="residency in residency" :key="residency.id" v-bind:value="residency.id">{{residency.title}} - {{residency.description}}</option>
                 </select>
-              </div>
+              </div> -->
 
               <div class="form-group">
                 <label>Tuition Fee</label>
                 <input v-model="form.tuition_fee" type="text" name="tuition_fee"
                   class="form-control" >
               </div>
-            <template v-if="form.isStatus != 'Adding'">    
+            <!-- <template v-if="form.isStatus != 'Adding'">    
               <div class="form-group">
                 <label>Registration Fee</label>
                 <input v-model="form.registration_fee" type="text" name="registration_fee"
                   class="form-control" >
-              </div>
+              
 
-              <div class="form-group">
+              
                 <label>Library Fee</label>
                 <input v-model="form.library_fee" type="text" name="library_fee"
                   class="form-control" >
-              </div>
-
-              <div class="form-group">
+              
                 <label>Medical Fee</label>
                 <input v-model="form.medical_fee" type="text" name="medical_fee"
                   class="form-control" >
-              </div>
-
-              <div class="form-group">
+              
                 <label>Cultural Fee</label>
                 <input v-model="form.cultural_fee" type="text" name="cultural_fee"
                   class="form-control" >
-              </div>
-
-              <div class="form-group">
+              
                 <label>Athletic Fee</label>
                 <input v-model="form.athletic_fee" type="text" name="athletic_fee"
                   class="form-control" >
-              </div>
-
-              <div class="form-group">
+           
                 <label>Book Rental Fee</label>
                 <input v-model="form.bookrental_fee" type="text" name="bookrental_fee"
                   class="form-control" >
               </div>
-            </template>
+            </template> -->
 
               <div class="form-group">
                 <label>Laboratoy Fee</label>
@@ -260,14 +246,14 @@
               </div>
 
               <div class="form-group">
-                <label>Penalty Fee</label>
-                <input v-model="form.penalty_fee" type="text" name="penalty_fee"
+                <label>Misc / Others Fee</label>
+                <input v-model="form.m_fee" type="text" name="penalty_fee"
                   class="form-control" >
               </div>
 
               <div class="form-group">
-                <label>Other Fee</label>
-                <input v-model="form.other_fee" type="text" name="other_fee"
+                <label>Penalty Fee</label>
+                <input v-model="form.penalty_fee" type="text" name="penalty_fee"
                   class="form-control" >
               </div>
 
@@ -326,10 +312,18 @@
             medical_fee:'50.00',
             cultural_fee:'15.00',
             athletic_fee:'15.00',
+            //
             bookrental_fee:'0.00',
             laboratory_fee:'',
             penalty_fee:'0.00',
-            other_fee:'300.00',
+            //
+            idval_fee:'150.00',
+            guidance_fee:'100.00',
+            ptccup_fee:'75.00',
+            ssc_fee:'75.00',
+            studenthb_fee:'50.00',
+            insurance_fee:'50.00',
+            //
             total_amount_fee:'',
             assessed_by:'Rowena Del Rosario',
             total_course_unit:'',
@@ -337,18 +331,7 @@
             downpayment_topaid:'',
             m_fee:'',
             isStatus:'',
-            // prelim_or_num:'',
-            // prelim_amount_paid:'',
-            // prelim_paid_date:'',
-            // prelim_issued_by:'',
-            // midterm_or_num:'',
-            // midterm_amount_paid:'',
-            // midterm_paid_date:'',
-            // midterm_issued_by:'',
-            // finals_or_num:'',
-            // finals_amount_paid:'',
-            // finals_paid_date:'',
-            // finals_issued_by:'',
+            
           }),
           pagination:{
             current_page:1,
@@ -364,17 +347,17 @@
             this.searchData()
           }
         },
-        category:function(newCategory){
-         if(newCategory!=null){
-            this.form.tuition_fee = parseFloat(this.form.total_course_unit) * parseFloat(this.residency[newCategory-1].isTF)
-            this.form.laboratory_fee = parseFloat(this.form.total_lab) * 100
-            this.form.category_id = this.residency[newCategory-1].id
-            this.form.m_fee = parseFloat(this.form.registration_fee)+parseFloat(this.form.library_fee)+parseFloat(this.form.medical_fee)+parseFloat(this.form.cultural_fee)+parseFloat(this.form.athletic_fee)+parseFloat(this.form.other_fee)
-            this.form.downpayment_topaid = ((parseFloat(this.form.tuition_fee) + parseFloat(this.form.laboratory_fee))*.30)+parseFloat(this.form.m_fee)
-         }
+        // category:function(newCategory){
+        //  if(newCategory!=null){
+        //     this.form.tuition_fee = parseFloat(this.form.total_course_unit) * parseFloat(this.residency[newCategory-1].isTF)
+        //     this.form.laboratory_fee = parseFloat(this.form.total_lab) * 100
+        //     this.form.category_id = this.residency[newCategory-1].id
+        //     this.form.m_fee = parseFloat(this.form.registration_fee)+parseFloat(this.form.library_fee)+parseFloat(this.form.medical_fee)+parseFloat(this.form.cultural_fee)+parseFloat(this.form.athletic_fee)+parseFloat(this.form.idval_fee)+parseFloat(this.form.guidance_fee)+parseFloat(this.form.ptccup_fee)+parseFloat(this.form.ssc_fee)+parseFloat(this.form.studenthb_fee)+parseFloat(this.form.insurance_fee)
+        //     this.form.downpayment_topaid = ((parseFloat(this.form.tuition_fee) + parseFloat(this.form.laboratory_fee))*.30)+parseFloat(this.form.m_fee)
+        //  }
             
           
-        }
+        // }
       },
         mounted() {
             // console.log('Component mounted.')
@@ -438,7 +421,8 @@
             // console.log('Hello')
             this.$Progress.start()
             this.form.busy = true
-            this.form.total_amount_fee = parseFloat(this.form.tuition_fee) + parseFloat(this.form.registration_fee) + parseFloat(this.form.library_fee) + parseFloat(this.form.medical_fee) + parseFloat(this.form.cultural_fee) + parseFloat(this.form.athletic_fee) + parseFloat(this.form.bookrental_fee) + parseFloat(this.form.laboratory_fee) + parseFloat(this.form.penalty_fee) + parseFloat(this.form.other_fee)
+            this.form.total_amount_fee = parseFloat(this.form.tuition_fee) + parseFloat(this.form.registration_fee) + parseFloat(this.form.library_fee) + parseFloat(this.form.medical_fee) + parseFloat(this.form.cultural_fee) + parseFloat(this.form.athletic_fee) + parseFloat(this.form.bookrental_fee) + parseFloat(this.form.laboratory_fee) + parseFloat(this.form.penalty_fee) +parseFloat(this.form.idval_fee)+parseFloat(this.form.guidance_fee)+parseFloat(this.form.ptccup_fee)+parseFloat(this.form.ssc_fee)+parseFloat(this.form.studenthb_fee)+parseFloat(this.form.insurance_fee)
+
             this.form
               .post('/api/managepayment')
               .then(response => {
@@ -485,7 +469,12 @@
             this.form.total_lab = payment.py_f_i_d.total_lab
             this.form.isStatus = payment.py_f_i_d.isStatus
             this.category = payment.category
-            if(payment.tuition_fee==null && this.form.isStatus!='Adding'){
+            //
+            this.form.tuition_fee = parseFloat(this.form.total_course_unit) * 300
+            this.form.laboratory_fee = parseFloat(this.form.total_lab) * 100
+            
+            //
+           
               this.form.registration_fee='75.00'
               this.form.library_fee='40.00'
               this.form.medical_fee='50.00'
@@ -493,24 +482,46 @@
               this.form.athletic_fee='15.00'
               this.form.bookrental_fee='0.00'
               this.form.penalty_fee='0.00'
-              this.form.other_fee='300.00'
-            }
-            if(payment.tuition_fee==null && this.form.isStatus=='Adding'){
-              this.form.registration_fee='0.00'
-              this.form.library_fee='0.00'
-              this.form.medical_fee='0.00'
-              this.form.cultural_fee='0.00'
-              this.form.athletic_fee='0.00'
-              this.form.bookrental_fee='0.00'
-              this.form.penalty_fee='0.00'
-              this.form.other_fee='0.00'
-            }
+              //
+              this.form.idval_fee='150.00'
+              this.form.guidance_fee='100.00'
+              this.form.ptccup_fee='75.00'
+              this.form.ssc_fee='75.00'
+              this.form.studenthb_fee='50.00'
+              this.form.insurance_fee='50.00'
+
+              this.form.m_fee = parseFloat(this.form.registration_fee)+parseFloat(this.form.library_fee)+parseFloat(this.form.medical_fee)+parseFloat(this.form.cultural_fee)+parseFloat(this.form.athletic_fee)+parseFloat(this.form.idval_fee)+parseFloat(this.form.guidance_fee)+parseFloat(this.form.ptccup_fee)+parseFloat(this.form.ssc_fee)+parseFloat(this.form.studenthb_fee)+parseFloat(this.form.insurance_fee)
+              
+              this.form.downpayment_topaid = ((parseFloat(this.form.tuition_fee) + parseFloat(this.form.laboratory_fee))*.30)+parseFloat(this.form.m_fee)
+            
+            // if(payment.tuition_fee==null && this.form.isStatus=='Adding'){
+            //   this.form.registration_fee='0.00'
+            //   this.form.library_fee='0.00'
+            //   this.form.medical_fee='0.00'
+            //   this.form.cultural_fee='0.00'
+            //   this.form.athletic_fee='0.00'
+            //   this.form.bookrental_fee='0.00'
+            //   this.form.penalty_fee='0.00'
+            //   //
+            //   this.form.idval_fee='0.00'
+            //   this.form.guidance_fee='0.00'
+            //   this.form.ptccup_fee='0.00'
+            //   this.form.ssc_fee='0.00'
+            //   this.form.studenthb_fee='0.00'
+            //   this.form.insurance_fee='0.00'
+            // }
            
           },
           update(){
             this.$Progress.start()
             this.form.busy = true
-            this.form.total_amount_fee = parseFloat(this.form.tuition_fee) + parseFloat(this.form.registration_fee) + parseFloat(this.form.library_fee) + parseFloat(this.form.medical_fee) + parseFloat(this.form.cultural_fee) + parseFloat(this.form.athletic_fee) + parseFloat(this.form.bookrental_fee) + parseFloat(this.form.laboratory_fee) + parseFloat(this.form.penalty_fee) + parseFloat(this.form.other_fee)
+            this.form.total_amount_fee = parseFloat(this.form.tuition_fee) + parseFloat(this.form.registration_fee) + parseFloat(this.form.library_fee) + parseFloat(this.form.medical_fee) + parseFloat(this.form.cultural_fee) + parseFloat(this.form.athletic_fee) + parseFloat(this.form.bookrental_fee) + parseFloat(this.form.laboratory_fee) + parseFloat(this.form.penalty_fee) +parseFloat(this.form.idval_fee)+parseFloat(this.form.guidance_fee)+parseFloat(this.form.ptccup_fee)+parseFloat(this.form.ssc_fee)+parseFloat(this.form.studenthb_fee)+parseFloat(this.form.insurance_fee)
+              this.form.idval_fee='150.00'
+              this.form.guidance_fee='100.00'
+              this.form.ptccup_fee='75.00'
+              this.form.ssc_fee='75.00'
+              this.form.studenthb_fee='50.00'
+              this.form.insurance_fee='50.00'
             this.form
               .put('/api/manageassesstment/'+this.form.id)
               .then(response => {
@@ -526,6 +537,8 @@
                           position: "rightTop",
                         });
                       this.getData()
+                      this.query=''
+                      this.queryField='payment_id_num'
                   }else{
                     this.$Progress.fail()
                     this.$snotify.error('Something went wrong try again later','Error', {

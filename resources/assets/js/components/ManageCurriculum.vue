@@ -180,6 +180,13 @@
               </div>
 
               <div class="form-group">
+                <label>Student Count</label>
+                <input v-model="form.curr_stud_count" type="text" name="curr_stud_count"
+                  class="form-control" :class="{ 'is-invalid': form.errors.has('curr_stud_count') }" >
+                <has-error :form="form" field="curr_stud_count"></has-error>
+              </div>
+
+              <div class="form-group">
                 <label>Limit Count</label>
                 <input v-model="form.curr_limit_persec" type="text" name="curr_limit_persec"
                   class="form-control" :class="{ 'is-invalid': form.errors.has('curr_limit_persec') }" >
@@ -408,7 +415,7 @@
             this.form
               .put('/api/managecurriculum/'+this.form.id)
               .then(response => {
-                this.reload()
+                // this.getData()
                 $('#curriculumModalLong').modal('hide')
                   if(this.form.successful){
                     this.$Progress.finish()
@@ -485,4 +492,5 @@
           }
         }
     }
+    
 </script>

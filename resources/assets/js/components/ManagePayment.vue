@@ -145,6 +145,10 @@
                   <th>Finals Amount Paid</th>
                   <th>Finals Paid Date</th>
                   <th>Finals Issued By</th>
+                  <th>Adding OR Number</th>
+                  <th>Adding Amount Paid</th>
+                  <th>Adding Paid Date</th>
+                  <th>Adding Issued By</th> 
                 <th class="text-center">Action</th>
               </tr>
               </tfoot>
@@ -357,16 +361,6 @@
             yearlevel:'',
             payment_form_id:'',
             balance_fee:'',
-            // tuition_fee:'',
-            // registration_fee:'',
-            // library_fee:'',
-            // medical_fee:'',
-            // cultural_fee:'',
-            // athletic_fee:'',
-            // bookrental_fee:'',
-            // laboratory_fee:'',
-            // penalty_fee:'',
-            // other_fee:'',
             total_amount_fee:'',
             assessed_by:'',
             adding_or_num:'',
@@ -377,14 +371,17 @@
             downpayment_amount_paid:'',
             downpayment_paid_date:'',
             downpayment_issued_by:'',
+            prelim_topaid:'',
             prelim_or_num:'',
             prelim_amount_paid:'',
             prelim_paid_date:'',
             prelim_issued_by:'',
+            midterm_topaid:'',
             midterm_or_num:'',
             midterm_amount_paid:'',
             midterm_paid_date:'',
             midterm_issued_by:'',
+            finals_topaid:'',
             finals_or_num:'',
             finals_amount_paid:'',
             finals_paid_date:'',
@@ -513,6 +510,9 @@
             this.$Progress.start()
             this.form.busy = true
             this.form.balance_fee = parseFloat(this.form.total_amount_fee) - parseFloat(this.form.downpayment_amount_paid)
+            this.form.prelim_topaid = parseFloat(this.form.balance_fee)/3
+            this.form.midterm_topaid = parseFloat(this.form.balance_fee)/3
+            this.form.finals_topaid = parseFloat(this.form.balance_fee)/3
             this.form
               .put('/api/managepayment/'+this.form.id)
               .then(response => {
