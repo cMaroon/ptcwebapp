@@ -26,7 +26,7 @@ Route::group(['prefix' => 'admin'], function(){
     Route::get('/dashboard', 'AdminController@index')->name('admin.home');
     Route::get('/logout','AuthAdmin\LoginController@logoutAdmin')->name('admin.logout');
 
-    Route::get('/{path}',"AdminController@index")->where('path','([A-z\d-\/_.]+)?');
+    Route::get('/{path}',"AdminController@index")->where( 'path', '.*' );
 });
 
 Route::group(['prefix' => 'instructor'], function(){
@@ -42,7 +42,7 @@ Route::group(['prefix' => 'student'], function(){
     Route::get('/dashboard', 'StudentController@index')->name('student.home');
     Route::get('/logout','AuthStudent\LoginController@logoutStudent')->name('student.logout');
 
-    Route::get('/{path}',"StudentController@index")->where('path','([A-z\d-\/_.]+)?');
+    Route::get('/{path}',"StudentController@index")->where( 'path', '.*' );
 });
 
 
