@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResidencyCategoryTable extends Migration
+class CreateCategoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateResidencyCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('residency_category', function (Blueprint $table) {
+        Schema::create('category', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
             $table->string('description');
@@ -28,6 +28,6 @@ class CreateResidencyCategoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('residency_category');
+        Schema::dropIfExists('category');
     }
 }

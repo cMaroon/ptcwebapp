@@ -358,6 +358,8 @@
             
           
         // }
+
+        //  *for update for unifast and non unifast category *do not touch
       },
         mounted() {
             // console.log('Component mounted.')

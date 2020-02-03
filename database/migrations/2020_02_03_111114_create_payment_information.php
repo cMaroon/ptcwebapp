@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePaymentInformationTable extends Migration
+class CreatePaymentInformation extends Migration
 {
     /**
      * Run the migrations.
@@ -84,7 +84,7 @@ class CreatePaymentInformationTable extends Migration
             $table->foreign('semester')->references('id')->on('semester_info')->onDelete('cascade');
             $table->foreign('yearlevel')->references('id')->on('yearlevel_info')->onDelete('cascade');
             $table->foreign('sy')->references('id')->on('school_year')->onDelete('cascade');
-            $table->foreign('category')->references('id')->on('residency_category')->onDelete('cascade');
+            $table->foreign('category')->references('id')->on('category')->onDelete('cascade');
         });
     }
 

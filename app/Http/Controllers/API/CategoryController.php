@@ -8,11 +8,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OtherSettingsCollection;
 use App\Http\Resources\OtherSettingsResource;
 
-use App\ResidencyCategory;
+use App\Category;
 
-class ResidencyCategoryController extends Controller
+class CategoryController extends Controller
 {
-    protected $table = 'residency_category';
+    protected $table = 'category';
     /**
      * Display a listing of the resource.
      *
@@ -20,12 +20,12 @@ class ResidencyCategoryController extends Controller
      */
     public function index()
     {
-        return new OtherSettingsCollection(ResidencyCategory::orderBy('id','DESC')->paginate(15));
+        return new OtherSettingsCollection(Category::orderBy('id','DESC')->paginate(15));
     }
 
     public function rclist()
     {
-        return new OtherSettingsCollection(ResidencyCategory::orderBy('id','ASC')->get());
+        return new OtherSettingsCollection(Category::orderBy('id','ASC')->get());
 
     }
 
@@ -42,7 +42,7 @@ class ResidencyCategoryController extends Controller
             'description' => 'required|string|max:191',
         ]);
 
-        $rc = new ResidencyCategory();
+        $rc = new Category();
         $rc->title = $request->title;
         $rc->description = $request->description;
         $rc->save();
@@ -59,7 +59,7 @@ class ResidencyCategoryController extends Controller
      */
     public function show($id)
     {
-        return new OtherSettingsResource(ResidencyCategory::findOrFail($id));
+        return new OtherSettingsResource(Category::findOrFail($id));
     }
 
     /**
@@ -76,7 +76,7 @@ class ResidencyCategoryController extends Controller
             'description' => 'required|string|max:191',
         ]);
 
-        $rc = ResidencyCategory::findOrfail($id);
+        $rc = Category::findOrfail($id);
         $rc->title = $request->title;
         $rc->description = $request->description;
         $rc->save();
@@ -92,7 +92,7 @@ class ResidencyCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $rc = ResidencyCategory::findOrfail($id);
+        $rc = Category::findOrfail($id);
         $rc->delete();
         return new OtherSettingsResource($rc);
 
@@ -100,7 +100,7 @@ class ResidencyCategoryController extends Controller
 
     public function searchRC($field,$query)
     {
-        return new OtherSettingsCollection(ResidencyCategory::where($field,'LIKE',"%$query%")->latest()
+        return new OtherSettingsCollection(Category::where($field,'LIKE',"%$query%")->latest()
         ->paginate(15));
     }
 

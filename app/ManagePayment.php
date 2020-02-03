@@ -93,7 +93,7 @@ class ManagePayment extends Model
 
     public function pycat()
     {
-        return $this->belongsTo('App\ResidencyCategory','category');
+        return $this->belongsTo('App\Category','category');
     }
 
     

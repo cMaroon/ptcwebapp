@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ResidencyCategory extends Model
+class Category extends Model
 {
     
-    protected $table = 'residency_category';
+    protected $table = 'category';
     public $primaryKey = 'id';
 
 
