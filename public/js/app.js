@@ -3297,6 +3297,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -68246,6 +68248,59 @@ var render = function() {
                               }
                             }
                           })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Category")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.category,
+                                  expression: "category"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", name: "category" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.category = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                }
+                              }
+                            },
+                            _vm._l(_vm.residency, function(residency) {
+                              return _c(
+                                "option",
+                                {
+                                  key: residency.id,
+                                  domProps: { value: residency.id }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(residency.title) +
+                                      " - " +
+                                      _vm._s(residency.description)
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [

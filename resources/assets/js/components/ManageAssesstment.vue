@@ -197,12 +197,7 @@
           <div class="modal-body">
             <alert-error :form="form" message="There were some problems with your input."></alert-error>
 
-              <!-- <div class="form-group">
-                <label>Category</label>
-                <select  type="text" name="category" class="form-control" v-model="category" >
-                    <option v-for="residency in residency" :key="residency.id" v-bind:value="residency.id">{{residency.title}} - {{residency.description}}</option>
-                </select>
-              </div> -->
+              
 
               <div class="form-group">
                 <label>Tuition Fee</label>
@@ -262,6 +257,13 @@
                 <input v-model="form.total_amount_fee" type="text" name="total_amount_fee"
                   class="form-control" >
               </div> -->
+
+              <div class="form-group">
+                <label>Category</label>
+                <select  type="text" name="category" class="form-control" v-model="category" >
+                    <option v-for="residency in residency" :key="residency.id" v-bind:value="residency.id">{{residency.title}} - {{residency.description}}</option>
+                </select>
+              </div>
 
               <div class="form-group">
                 <label>Assessed By</label>
