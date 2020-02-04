@@ -60,6 +60,7 @@ class ManageEnrollmentCountController extends Controller
         $me = ManageEnrollment::findOrfail($id);
         $me->total_course_unit = $request->total_course_unit;
         $me->total_lab = $request->total_lab;
+        $me->total_comp = $request->total_comp;
         $me->save();
 
         

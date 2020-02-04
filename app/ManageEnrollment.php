@@ -13,7 +13,7 @@ class ManageEnrollment extends Model
 
     //Database Tables
     protected $fillable = [
-        'enr_form_id','isStatus','sy','semester','yearlevel','section','enr_id_num','enr_program_id','total_course_unit','total_lab'
+        'enr_form_id','isStatus','sy','semester','yearlevel','section','enr_id_num','enr_program_id','total_course_unit','total_lab','total_comp'
 
     ];
 

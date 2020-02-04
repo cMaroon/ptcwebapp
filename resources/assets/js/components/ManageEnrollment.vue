@@ -44,6 +44,7 @@
                   <th>Program</th>
                   <th>Total Course Unit</th>
                   <th>Total Laboratory Unit</th>
+                  <th>Total Computer Use</th>
                   <th class="text-center">Action</th>
                 </tr>
               </thead>
@@ -62,6 +63,7 @@
                     <td>{{ enrollment.enrollprograms.program_code }}</td>
                     <td >{{ enrollment.total_course_unit }}</td>
                     <td>{{ enrollment.total_lab}}</td>
+                    <td>{{ enrollment.total_comp}}</td>
 
                     
                     <td class="text-center">
@@ -113,6 +115,7 @@
                   <th>Program</th>
                   <th>Total Course Unit</th>
                   <th>Total Laboratory Unit</th>
+                  <th>Total Computer Use</th>
                   <th class="text-center">Action</th>
               </tr>
               </tfoot>
@@ -406,6 +409,12 @@
                 <input v-model="form.total_lab" type="text" name="total_lab"
                   class="form-control" >
               </div>
+              <div class="form-group" v-show="editMode==true">
+                <label>Total Computer Use</label>
+                <input v-model="form.total_comp" type="text" name="total_comp"
+                  class="form-control" >
+              </div>
+
 
           </div>
           <div class="modal-footer">
@@ -451,6 +460,7 @@
             enr_program_id:'',
             total_course_unit:0,
             total_lab:0,
+            total_comp:0,
             fullname:'',
             yltitle:'',
             progtitle:'',
@@ -475,9 +485,10 @@
             //
             idval_fee:'150.00',
             guidance_fee:'50.00',
+            careerdev_fee:'50.00',
             ptccup_fee:'50.00',
             ssc_fee:'50.00',
-            studenthb_fee:'50.00',
+            studenthb_fee:'0.00',
             insurance_fee:'50.00',
             //
           }),
@@ -580,9 +591,10 @@
                     //
                     this.form.idval_fee='150.00'
                     this.form.guidance_fee='50.00'
+                    this.form.careerdev_fee='50.00'
                     this.form.ptccup_fee='50.00'
                     this.form.ssc_fee='50.00'
-                    this.form.studenthb_fee='50.00'
+                    this.form.studenthb_fee='0.00'
                     this.form.insurance_fee='50.00'
                     this.form.assessed_by = 'Rowena Del Rosario'
                     this.form.post('/api/managepayment')

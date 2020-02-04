@@ -97,6 +97,7 @@ class ManageEnrollmentController extends Controller
         $me->enr_program_id = $request->enr_program_id;
         $me->total_course_unit = $request->total_course_unit;
         $me->total_lab = $request->total_lab;
+        $me->total_comp = $request->total_comp;
         $me->save();
 
         // $mp = ManagePayment::findOrfail($id);

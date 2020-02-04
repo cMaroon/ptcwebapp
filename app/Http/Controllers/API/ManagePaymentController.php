@@ -60,10 +60,12 @@ class ManagePaymentController extends Controller
         $mp->athletic_fee = $request->athletic_fee;
         $mp->bookrental_fee = $request->bookrental_fee;
         $mp->laboratory_fee = $request->laboratory_fee;
+        $mp->computer_fee = $request->computer_fee;
         $mp->penalty_fee = $request->penalty_fee;
         //
         $mp->idval_fee = $request->idval_fee;
         $mp->guidance_fee = $request->guidance_fee;
+        $mp->careerdev_fee = $request->careerdev_fee;
         $mp->ptccup_fee = $request->ptccup_fee;
         $mp->studenthb_fee = $request->studenthb_fee;
         $mp->insurance_fee = $request->insurance_fee;

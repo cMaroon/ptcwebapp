@@ -3299,6 +3299,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3318,27 +3325,31 @@ __webpack_require__.r(__webpack_exports__);
         payment_form_id: '',
         category_id: '',
         tuition_fee: '',
+        laboratory_fee: '',
+        computer_fee: '',
+        //Misc Fee
         registration_fee: '75.00',
         library_fee: '40.00',
         medical_fee: '50.00',
         cultural_fee: '15.00',
         athletic_fee: '15.00',
-        //
-        bookrental_fee: '0.00',
-        laboratory_fee: '',
-        penalty_fee: '0.00',
-        //
         idval_fee: '150.00',
         guidance_fee: '100.00',
+        careerdev_fee: '50.00',
         ptccup_fee: '75.00',
         ssc_fee: '75.00',
-        studenthb_fee: '50.00',
         insurance_fee: '50.00',
+        //
+        bookrental_fee: '0.00',
+        penalty_fee: '0.00',
+        studenthb_fee: '0.00',
+        //firstyr 1st sem
         //
         total_amount_fee: '',
         assessed_by: 'Rowena Del Rosario',
         total_course_unit: '',
         total_lab: '',
+        total_comp: '',
         downpayment_topaid: '',
         m_fee: '',
         isStatus: ''
@@ -3356,16 +3367,17 @@ __webpack_require__.r(__webpack_exports__);
         // console.log(newQuery)
         this.searchData();
       }
-    } // category:function(newCategory){
-    //  if(newCategory!=null){
-    //     this.form.tuition_fee = parseFloat(this.form.total_course_unit) * parseFloat(this.residency[newCategory-1].isTF)
-    //     this.form.laboratory_fee = parseFloat(this.form.total_lab) * 100
-    //     this.form.category_id = this.residency[newCategory-1].id
-    //     this.form.m_fee = parseFloat(this.form.registration_fee)+parseFloat(this.form.library_fee)+parseFloat(this.form.medical_fee)+parseFloat(this.form.cultural_fee)+parseFloat(this.form.athletic_fee)+parseFloat(this.form.idval_fee)+parseFloat(this.form.guidance_fee)+parseFloat(this.form.ptccup_fee)+parseFloat(this.form.ssc_fee)+parseFloat(this.form.studenthb_fee)+parseFloat(this.form.insurance_fee)
-    //     this.form.downpayment_topaid = ((parseFloat(this.form.tuition_fee) + parseFloat(this.form.laboratory_fee))*.30)+parseFloat(this.form.m_fee)
-    //  }
-    // }
-    //  *for update for unifast and non unifast category *do not touch
+    },
+    category: function category(newCategory) {
+      if (newCategory != null) {
+        this.form.tuition_fee = parseFloat(this.form.total_course_unit) * parseFloat(this.residency[newCategory - 1].isTF);
+        this.form.laboratory_fee = parseFloat(this.form.total_lab) * 100;
+        this.form.computer_fee = parseFloat(this.form.total_comp) * 200;
+        this.form.category_id = this.residency[newCategory - 1].id;
+        this.form.m_fee = parseFloat(this.form.registration_fee) + parseFloat(this.form.library_fee) + parseFloat(this.form.medical_fee) + parseFloat(this.form.cultural_fee) + parseFloat(this.form.athletic_fee) + parseFloat(this.form.idval_fee) + parseFloat(this.form.guidance_fee) + parseFloat(this.form.careerdev_fee) + parseFloat(this.form.ptccup_fee) + parseFloat(this.form.ssc_fee) + parseFloat(this.form.studenthb_fee) + parseFloat(this.form.insurance_fee);
+        this.form.downpayment_topaid = (parseFloat(this.form.tuition_fee) + parseFloat(this.form.laboratory_fee)) * .30 + parseFloat(this.form.m_fee);
+      }
+    } //  *for update for unifast and non unifast category *do not touch
 
   },
   mounted: function mounted() {
@@ -3433,7 +3445,7 @@ __webpack_require__.r(__webpack_exports__);
       // console.log('Hello')
       this.$Progress.start();
       this.form.busy = true;
-      this.form.total_amount_fee = parseFloat(this.form.tuition_fee) + parseFloat(this.form.registration_fee) + parseFloat(this.form.library_fee) + parseFloat(this.form.medical_fee) + parseFloat(this.form.cultural_fee) + parseFloat(this.form.athletic_fee) + parseFloat(this.form.bookrental_fee) + parseFloat(this.form.laboratory_fee) + parseFloat(this.form.penalty_fee) + parseFloat(this.form.idval_fee) + parseFloat(this.form.guidance_fee) + parseFloat(this.form.ptccup_fee) + parseFloat(this.form.ssc_fee) + parseFloat(this.form.studenthb_fee) + parseFloat(this.form.insurance_fee);
+      this.form.total_amount_fee = parseFloat(this.form.tuition_fee) + parseFloat(this.form.registration_fee) + parseFloat(this.form.library_fee) + parseFloat(this.form.medical_fee) + parseFloat(this.form.cultural_fee) + parseFloat(this.form.athletic_fee) + parseFloat(this.form.bookrental_fee) + parseFloat(this.form.laboratory_fee) + parseFloat(this.form.computer_fee) + parseFloat(this.form.penalty_fee) + parseFloat(this.form.idval_fee) + parseFloat(this.form.guidance_fee) + parseFloat(this.form.careerdev_fee) + parseFloat(this.form.ptccup_fee) + parseFloat(this.form.ssc_fee) + parseFloat(this.form.studenthb_fee) + parseFloat(this.form.insurance_fee);
       this.form.post('/api/managepayment').then(function (response) {
         _this3.getData();
 
@@ -3478,11 +3490,13 @@ __webpack_require__.r(__webpack_exports__);
       this.form.fill(payment);
       this.form.total_course_unit = payment.py_f_i_d.total_course_unit;
       this.form.total_lab = payment.py_f_i_d.total_lab;
+      this.form.total_comp = payment.py_f_i_d.total_comp;
       this.form.isStatus = payment.py_f_i_d.isStatus;
       this.category = payment.category; //
 
       this.form.tuition_fee = parseFloat(this.form.total_course_unit) * 300;
-      this.form.laboratory_fee = parseFloat(this.form.total_lab) * 100; //
+      this.form.laboratory_fee = parseFloat(this.form.total_lab) * 100;
+      this.form.computer_fee = parseFloat(this.form.total_comp) * 200; //
 
       this.form.registration_fee = '75.00';
       this.form.library_fee = '40.00';
@@ -3494,11 +3508,12 @@ __webpack_require__.r(__webpack_exports__);
 
       this.form.idval_fee = '150.00';
       this.form.guidance_fee = '100.00';
+      this.form.careerdev_fee = '50.00';
       this.form.ptccup_fee = '75.00';
       this.form.ssc_fee = '75.00';
-      this.form.studenthb_fee = '50.00';
+      this.form.studenthb_fee = '0.00';
       this.form.insurance_fee = '50.00';
-      this.form.m_fee = parseFloat(this.form.registration_fee) + parseFloat(this.form.library_fee) + parseFloat(this.form.medical_fee) + parseFloat(this.form.cultural_fee) + parseFloat(this.form.athletic_fee) + parseFloat(this.form.idval_fee) + parseFloat(this.form.guidance_fee) + parseFloat(this.form.ptccup_fee) + parseFloat(this.form.ssc_fee) + parseFloat(this.form.studenthb_fee) + parseFloat(this.form.insurance_fee);
+      this.form.m_fee = parseFloat(this.form.registration_fee) + parseFloat(this.form.library_fee) + parseFloat(this.form.medical_fee) + parseFloat(this.form.cultural_fee) + parseFloat(this.form.athletic_fee) + parseFloat(this.form.idval_fee) + parseFloat(this.form.guidance_fee) + parseFloat(this.form.careerdev_fee) + parseFloat(this.form.ptccup_fee) + parseFloat(this.form.ssc_fee) + parseFloat(this.form.studenthb_fee) + parseFloat(this.form.insurance_fee);
       this.form.downpayment_topaid = (parseFloat(this.form.tuition_fee) + parseFloat(this.form.laboratory_fee)) * .30 + parseFloat(this.form.m_fee); // if(payment.tuition_fee==null && this.form.isStatus=='Adding'){
       //   this.form.registration_fee='0.00'
       //   this.form.library_fee='0.00'
@@ -3521,12 +3536,13 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$Progress.start();
       this.form.busy = true;
-      this.form.total_amount_fee = parseFloat(this.form.tuition_fee) + parseFloat(this.form.registration_fee) + parseFloat(this.form.library_fee) + parseFloat(this.form.medical_fee) + parseFloat(this.form.cultural_fee) + parseFloat(this.form.athletic_fee) + parseFloat(this.form.bookrental_fee) + parseFloat(this.form.laboratory_fee) + parseFloat(this.form.penalty_fee) + parseFloat(this.form.idval_fee) + parseFloat(this.form.guidance_fee) + parseFloat(this.form.ptccup_fee) + parseFloat(this.form.ssc_fee) + parseFloat(this.form.studenthb_fee) + parseFloat(this.form.insurance_fee);
+      this.form.total_amount_fee = parseFloat(this.form.tuition_fee) + parseFloat(this.form.registration_fee) + parseFloat(this.form.library_fee) + parseFloat(this.form.medical_fee) + parseFloat(this.form.cultural_fee) + parseFloat(this.form.athletic_fee) + parseFloat(this.form.bookrental_fee) + parseFloat(this.form.laboratory_fee) + parseFloat(this.form.computer_fee) + parseFloat(this.form.penalty_fee) + parseFloat(this.form.idval_fee) + parseFloat(this.form.guidance_fee) + parseFloat(this.form.careerdev_fee) + parseFloat(this.form.ptccup_fee) + parseFloat(this.form.ssc_fee) + parseFloat(this.form.studenthb_fee) + parseFloat(this.form.insurance_fee);
       this.form.idval_fee = '150.00';
       this.form.guidance_fee = '100.00';
+      this.form.careerdev_fee = '50.00';
       this.form.ptccup_fee = '75.00';
       this.form.ssc_fee = '75.00';
-      this.form.studenthb_fee = '50.00';
+      this.form.studenthb_fee = '0.00';
       this.form.insurance_fee = '50.00';
       this.form.put('/api/manageassesstment/' + this.form.id).then(function (response) {
         _this4.getData();
@@ -5016,6 +5032,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5043,6 +5068,7 @@ __webpack_require__.r(__webpack_exports__);
         enr_program_id: '',
         total_course_unit: 0,
         total_lab: 0,
+        total_comp: 0,
         fullname: '',
         yltitle: '',
         progtitle: '',
@@ -5067,9 +5093,10 @@ __webpack_require__.r(__webpack_exports__);
         //
         idval_fee: '150.00',
         guidance_fee: '50.00',
+        careerdev_fee: '50.00',
         ptccup_fee: '50.00',
         ssc_fee: '50.00',
-        studenthb_fee: '50.00',
+        studenthb_fee: '0.00',
         insurance_fee: '50.00' //
 
       }),
@@ -5191,9 +5218,10 @@ __webpack_require__.r(__webpack_exports__);
 
           _this3.form.idval_fee = '150.00';
           _this3.form.guidance_fee = '50.00';
+          _this3.form.careerdev_fee = '50.00';
           _this3.form.ptccup_fee = '50.00';
           _this3.form.ssc_fee = '50.00';
-          _this3.form.studenthb_fee = '50.00';
+          _this3.form.studenthb_fee = '0.00';
           _this3.form.insurance_fee = '50.00';
           _this3.form.assessed_by = 'Rowena Del Rosario';
 
@@ -9620,6 +9648,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -67914,6 +67944,12 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
+                              _vm._s(_vm.currencyFormat(payment.computer_fee))
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
                               _vm._s(
                                 _vm.currencyFormat(payment.downpayment_topaid)
                               )
@@ -68195,6 +68231,36 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [
+                          _c("label", [_vm._v("Computer Fee")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.computer_fee,
+                                expression: "form.computer_fee"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", name: "computer_fee" },
+                            domProps: { value: _vm.form.computer_fee },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "computer_fee",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
                           _c("label", [_vm._v("Misc / Others Fee")]),
                           _vm._v(" "),
                           _c("input", {
@@ -68404,6 +68470,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Laboratory Fee")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Computer Fee")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Down-payment to Paid")]),
         _vm._v(" "),
         _c("th", [_vm._v("Partial Payment")]),
@@ -68463,6 +68531,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Tuition Fee")]),
         _vm._v(" "),
         _c("th", [_vm._v("Laboratory Fee")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Computer Fee")]),
         _vm._v(" "),
         _c("th", [_vm._v("Down-payment to Paid")]),
         _vm._v(" "),
@@ -71059,6 +71129,10 @@ var render = function() {
                                   _vm._v(_vm._s(enrollment.total_lab))
                                 ]),
                                 _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(_vm._s(enrollment.total_comp))
+                                ]),
+                                _vm._v(" "),
                                 _c(
                                   "td",
                                   { staticClass: "text-center" },
@@ -72632,6 +72706,50 @@ var render = function() {
                               }
                             })
                           ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.editMode == true,
+                                expression: "editMode==true"
+                              }
+                            ],
+                            staticClass: "form-group"
+                          },
+                          [
+                            _c("label", [_vm._v("Total Computer Use")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.total_comp,
+                                  expression: "form.total_comp"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", name: "total_comp" },
+                              domProps: { value: _vm.form.total_comp },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "total_comp",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]
                         )
                       ],
                       1
@@ -72701,6 +72819,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Total Laboratory Unit")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Total Computer Use")]),
+        _vm._v(" "),
         _c("th", { staticClass: "text-center" }, [_vm._v("Action")])
       ])
     ])
@@ -72732,6 +72852,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Total Course Unit")]),
         _vm._v(" "),
         _c("th", [_vm._v("Total Laboratory Unit")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total Computer Use")]),
         _vm._v(" "),
         _c("th", { staticClass: "text-center" }, [_vm._v("Action")])
       ])
@@ -81118,6 +81240,17 @@ var render = function() {
                                             _vm.currencyFormat(
                                               _vm.enrollmentassoc.data[0]
                                                 .assocformid.payment
+                                                .computer_fee
+                                            )
+                                          )
+                                      ),
+                                      _c("br"),
+                                      _vm._v(
+                                        "\n                                            " +
+                                          _vm._s(
+                                            _vm.currencyFormat(
+                                              _vm.enrollmentassoc.data[0]
+                                                .assocformid.payment
                                                 .registration_fee
                                             )
                                           )
@@ -81161,17 +81294,6 @@ var render = function() {
                                               _vm.enrollmentassoc.data[0]
                                                 .assocformid.payment
                                                 .athletic_fee
-                                            )
-                                          )
-                                      ),
-                                      _c("br"),
-                                      _vm._v(
-                                        "\n                                            " +
-                                          _vm._s(
-                                            _vm.currencyFormat(
-                                              _vm.enrollmentassoc.data[0]
-                                                .assocformid.payment
-                                                .bookrental_fee
                                             )
                                           )
                                       ),
@@ -81831,9 +81953,9 @@ var staticRenderFns = [
     return _c("th", { staticStyle: { width: "25%", padding: "1px" } }, [
       _vm._v("\n                                        Tuition Fee:"),
       _c("br"),
-      _vm._v(
-        "\n                                        Computer / Laboratory Fee:"
-      ),
+      _vm._v("\n                                        Laboratory Fee:"),
+      _c("br"),
+      _vm._v("\n                                        Computer Fee:"),
       _c("br"),
       _vm._v("\n                                        Registration Fee:"),
       _c("br"),
@@ -81846,8 +81968,6 @@ var staticRenderFns = [
       _vm._v("\n                                        Cultural Fee:"),
       _c("br"),
       _vm._v("\n                                        Athletic Fee:"),
-      _c("br"),
-      _vm._v("\n                                        Book Rental:"),
       _c("br")
     ])
   },

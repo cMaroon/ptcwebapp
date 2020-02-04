@@ -121,25 +121,27 @@
                                     <tr>
                                         <th style="width:25%; padding:1px;">
                                             Tuition Fee:<br>
-                                            Computer / Laboratory Fee:<br>
+                                            Laboratory Fee:<br>
+                                            Computer Fee:<br>
                                             Registration Fee:<br>
                                             Library Fee:<br>
                                             Medical and Dental Fee:<br>
                                             Cultural Fee:<br>
                                             Athletic Fee:<br>
-                                            Book Rental:<br>
+                                            
                                             
                                         </th>
                                         <th style="width:30%; padding:1px; text-align:right; ">
                                             <template v-if="enrollmentassoc.data[0].assocformid.payment!=null">
                                                 {{currencyFormat(enrollmentassoc.data[0].assocformid.payment.tuition_fee)}}<br>
                                                 {{currencyFormat(enrollmentassoc.data[0].assocformid.payment.laboratory_fee)}}<br>
+                                                {{currencyFormat(enrollmentassoc.data[0].assocformid.payment.computer_fee)}}<br>
                                                 {{currencyFormat(enrollmentassoc.data[0].assocformid.payment.registration_fee)}}<br>
                                                 {{currencyFormat(enrollmentassoc.data[0].assocformid.payment.library_fee)}}<br>
                                                 {{currencyFormat(enrollmentassoc.data[0].assocformid.payment.medical_fee)}}<br>
                                                 {{currencyFormat(enrollmentassoc.data[0].assocformid.payment.cultural_fee)}}<br>
                                                 {{currencyFormat(enrollmentassoc.data[0].assocformid.payment.athletic_fee)}}<br>
-                                                {{currencyFormat(enrollmentassoc.data[0].assocformid.payment.bookrental_fee)}}<br>                                               
+                                                                                               
                                                 
                                             </template>
                                         </th>
