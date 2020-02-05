@@ -487,8 +487,8 @@
             this.category = payment.category
             //
             this.form.tuition_fee = parseFloat(this.form.total_course_unit) * 300
-            this.form.laboratory_fee = parseFloat(this.form.total_lab) * 100
-            this.form.computer_fee = parseFloat(this.form.total_comp) * 200
+            this.form.laboratory_fee = parseFloat(this.form.total_comp) * 100
+            this.form.computer_fee = parseFloat(this.form.total_lab) * 300
             //
            
               this.form.registration_fee='75.00'
